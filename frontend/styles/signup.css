@@ -1,0 +1,14 @@
+body{
+    background-color: #202020;
+}
+.banner{
+    text-align: center;
+    font-size: 80px;
+    margin-top: 5%;
+}
+.signup{
+    text-align: center;
+}
+.day {
+    size: 5;
+}

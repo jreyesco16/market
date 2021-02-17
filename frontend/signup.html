@@ -1,0 +1,123 @@
+<!Doctype html>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="styles/signup.css"/>
+    </head>
+
+    <body>
+        <h1 class="banner" id="alphax"></h1>
+        <form class="signup" action="javascript:signup()">
+            <div>
+                <input type="text" placeholder="first name" name="first_name" id="first_name" required> <br><br>
+                <input type="text" placeholder="last name" name="last_name" id="last_name" required> <br><br>
+                
+                <!-- birthday options -->
+                <select name="month" id="month">
+                    <option value="01">January</option>
+                    <option value="02">February</option>
+                    <option value="03">March</option>
+                    <option value="04">April</option>
+                    <option value="05">May</option>
+                    <option value="06">June</option>
+                    <option value="07">July</option>
+                    <option value="08">August</option>
+                    <option value="09">September</option>
+                    <option value="10">October</option>
+                    <option value="11">November</option>
+                    <option value="12">December</option>
+                </select>
+                <select name="day" id="day"></select>
+                <select name="year" id="year"></select> <br><br>
+                <input type="email" placeholder="email" name="email" id="email" required> <br><br>
+
+                <input type="password" placeholder="password" name="password" id="password" required> <br><br>
+                <input type="password" placeholder="confirm password" name="confirm_password" id="confirm_password" required> <br><br>
+                <button type="submit">Sign up</button>
+
+            </div>
+        </form>
+
+
+        <script>
+            function alphax(){
+                return "&#945lpha".fontcolor("red") + "X".fontcolor("black")  
+            }
+            document.getElementById("alphax").innerHTML = window.alphax()
+
+            function getDays(){
+                var days
+                for(i = 1; i < 32; i++){
+                    days += "<option value='" + i + "'>" + i + "</option>"
+                }  
+                return days
+            }
+            document.getElementById("day").innerHTML = window.getDays()
+
+            function getYears(){
+                var years
+                for(i = 0; i < 120; i++){
+                    years += "<option value='" + (i+1902) + "'>" + (i+1902) + "</option>"
+                }
+                return years
+            }
+            document.getElementById("year").innerHTML = window.getYears()
+
+            function signup(){
+
+                // all users data
+                first_name = document.getElementById("first_name").value
+                last_name = document.getElementById("last_name").value
+
+                day = document.getElementById("day").value
+                month = document.getElementById("month").value
+                year = document.getElementById("year").value
+                birthday = document.getElementById("year").value + "-" + month + "-" + day
+
+                email = document.getElementById("email").value
+                password = document.getElementById("password").value
+                confirm_password = document.getElementById("confirm_password").value
+
+                if(password === confirm_password){
+                    // send the form to backend
+                    fetch("http://127.0.0.1:5000/signup",
+                    {
+                        method : "POST",
+                        mode: "cors",
+                        headers : {
+                            "Content-Type" : "application/json; charset=utf-8",
+                        },
+                        body : JSON.stringify(
+                            {   
+                                first_name : first_name,
+                                last_name : last_name,
+                                birthday : birthday,
+                                email : email,
+                                password : password
+                            }
+                        )
+                    }
+                ).then(response => response.json())
+                .then(data => 
+                    {
+                        if (data["Signup"] === "Success") {
+                            // redirect to backend page
+                            console.log("Successful signup")
+                            // send user back to login in page (index)
+                            location.replace("index.html")
+                        }else{
+                            //inform backend user that login failed
+                            console.log("Failure to signup")
+                            alert("This email is already registered to a member")
+                        }
+                    }
+                )
+                }else{
+                    alert("Passwords don't match")
+                }
+            }
+
+        </script>
+    </body>
+
+
+</html>

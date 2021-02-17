@@ -1,0 +1,29 @@
+body{
+    background-color: #202020;
+}
+.banner{
+    text-align: center;
+    font-size: 100px;
+}
+.description{
+    color: white;
+    text-align: center;
+}
+body{
+    background-color: #202020;
+}
+.banner{
+    text-align: center;
+    font-size: 120px;
+    margin-top: 5%;
+}
+.backend{
+    text-align: center;
+    font-size: 50px;
+    color: gainsboro;
+    font-family: Impact;
+}
+.login{
+    color: white;
+    text-align: center;
+}
