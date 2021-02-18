@@ -1,7 +1,7 @@
 <!Doctype html>
 <html>
     <head>
-        <link rel="stylesheet" href="styles/index.css"/>
+        <!-- <link rel="stylesheet" href="styles/index.css"/> -->
     </head>
     <body>
         <br>
@@ -29,7 +29,7 @@
                         method : "POST",
                         mode: "cors",
                         headers : {
-                            "Content-Type" : "application/json; charset=utf-8",
+                            "Content-Type" : "application/json; charset=utf-8"
                         },
                         body : JSON.stringify(
                             {
@@ -45,6 +45,11 @@
                             // redirect to backend page
                             console.log("Successful login")
                             location.replace("dashboard.html")
+
+                            // create cookie for user
+                            document.cookie = "user="+email
+
+                            alert(document.cookie)
 
                         }else{
                             //inform backend user that login failed

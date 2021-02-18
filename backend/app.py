@@ -45,3 +45,9 @@ def signup():
 
     return jsonify({"Signup" : signup, "status" : 200})
 
+@app.route('/dashboard', methods = ['POST', 'GET'])
+def dashboard():
+
+    global user
+        
+    return jsonify({"User" : user, "status" : 200})

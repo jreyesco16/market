@@ -1,0 +1,9 @@
+body {
+    background-color: #202020;
+}
+.banner{
+    text-align: left;
+    font-size: 50px;
+    margin-top: 5%;
+    margin-left: 5%;
+}

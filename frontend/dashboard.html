@@ -1,9 +1,55 @@
 <!Doctype html>
 <html>
     <head>
-        <link rel="stylesheet" href="styles/dashboard.css"/>
+        <!-- <link rel="stylesheet" href="styles/dashboard.css"/> -->
     </head>
+
+    <script>
+
+        // check if this user has access to this page (only users that have signed in can view this page)
+        function checkSignin(){
+
+            console.log("Testing signin")
+
+            // fetch("http://127.0.0.1:5000/dashboard", 
+            //     {
+            //         method : "GET",
+            //         mode : "cors",
+            //         headers : {
+            //             "Content-Type" : "application/json; charset=utf-8",
+            //     }
+            // }
+            // ).then(response => response.json())
+            // .then(data =>
+            //     {
+            //         console.log(data)
+
+            //         if(data["User"] != ""){
+
+            //         }else{
+            //             console.log("Successful login")
+            //             location.replace("index.html")
+            //         }
+            //     }
+            // )
+            console.log(document.cookie)
+        }
+
+    </script>
+
     <body>
-        <h1>WHATS UP!</h1>
+
+        <h1 class="banner" id="alphax"></h1>
+
+
+
+        <script>
+
+            function alphax(){
+                return "&#945lpha".fontcolor("red") + "X".fontcolor("black")  
+            }
+            document.getElementById("alphax").innerHTML = window.alphax();
+
+        </script>
     </body>
 </html>

@@ -28,6 +28,10 @@ install flask
 
 installed MySQL
 
+# node.js
+
+# FLASK
+
 # IMPORTANT
 mysql server password: Distant_7
 
