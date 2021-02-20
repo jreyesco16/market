@@ -1,7 +1,13 @@
 from flask import Flask, render_template, request, jsonify
 from flask_cors import CORS
 import alphax_database as db
+import jwt, datetime
+from dotenv import load_dotenv
+load_dotenv()
+import os
+
 app = Flask(__name__)
+app.config['SECRET_KEY'] = os.getenv('USER_TOKEN_SECRET')
 # allows availability to/from all sources
 CORS(app)
 
@@ -16,6 +22,7 @@ user = ""
 def login():
     # return true if the user is found else return false
     login = "Failure"
+
     data = request.get_json(force=True)
 
     email = data['email']
@@ -25,6 +32,18 @@ def login():
         global user
         user = email
         login = "Success"
+        
+        # create a jwt token
+        token = jwt.encode({
+            
+            'exp' : datetime.datetime.utcnow() + datetime.timedelta(seconds=60*15),
+            'authorization' : os.getenv('USER_TOKEN_SECRET'),
+
+        }, os.getenv('ACCESS_TOKEN_SECRET'), algorithm="HS256")
+
+        return jsonify({'token' : token, "login" : login, "status" : 200})
+
+
 
     return jsonify({"login" : login, "status" : 200})
 
@@ -47,7 +66,10 @@ def signup():
 
 @app.route('/dashboard', methods = ['POST', 'GET'])
 def dashboard():
-
-    global user
         
     return jsonify({"User" : user, "status" : 200})
+
+
+
+if __name__ == "__main__" :
+    app.run(debug=True)

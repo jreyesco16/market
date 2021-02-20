@@ -1,0 +1,34 @@
+# used for testing requests
+
+POST http://localhost:3000/dashboard
+Content-Type : application/json
+
+{
+    "username" : "jesse"
+}
+
+###
+POST http://127.0.0.1:5000/login
+Content-Type: application/json
+
+{
+    "email" : "ladiesman28170@gmail.com",
+    "password" : "Distant_7"
+}
+
+###
+POST http://127.0.0.1:5000/authorize
+Content-Type: application/json
+
+{
+    "token" :"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTM3OTIwODYsImF1dGhvcml6YXRpb24iOiI5NjdkZjU0ZTJmMGFiZjJhNWQ1ZmRkZjU0YWMyMTcyNDMwNzE0ZGFmNTQyOWI0MDc3NTU5ODE1NjZjNWE5NGU5ZGExNGUwMmZmYTkzMDQ3ODY4YzVkYjQzMzYxZmFlYWNmZDZkMGZhOWI3NjBmM2Q1MDM2YzA5M2Q5M2FmZjM4ZiJ9.nhXckeAvqrYAAGGnhzZpM1SENwj2_1ejnTY6aZzYZek"
+}
+
+
+###
+POST http://localhost:3000/dashboard
+Content-Type : application/json
+
+{
+    "token" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTM3OTU0OTEsImF1dGhvcml6YXRpb24iOiI0ZDRhNWIxYmM3MDg3MDJkZTBhODQ2NzVkMjNlZmZhMjk5MzQ2NjkyZTEzMWViMGMzNGUxMmUwZGEzMmQ3Y2IzZGE2OTIzYjY4MzZlN2VjMTdmM2IzMjIxZjJmNTRiMDkyYzg4ZDQ2ZjNhMzc4MzYxNzg4ZWYwNjQ2ZjU2ZmIxYSJ9.3pzjNS-qij1ne-F737DdO-yGHe0OolQBS_8YytX4_0c"
+}
