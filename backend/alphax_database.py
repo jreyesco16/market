@@ -2,7 +2,7 @@ import mysql.connector
 
 # return the connection of the database
 def connection():
-    conn = mysql.connector.connect(host="localhost", user="root", password="Distant_7", database="alphax")
+    conn = mysql.connector.connect(host="db", user="root", password="Distant_7", database="alphax")
     return conn
 
 # check if user has access to backend

@@ -23,8 +23,6 @@ def login():
     # return true if the user is found else return false
     login = "Failure"
 
-    print("Hello")
-
     data = request.get_json(force=True)
 
     email = data['email']

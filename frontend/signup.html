@@ -79,10 +79,9 @@
 
                 if(password === confirm_password){
                     // send the form to backend
-                    fetch("http://0.0.0.0:5000/signup",
+                    fetch("http://127.0.0.1:5000/signup",
                     {
                         method : "POST",
-                        mode: "cors",
                         headers : {
                             "Content-Type" : "application/json; charset=utf-8",
                         },
@@ -103,7 +102,7 @@
                             // redirect to backend page
                             console.log("Successful signup")
                             // send user back to login in page (index)
-                            location.replace("index.html")
+                            location.replace("/")
                         }else{
                             //inform backend user that login failed
                             console.log("Failure to signup")

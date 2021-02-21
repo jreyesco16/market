@@ -4,8 +4,21 @@ services:
     build: frontend
     ports:
       - "3000:3000" 
+    expose:
+      - "3000"
   backend: 
     build: backend
     ports:
       - "5000:5000"
+  db:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'alphax'
+      MYSQL_USER: 'root'
+      MYSQL_PASSWORD: 'Distant_7'
+      MYSQL_ROOT_PASSWORD: 'Distant_7'
+    ports:
+      # <Port exposed> : < MySQL Port running inside container>
+      - '3360:3306'
   
