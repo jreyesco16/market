@@ -23,6 +23,8 @@ def login():
     # return true if the user is found else return false
     login = "Failure"
 
+    print("Hello")
+
     data = request.get_json(force=True)
 
     email = data['email']
@@ -72,4 +74,4 @@ def dashboard():
 
 
 if __name__ == "__main__" :
-    app.run(debug=True)
+    app.run(host='0.0.0.0',debug=True,port='5000')
