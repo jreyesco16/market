@@ -1,9 +1,0 @@
-FLASK:
-export FLASK_ENV=development
-
-export FLASK_APP=app.py
-
-NODE:
-
-DOCKER:
-
