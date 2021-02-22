@@ -20,7 +20,7 @@ app.get('/', (req, res) => {
 
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, algorithms=['HS256'], function(err, decoded) {
 
-        if(decoded==null || err){
+        if(decoded==null || err || decoded.authorization == null ){
             readFile('./index.html', 'utf8', (err, html) => {
                 if (err) {
                     res.status(500).send('sorry, out of order')
@@ -54,7 +54,8 @@ app.get('/dashboard', (req, res) => {
     token = req.cookies.alphax_token
 
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, algorithms=['HS256'], function(err, decoded) {
-        if(decoded.authorization==process.env.USER_TOKEN_SECRET){
+
+        if(decoded != null  && decoded.authorization==process.env.USER_TOKEN_SECRET){
             readFile('./dashboard.html', 'utf8', (err, html) => {
                 if (err) {
                     res.status(500).send('sorry, out of order')
@@ -62,7 +63,7 @@ app.get('/dashboard', (req, res) => {
                 res.send(html)
             })
         }else if(err){
-            readFile('./signup.html', 'utf8', (err, html) => {
+            readFile('./index.html', 'utf8', (err, html) => {
                 if (err) {
                     res.status(500).send('sorry, out of order')
                 }
