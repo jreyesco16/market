@@ -1,7 +1,7 @@
 *.rest
 
+*.txt
+
 /frontend/.env
 
 /backend/.env
-
-commands.txt
