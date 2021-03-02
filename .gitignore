@@ -5,4 +5,4 @@
 /frontend/.env
 
 /backend/.env
-/ackend/__pycache__/
+/backend/__pycache__/*
