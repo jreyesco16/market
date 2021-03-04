@@ -96,12 +96,9 @@ body {
 }
 
 .dashboard-footer {
-    background-color: black;
-    position: absolute;
-    display: block;
-    align-items: center;
-    height: 10%;
-    right: 0;
+    position: flex;
     bottom: 0;
-    left: 0;
+    height: 80px;
+    background-color: black;
+    text-align: center;
 }
