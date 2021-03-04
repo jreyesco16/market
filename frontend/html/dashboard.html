@@ -2,56 +2,94 @@
 <html>
     <head>
         <link rel="stylesheet" type="text/css" href="dashboard.css">
+        <title>Market Dashboard</title>
     </head>
     <body>
 
         <nav class="user-nav">
-            <a href="#contact">Transaction</a>
-            <a class="people-nav" href="#news">People</a>
-            <a class="messagas-nav" href="#messages">Messages</a>
+            <a class="transaction-nav" href="transactions.html">Transaction</a>
+            <a class="people-nav" href="people.html">People</a>
+            <a class="messagas-nav" href="messages.html">Messages</a>
         </nav>  <br>
 
         <h1 class="banner" id="logo"></h1>
 
+        <div class="dashboard-title">
+            <div class="user-title">
+                User Name
+            </div>
+
+            <div class="community-title">
+                Community
+            </div>
+        </div>
+
         <div class="profile-community">
 
             <div class="avatar-div">
-                <img class="avatar" src="avatar.png" alt="avatar">
+                <a href="./profile.html">
+                    <img class="avatar" src="avatar.png" alt="avatar">
+                </a>
             </div>
 
             <div class="community-div">
-                <img class="community" src="community.png" alt="community">
+                <a href="./community.html">
+                    <img class="community" src="community.png" alt="community">
+                </a>
             </div>
         </div>
 
         <div class="user-history">
             <div class="requests">
-                Requests
-                <ul class="requests-list">
-                    <l1>Request 1</l1>
-                    <li>Request 2</li>
-                    <li>Request 3</li>
-                    <li>Request 4</li>
-                    <li>Request 5</li>
-                </ul>
+                Requests    <br>
+                <iframe class="requests-frame">
+                    <!-- last 8 requests goes here -->
+                </iframe>
             </div>
 
             <div class="feedback">
-                History
-                <ul class="feedback-list">
-                    <li>Feedback 1</li>
-                    <li>Feedback 2</li>
-                    <li>Feedback 3</li>
-                    <li>Feedback 4</li>
-                    <li>Feedback 5</li>
-                </ul>
+                History <br>
+                <iframe class="feedback-frame">
+                   <!-- last 8 feedback goes here -->
+                </iframe>
             </div>
+
         </div>
 
         <br>
 
         <footer class="dashboard-footer">
-            Footer
+
+            <div class="global-currencies">
+                Global Currencies
+                <ul>
+                    <a>Bitcoin</a> <br>
+                    <a>Gold</a> <br>
+                    <a>NASDAQ</a> <br>
+                </ul>
+
+            </div>
+
+            <div class="global-market">
+                Global Markets
+                <ul>
+                    <a href="https://etrade.com/" >Etrade</a> <br>
+                    <a>Bitcoin</a>  <br>
+                    <a>Coinbase</a> <br>
+                </ul>
+            </div>
+
+            <div class="global-community">
+                Global Community
+                <ul>
+                    <a>Youtube</a> <br>
+                    <a>Github</a>  <br>
+                    <a>Facebook</a> <br>
+                    <a>Club House</a> <br>
+                </ul>
+
+
+            </div>
         </footer>
 
 

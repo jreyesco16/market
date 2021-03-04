@@ -32,13 +32,23 @@ body {
     font-weight: 800;
 }
 
+.dashboard-title {
+    display: flex;
+    text-align: center;
+    font-size: larger;
+}
+.user-title {
+    width: 50%;
+}
+.community-title {
+    width: 50%;
+}
+
 .profile-community {
     display: flex;
     width: 100%;
 }
 .community-div {
-    /* display: inline; */
-    float: right;
     width: 50%;
 
 }
@@ -66,6 +76,7 @@ body {
 }
 
 .user-history { 
+    margin-top: 4%;
     display: flex;
 }
 .requests {
@@ -77,9 +88,12 @@ body {
     font-style: normal;
     font-weight: 800;
 }
-.requests-list {
-    list-style-type: none;
-    font-size: x-large;
+.requests-frame{
+    width: 50%;
+    height: 400px;
+    border-color: grey;
+    overflow: scroll;
+
 }
 .feedback {
     text-align: center;
@@ -89,16 +103,30 @@ body {
     font-family:Arial, Helvetica, sans-serif;
     font-style: normal;
     font-weight: 800;
+    
 }
-.feedback-list {
-    list-style-type: none;
-    font-size: x-large;
+.feedback-frame {
+    width: 50%;
+    height: 400px;
+    border-color: lightgrey;
+    overflow: scroll;
 }
 
 .dashboard-footer {
+    display: flex;
     position: flex;
     bottom: 0;
-    height: 80px;
+    height: 150px;
     background-color: black;
     text-align: center;
+    color: white;
+}
+.global-currencies {
+    width: 33.3%;
+}
+.global-market {
+    width: 33.3%;
+}
+.global-community {
+    width: 33.3%;
 }
