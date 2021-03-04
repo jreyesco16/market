@@ -1,7 +1,7 @@
 <!Doctype html>
 <html>
     <head>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> 
+        <link rel="stylesheet" type="text/css" href="index.css">
     </head>
     <body>
         <br>
@@ -44,8 +44,8 @@
                     {
                         if (data["token"]) {
                             // create cookie for user
-                            document.cookie = "alphax_token="+data['token']
-
+                            document.cookie = "market_token="+data['token']
+                            
                             location.replace("/dashboard")
 
                         }else{

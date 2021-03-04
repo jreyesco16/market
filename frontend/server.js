@@ -1,21 +1,17 @@
 require('dotenv').config()
-require('cookie-parser')
 
-const cookieParser = require('cookie-parser')
-const { response } = require('express')
 const express = require('express')
-// const { readFile } = require('fs')
-const jwt = require('jsonwebtoken')
+const cookieParser = require('cookie-parser')
 
 const app = express()
+app.use(cookieParser())
+
+app.use(express.static(__dirname + '/css'));
+app.use(express.static(__dirname + '/images'))
 
 // import all routes
 app.use(require ('./routes'))
 
-app.use(express.static(__dirname + '/css'))
-app.use(express.static(__dirname + '/images'))
-app.use(express.json())
-app.use(cookieParser())
 
 app.get((req, res) => {
     res.status(404).send("Unknown Request")

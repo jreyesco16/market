@@ -1,0 +1,107 @@
+body {
+    background-color: white;
+}
+.user-nav {
+    display: inline;
+    overflow: hidden;
+}
+/* Style the links inside the navigation bar */
+.user-nav a {
+    float: right;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 18px;
+    background-color: skyblue;
+    margin-left: 2px;
+    border-radius: 5%;
+}
+.user-nav a:hover {
+    background-color: #ddd;
+    color: black;
+  }
+
+.banner{
+    text-align: center;
+    font-size: 50px;
+    margin-top: 10%;
+    font-size: xx-large;
+    font-family:Arial, Helvetica, sans-serif;
+    font-style: normal;
+    font-weight: 800;
+}
+
+.profile-community {
+    display: flex;
+    width: 100%;
+}
+.community-div {
+    /* display: inline; */
+    float: right;
+    width: 50%;
+
+}
+.community {
+    border-radius: 50%;
+    /* width: 300px; */
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    background: url(community.png) 50% 50% no-repeat; /* 50% 50% centers image in div */
+    width: 200px;
+    height: 200px;
+}
+.avatar-div {
+    /* display: inline; */
+    width: 50%;
+
+}
+.avatar {
+    width: 200px;
+    height: 200px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.user-history { 
+    display: flex;
+}
+.requests {
+    text-align: center;
+    width: 50%;
+    display: inline;
+    font-size: xx-large;
+    font-family:Arial, Helvetica, sans-serif;
+    font-style: normal;
+    font-weight: 800;
+}
+.requests-list {
+    list-style-type: none;
+    font-size: x-large;
+}
+.feedback {
+    text-align: center;
+    width: 50%;
+    display: inline;
+    font-size: xx-large;
+    font-family:Arial, Helvetica, sans-serif;
+    font-style: normal;
+    font-weight: 800;
+}
+.feedback-list {
+    list-style-type: none;
+    font-size: x-large;
+}
+
+.dashboard-footer {
+    background-color: black;
+    position: absolute;
+    display: block;
+    align-items: center;
+    height: 10%;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}

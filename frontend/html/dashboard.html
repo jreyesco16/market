@@ -1,24 +1,67 @@
 <!Doctype html>
 <html>
     <head>
-        <link rel="stylesheet" type="text/css" href="dashboard.css"/>
+        <link rel="stylesheet" type="text/css" href="dashboard.css">
     </head>
     <body>
 
-        <h1 class="banner" id="alphax"></h1>
+        <nav class="user-nav">
+            <a href="#contact">Transaction</a>
+            <a class="people-nav" href="#news">People</a>
+            <a class="messagas-nav" href="#messages">Messages</a>
+        </nav>  <br>
 
-        <div class="avatar-div">
-            <img class="avatar" src="../images/avatar.png" alt="avatar">
+        <h1 class="banner" id="logo"></h1>
+
+        <div class="profile-community">
+
+            <div class="avatar-div">
+                <img class="avatar" src="avatar.png" alt="avatar">
+            </div>
+
+            <div class="community-div">
+                <img class="community" src="community.png" alt="community">
+            </div>
         </div>
+
+        <div class="user-history">
+            <div class="requests">
+                Requests
+                <ul class="requests-list">
+                    <l1>Request 1</l1>
+                    <li>Request 2</li>
+                    <li>Request 3</li>
+                    <li>Request 4</li>
+                    <li>Request 5</li>
+                </ul>
+            </div>
+
+            <div class="feedback">
+                History
+                <ul class="feedback-list">
+                    <li>Feedback 1</li>
+                    <li>Feedback 2</li>
+                    <li>Feedback 3</li>
+                    <li>Feedback 4</li>
+                    <li>Feedback 5</li>
+                </ul>
+            </div>
+        </div>
+
+        <br>
+
+        <footer class="dashboard-footer">
+            Footer
+        </footer>
 
 
 
         <script>
 
-            function alphax(){
+            function logo(){
                 return "Market".fontcolor("black")
             }
-            document.getElementById("alphax").innerHTML = window.alphax();
+            document.getElementById("logo").innerHTML = window.logo();
 
         </script>
     </body>
