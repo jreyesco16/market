@@ -11,7 +11,6 @@ function dashboard(req, res){
 
         token = req.cookies.market_token
 
-
         jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, algorithms=['HS256'], function(err, decoded) {
 
 

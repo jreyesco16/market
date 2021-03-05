@@ -1,10 +1,21 @@
 <!Doctype html>
 <html>
-    <head>
+    <head id="">
         <link rel="stylesheet" type="text/css" href="dashboard.css">
         <title>Market Dashboard</title>
+
+
+        <script>
+
+            const token = document.cookie.split(";").find(row => row.startsWith("market_token=")).split("=")[1]
+
+            function getUserData() {
+                console.log( token )
+            }
+        </script>
+
     </head>
-    <body>
+    <body onload="getUserData()">
 
         <nav class="user-nav">
             <a class="transaction-nav" href="transactions.html">Transaction</a>
@@ -12,7 +23,7 @@
             <a class="messagas-nav" href="messages.html">Messages</a>
         </nav>  <br>
 
-        <h1 class="banner" id="logo"></h1>
+        <h1 class="banner">Market</h1>
 
         <div class="dashboard-title">
             <div class="user-title">
@@ -92,15 +103,5 @@
             </div>
         </footer>
 
-
-
-        <script>
-
-            function logo(){
-                return "Market".fontcolor("black")
-            }
-            document.getElementById("logo").innerHTML = window.logo();
-
-        </script>
     </body>
 </html>
