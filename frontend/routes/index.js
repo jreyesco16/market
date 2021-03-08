@@ -6,6 +6,7 @@ var router = express.Router()
 const { index } = require('../modules/index')
 const { signup } = require('../modules/signup')
 const { dashboard } = require('../modules/dashboard')
+const { messages } = require('../modules/messages')
 
 require('cookie-parser')
 
@@ -30,6 +31,13 @@ router.get('/dashboard', (req, res) => {
 
     dashboard(req,res)
 
+})
+
+/*GET messages page */
+router.get('/messages/', (req, res) => {
+
+    messages(req, res)
+    
 })
 
 module.exports = router;
