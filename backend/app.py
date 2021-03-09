@@ -28,6 +28,9 @@ def login():
     email = data['email']
     password = data['password']
 
+    print(email)
+    print(password)
+
     if db.login(email,password):
         global user
         user = email

@@ -1,9 +1,13 @@
 import mysql.connector
 
+# IMPORT .ENV CONFIGS
+# load_dotenv()
+import os
+
 # return the connection of the database
 def connection():
     # host is db for docker container & localhost for non docker container
-    conn = mysql.connector.connect(host="localhost", user="root", password="Distant_7", database="alphax")
+    conn = mysql.connector.connect(host="localhost", user="root", password="Distant_7", database="market")
     return conn
 
 # check if user has access to backend
