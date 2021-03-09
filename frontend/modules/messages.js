@@ -5,6 +5,7 @@ const renderer = require('vue-server-renderer').createRenderer()
 
 function messages(req, res) {
 
+    // VUE CONFIG
     const messages_vue = new Vue({
         data: {
             url: req.url,

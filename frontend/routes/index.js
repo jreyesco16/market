@@ -34,7 +34,7 @@ router.get('/dashboard', (req, res) => {
 })
 
 /*GET messages page */
-router.get('/messages/', (req, res) => {
+router.get('/dashboard/messages/', (req, res) => {
 
     messages(req, res)
     

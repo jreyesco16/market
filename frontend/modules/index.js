@@ -14,7 +14,7 @@ function index(req, res){
             if(decoded != null  && decoded.authorization==process.env.USER_TOKEN_SECRET){
                 res.redirect("/dashboard")
             }else{
-                readFile('./html/index.html', 'utf8', (err, html) => {
+                readFile('./index.html', 'utf8', (err, html) => {
                     if (err) {
                         res.status(500).send('sorry, out of order')
                     }
@@ -26,7 +26,7 @@ function index(req, res){
 
     }else{
         
-        readFile('./html/index.html', 'utf8', (err, html) => {
+        readFile('./index.html', 'utf8', (err, html) => {
             if (err) {
                 res.status(500).send('sorry, out of order')
             }
