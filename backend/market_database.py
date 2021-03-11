@@ -1,7 +1,7 @@
 import mysql.connector
+from flask import jsonify
 
 # IMPORT .ENV CONFIGS
-# load_dotenv()
 import os
 
 # return the connection of the database
@@ -59,6 +59,22 @@ def signup(first_name, last_name, birthday, email, password):
     return signup
 
 # return list of all the data in a given field  (always close a connection when passed)
+def dashboardData(user):
+
+    # get db components
+    db = connection()
+    csr = db.cursor()
+
+    # get first_name, last_name, jobs, feedback
+    # data = {
+    #     "first_name" :  ,
+    #     "last_name" : ,
+    #     "jobs" :  ,
+    #     "feedback" :
+    # }
+
+
+    return jsonify({"data": data }}
 
 
 # adds data to a given field    (always close a connection when passed)

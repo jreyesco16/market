@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, jsonify
 from flask_cors import CORS
-import alphax_database as db
+import market_database as db
 import jwt, datetime
 from dotenv import load_dotenv
 load_dotenv()
@@ -10,9 +10,6 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('USER_TOKEN_SECRET')
 # allows availability to/from all sources
 CORS(app)
-
-# user global data
-user = ""
 
 # @app.route('/')
 # def alphax_backend():
@@ -28,25 +25,19 @@ def login():
     email = data['email']
     password = data['password']
 
-    print(email)
-    print(password)
-
     if db.login(email,password):
-        global user
         user = email
         login = "Success"
         
         # create a jwt token
         token = jwt.encode({
-            
+            'user' : user,
             'exp' : datetime.datetime.utcnow() + datetime.timedelta(seconds=60*15),
             'authorization' : os.getenv('USER_TOKEN_SECRET'),
 
         }, os.getenv('ACCESS_TOKEN_SECRET'), algorithm="HS256")
 
         return jsonify({'token' : token, "login" : login, "status" : 200})
-
-
 
     return jsonify({"login" : login, "status" : 200})
 
@@ -69,8 +60,17 @@ def signup():
 
 @app.route('/dashboard', methods = ['POST', 'GET'])
 def dashboard():
+
+    token = request.get_json(force=True)['token']
+    
+    data = jwt.decode(token, os.getenv('ACCESS_TOKEN_SECRET'), algorithms=["HS256"])
+
+    user = data['user']
+
+    # get user data with email (if they have made it this far then they already should have access)
+    data = db.dashboardData(user)
         
-    return jsonify({"User" : user, "status" : 200})
+    return jsonify({"data" : data, "status" : 200})
 
 
 
