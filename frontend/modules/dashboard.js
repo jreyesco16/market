@@ -5,6 +5,7 @@ var jwt = require('jsonwebtoken')
 require('cookie-parser')
 const { authenticate }= require('../component/authenticate')
 
+
 function dashboard(req, res){
 
     if(req.cookies.market_token != undefined){
@@ -13,7 +14,9 @@ function dashboard(req, res){
 
         if(authenticate(token)){
 
-            getUserDashboard(token)
+            dashabord_data = getUserDashboard(token)
+
+            console.log(dashabord_data)
 
             readFile('./html/dashboard.html', 'utf8', (err, html) => {
                 if (err) {
@@ -33,6 +36,8 @@ function dashboard(req, res){
 }
 
 function getUserDashboard(token){
+
+    dash_data = {}
 
     // get all the user data for the 
     fetch(process.env.BACKEND + "/dashboard",
