@@ -12,6 +12,8 @@ create table user(
     primary key(user_id)
 );
 
+-- drop table user;
+
 /* create table to holds all the services provided by all users */
 create table services(
     services_id int NOT NULL AUTO_INCREMENT ,
@@ -19,8 +21,7 @@ create table services(
     primary key(services_id)
 );
 
-/* need to drop user_services */
-DROP TABLE user_services;
+-- DROP TABLE user_services;
 
 /* create user services */
 create table user_services(
@@ -33,6 +34,8 @@ create table user_services(
     FOREIGN KEY (user_id) REFERENCES user(user_id) ON UPDATE CASCADE,
     FOREIGN KEY (services_id) REFERENCES services(services_id) ON UPDATE CASCADE
 );
+
+-- drop table user_services;
 
 /* create a request table */
 create table request(
@@ -47,6 +50,8 @@ create table request(
     FOREIGN KEY (reciever_id) REFERENCES user(user_id),
     FOREIGN KEY (user_service_id) REFERENCES user_services(user_service_id)
 );
+
+-- drop table request;
 
 create table payment(
     payment_id INT AUTO_INCREMENT NOT NULL,
@@ -63,6 +68,8 @@ create table payment(
     FOREIGN KEY (reciever_id) REFERENCES user(user_id)
 );
 
+-- drop table payment;
+
 create table feedback(
     feedback_id INT AUTO_INCREMENT NOT NULL,
     servicer_id INT NOT NULL,
@@ -77,3 +84,16 @@ create table feedback(
     FOREIGN KEY (reciever_id) REFERENCES user(user_id),
     FOREIGN KEY (request_id) REFERENCES request(request_id)
 );
+
+-- drop table feedback;
+
+create table business(
+    business_id INT AUTO_INCREMENT NOT NULL,
+    user_id INT NOT NULL,
+    name varchar(100) NOT NULL,
+    PRIMARY KEY (business_id),
+    FOREIGN KEY (user_id) REFERENCES user(user_id) ON UPDATE CASCADE
+);
+
+
+-- drop table business;

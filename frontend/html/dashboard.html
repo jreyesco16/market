@@ -4,8 +4,11 @@
         <link rel="stylesheet" type="text/css" href="dashboard.css">
         <title>Dashboard</title>
 
+        <!-- LINKS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
         <script>
+            src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
 
             const token = document.cookie.split(";").find(row => row.startsWith("market_token=")).split("=")[1]
 
@@ -15,54 +18,66 @@
         </script>
 
     </head>
-    <body onload="getUserData()">
+    <body class=dashboard-body>
 
         <nav class="user-nav">
             <a class="transaction-nav" href="transactions.html">Transaction</a>
-            <a class="people-nav" href="people.html">People</a>
+            <a class="people-nav" href="community.html">Community</a>
             <a class="messagas-nav" href="messages.html">Messages</a>
-        </nav>  <br>
+        </nav>  
+        
+        <br>
 
         <h1 class="banner">Market</h1>
 
-        <div class="dashboard-title">
-            <div class="user-title">
-                User Name
-            </div>
-
-            <div class="community-title">
-                Community
-            </div>
-        </div>
-
         <div class="profile-community">
-
+            <!-- user avatar -->
             <div class="avatar-div">
                 <a href="./profile.html">
                     <img class="avatar" src="avatar.png" alt="avatar">
-                </a>
-            </div>
-
-            <div class="community-div">
-                <a href="./community.html">
-                    <img class="community" src="community.png" alt="community">
                 </a>
             </div>
         </div>
 
         <div class="user-history">
             <div class="requests">
-                Requests    <br>
-                <iframe class="requests-frame">
-                    <!-- last 8 requests goes here -->
-                </iframe>
+                Requests    
+                
+                <br>
+                <div class="bootstrap-list">
+                    <div class="list-group">
+                        <a href="#" class="list-group-item list-group-item-action">Request 1</a>
+                        <a href="#" class="list-group-item list-group-item-action">Request 2</a>
+                        <a href="#" class="list-group-item list-group-item-action">Request 3</a>
+                        <a href="#" class="list-group-item list-group-item-action">Request 4</a>
+                        <a href="#" class="list-group-item list-group-item-action">Request 5</a>
+                        <a href="#" class="list-group-item list-group-item-action">Request 6</a>
+                        <a href="#" class="list-group-item list-group-item-action">Request 7</a>
+                        <a href="#" class="list-group-item list-group-item-action">Request 8</a>
+                        <a href="#" class="list-group-item list-group-item-action">Request 9</a>
+                        <a href="#" class="list-group-item list-group-item-action">Request 10</a>
+                    </div>
+                </div>
             </div>
 
             <div class="feedback">
-                History <br>
-                <iframe class="feedback-frame">
-                   <!-- last 8 feedback goes here -->
-                </iframe>
+                Feedback
+
+                <br>
+                <div class=bootstrap-list>
+                    <div class="list-group">
+                        <a href="#" class="list-group-item list-group-item-action">Feedback 1</a>
+                        <a href="#" class="list-group-item list-group-item-action">Feedback 2</a>
+                        <a href="#" class="list-group-item list-group-item-action">Feedback 3</a>
+                        <a href="#" class="list-group-item list-group-item-action">Feedback 4</a>
+                        <a href="#" class="list-group-item list-group-item-action">Feedback 5</a>
+                        <a href="#" class="list-group-item list-group-item-action">Feedback 6</a>
+                        <a href="#" class="list-group-item list-group-item-action">Feedback 7</a>
+                        <a href="#" class="list-group-item list-group-item-action">Feedback 8</a>
+                        <a href="#" class="list-group-item list-group-item-action">Feedback 9</a>
+                        <a href="#" class="list-group-item list-group-item-action">Feedback 10</a>
+                    </div>
+                </div>
             </div>
 
         </div>

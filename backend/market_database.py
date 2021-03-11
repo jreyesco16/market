@@ -66,15 +66,15 @@ def dashboardData(user):
     csr = db.cursor()
 
     # get first_name, last_name, jobs, feedback
-    # data = {
-    #     "first_name" :  ,
-    #     "last_name" : ,
-    #     "jobs" :  ,
-    #     "feedback" :
-    # }
+    data = {
+        "first_name" :  "Jesse",
+        "last_name" : "Reyes Cortes",
+        "request" :  "Roofing",
+        "feedback" : "Good job but could be better"
+    }
 
 
-    return jsonify({"data": data }}
+    return {"data": data }
 
 
 # adds data to a given field    (always close a connection when passed)
