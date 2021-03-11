@@ -28,7 +28,7 @@ create table user_services(
     user_service_id INT NOT NULL AUTO_INCREMENT,
     user_id INT NOT NULL,
     services_id INT NOT NULL,
-    price   INT NOT NULL,
+    price DECIMAL(18,2) NOT NULL,
     duration INT NULL NULL,
     PRIMARY KEY (user_service_id),
     FOREIGN KEY (user_id) REFERENCES user(user_id) ON UPDATE CASCADE,
@@ -56,33 +56,22 @@ create table request(
 create table payment(
     payment_id INT AUTO_INCREMENT NOT NULL,
     request_id INT NOT NULL,
-    -- user recieving payment 
-    servicer_id INT NOT NULL,
-    -- user sending the service (recieved service)
-    reciever_id INT NOT NULL,
-    amout DECIMAL(18,2) NOT NULL,
     payment_date date NOT NULL,
     PRIMARY KEY (payment_id),
-    FOREIGN KEY (request_id) REFERENCES request(request_id),
-    FOREIGN KEY (servicer_id) REFERENCES user(user_id),
-    FOREIGN KEY (reciever_id) REFERENCES user(user_id)
+    FOREIGN KEY (request_id) REFERENCES request(request_id)
 );
 
 -- drop table payment;
 
 create table feedback(
     feedback_id INT AUTO_INCREMENT NOT NULL,
-    servicer_id INT NOT NULL,
-    reciever_id INT NOT NULL,
-    request_id INT NOT NULL,
-    quality DECIMAL(1,1) NOT NULL,
-    speed DECIMAL(1,1) NOT NULL,
-    price DECIMAL(1,1) NOT NULL,
+    payment_id INT NOT NULL,
+    quality DECIMAL(2,1) NOT NULL,
+    speed DECIMAL(2,1) NOT NULL,
+    price DECIMAL(2,1) NOT NULL,
     comment VARCHAR(100) NULL,
     PRIMARY KEY (feedback_id),
-    FOREIGN KEY (servicer_id) REFERENCES user(user_id),
-    FOREIGN KEY (reciever_id) REFERENCES user(user_id),
-    FOREIGN KEY (request_id) REFERENCES request(request_id)
+    FOREIGN KEY (payment_id) REFERENCES payment(payment_id)
 );
 
 -- drop table feedback;
@@ -95,5 +84,54 @@ create table business(
     FOREIGN KEY (user_id) REFERENCES user(user_id) ON UPDATE CASCADE
 );
 
-
 -- drop table business;
+
+
+
+-- insert dummy data for testing
+
+    -- dummy users
+insert into user(first_name, last_name, birthday, email, password) values ("Micheal", "Jordan", "1963-02-17", "jumpman23@bulls.com", "thebestever");
+insert into user(first_name, last_name, birthday, email, password) values ("Monkey", "D. Luffy", "2000-05-07", "pirateking@gmail.com", "iwantmeat");
+
+
+    -- dummy services
+insert into services(providable_service) values ("Mercenary"); 
+insert into services(providable_service) values ("Body Guard");
+insert into services(providable_service) values ("Retrevial");
+insert into services(providable_service) values ("Software Engineering");
+insert into services(providable_service) values ("Software Development");
+insert into services(providable_service) values ("Web Development");
+insert into services(providable_service) values ("Basketball Coach");
+
+
+    -- dummy user services
+-- dummy 1 (jesse)
+insert into user_services (user_id, services_id, price, duration) values(1,4,65000,365);
+insert into user_services (user_id, services_id, price, duration) values(1,5,55000,365);
+insert into user_services (user_id, services_id, price, duration) values(1,6, 50000,365);
+
+-- dummy 2 (Luffy)
+insert into user_services (user_id, services_id, price, duration) values(3,1,500,7);
+insert into user_services (user_id, services_id, price, duration) values(3,2,400,7);
+insert into user_services (user_id, services_id, price, duration) values(3,3,400,7);
+
+-- dummy 3 (Micheal)
+insert into user_services (user_id, services_id, price, duration) values(2, 7, 300000, 365);
+
+    -- dummy requests
+
+-- requests for jesse from jordan for software engineering
+insert into request (servicer_id,reciever_id,user_service_id) values(1,2,4);
+-- request for jesse from luffy for web development
+insert into request (servicer_id,reciever_id,user_service_id) values(1,3,6);
+-- request for jesse from luffy for software development 
+insert into request (servicer_id,reciever_id,user_service_id) values(1,3,5);
+
+    -- dummy payments
+
+-- payment for jesse from luffy for request 2
+insert into payment (request_id,payment_date) value (2,"2021-03-05");
+
+    -- dummy feedback
+insert into feedback (payment_id,quality,speed,price,comment) values (1,5,3.5,4,"Really good quality websites but a little expensive and slow");
