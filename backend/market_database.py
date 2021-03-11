@@ -54,7 +54,7 @@ def signup(first_name, last_name, birthday, email, password):
 
     csr.close()
     db.close()
-
+    
 
     return signup
 
