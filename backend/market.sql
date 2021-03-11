@@ -9,10 +9,11 @@ create table user(
     birthday date not null,
     email varchar(80) not null unique,
     password varchar(50) not null,
+    user_rating DECIMAL (2,1) DEFAULT 0,
     primary key(user_id)
 );
 
--- drop table user;
+drop table user;
 
 /* create table to holds all the services provided by all users */
 create table services(
@@ -21,7 +22,7 @@ create table services(
     primary key(services_id)
 );
 
--- DROP TABLE user_services;
+DROP TABLE services;
 
 /* create user services */
 create table user_services(
@@ -30,12 +31,13 @@ create table user_services(
     services_id INT NOT NULL,
     price DECIMAL(18,2) NOT NULL,
     duration INT NULL NULL,
+    service_rating DECIMAL (2,1) DEFAULT 0,
     PRIMARY KEY (user_service_id),
     FOREIGN KEY (user_id) REFERENCES user(user_id) ON UPDATE CASCADE,
     FOREIGN KEY (services_id) REFERENCES services(services_id) ON UPDATE CASCADE
 );
 
--- drop table user_services;
+drop table user_services;
 
 /* create a request table */
 create table request(
@@ -51,7 +53,7 @@ create table request(
     FOREIGN KEY (user_service_id) REFERENCES user_services(user_service_id)
 );
 
--- drop table request;
+drop table request;
 
 create table payment(
     payment_id INT AUTO_INCREMENT NOT NULL,
@@ -61,7 +63,7 @@ create table payment(
     FOREIGN KEY (request_id) REFERENCES request(request_id)
 );
 
--- drop table payment;
+drop table payment;
 
 create table feedback(
     feedback_id INT AUTO_INCREMENT NOT NULL,
@@ -69,12 +71,13 @@ create table feedback(
     quality DECIMAL(2,1) NOT NULL,
     speed DECIMAL(2,1) NOT NULL,
     price DECIMAL(2,1) NOT NULL,
+    overall_rating DECIMAL (2,1) DEFAULT 0,
     comment VARCHAR(100) NULL,
     PRIMARY KEY (feedback_id),
     FOREIGN KEY (payment_id) REFERENCES payment(payment_id)
 );
 
--- drop table feedback;
+drop table feedback;
 
 create table business(
     business_id INT AUTO_INCREMENT NOT NULL,
@@ -84,7 +87,7 @@ create table business(
     FOREIGN KEY (user_id) REFERENCES user(user_id) ON UPDATE CASCADE
 );
 
--- drop table business;
+drop table business;
 
 
 
@@ -122,11 +125,11 @@ insert into user_services (user_id, services_id, price, duration) values(2, 7, 3
     -- dummy requests
 
 -- requests for jesse from jordan for software engineering
-insert into request (servicer_id,reciever_id,user_service_id) values(1,2,4);
+insert into request (servicer_id,reciever_id,user_service_id) values(1,2,1);
 -- request for jesse from luffy for web development
-insert into request (servicer_id,reciever_id,user_service_id) values(1,3,6);
+insert into request (servicer_id,reciever_id,user_service_id) values(1,3,3);
 -- request for jesse from luffy for software development 
-insert into request (servicer_id,reciever_id,user_service_id) values(1,3,5);
+insert into request (servicer_id,reciever_id,user_service_id) values(1,3,2);
 
     -- dummy payments
 
@@ -135,3 +138,53 @@ insert into payment (request_id,payment_date) value (2,"2021-03-05");
 
     -- dummy feedback
 insert into feedback (payment_id,quality,speed,price,comment) values (1,5,3.5,4,"Really good quality websites but a little expensive and slow");
+
+
+-- create query for getting all necessary data for the dashboard
+select user_id,first_name,last_name from user WHERE email="jesserc.2@gmail.com";
+-- query for requests
+select
+    -- have to add a field for user rating
+    user.first_name, user.last_name, services.providable_service
+from request 
+    inner join payment
+        on payment.request_id != request.request_id
+    inner join feedback
+        on payment.payment_id = feedback.payment_id
+    inner join user_services
+        on request.user_service_id = user_services.user_service_id
+    inner join services
+        on user_services.services_id = services.services_id
+    inner join user
+        on request.reciever_id = user.user_id
+where request.servicer_id = 1;
+
+select 
+    request.request_id
+from request
+    inner join payment
+        on payment.request_id != request.request_id
+    inner join feedback
+        on payment.payment_id = feedback.payment_id;
+
+
+-- query for feedback
+select 
+    -- have to add a field for overall rating
+    user.first_name,user.last_name, services.providable_service 
+from request
+    inner join user 
+        on request.reciever_id = user.user_id
+    inner join user_services
+        on request.user_service_id = user_services.user_service_id
+    inner join services
+        on user_services.services_id = services.services_id
+    inner join payment
+        on request.request_id = payment.request_id
+    inner join feedback
+        on payment.payment_id = feedback.payment_id
+where request.servicer_id=1;
+
+
+    
+

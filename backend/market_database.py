@@ -65,16 +65,39 @@ def dashboardData(user):
     db = connection()
     csr = db.cursor()
 
-    # get first_name, last_name, jobs, feedback
-    data = {
-        "first_name" :  "Jesse",
-        "last_name" : "Reyes Cortes",
-        "request" :  "Roofing",
-        "feedback" : "Good job but could be better"
+    # get the user id, first name, last name
+    query = "select user_id,first_name,last_name from user WHERE email="+"'"+user+"';"
+    csr.execute(query)
+    result = csr.fetchall()[0]
+
+    user_id = result[0]
+    first_name = result[1]
+    last_name = result[2]
+
+    feedback = {}
+    request = {}
+
+    # get all user requests
+    query = "select user.first_name, user.last_name, services.providable_service from request inner join payment on payment.request_id != request.request_id inner join feedback on payment.payment_id = feedback.payment_id inner join user_services on request.user_service_id = user_services.user_service_id inner join services on user_services.services_id = services.services_id inner join user on request.reciever_id = user.user_id where request.servicer_id ="+str(user_id)+ ";"
+    csr.execute(query)
+    requests = csr.fetchall()
+
+    # get all user feedback
+    query = "select user.first_name,user.last_name, services.providable_service from request inner join user on request.reciever_id = user.user_id inner join user_services on request.user_service_id = user_services.user_service_id inner join services on user_services.services_id = services.services_id inner join payment on request.request_id = payment.request_id inner join feedback on payment.payment_id = feedback.payment_id where request.servicer_id="+str(user_id)+ ";"
+    csr.execute(query)
+    feedback = csr.fetchall()
+
+    dashboard = {
+        "first_name" :  first_name,
+        "last_name" : last_name,
+        "request" :  requests,
+        "feedback" : feedback
     }
 
+    # def dashboard_helper():
 
-    return {"data": data }
+
+    return  dashboard
 
 
 # adds data to a given field    (always close a connection when passed)
