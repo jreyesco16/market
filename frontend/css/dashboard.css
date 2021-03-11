@@ -3,7 +3,7 @@
     background-color: white;
 }
 .user-nav {
-    margin-top: 2%;
+    margin-right: 2%;
     display: inline;
     overflow: hidden;
 }
@@ -108,7 +108,7 @@
     display: flex;
     position: flex;
     bottom: 0;
-    height: 120px;
+    height: 80px;
     background-color: dodgerblue;
     text-align: center;
     color: white;

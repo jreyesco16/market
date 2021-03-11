@@ -68,9 +68,9 @@ def dashboard():
     user = data['user']
 
     # get user data with email (if they have made it this far then they already should have access)
-    data = db.dashboardData(user)
+    # data = db.dashboardData(user)
         
-    return jsonify({"data" : data, "status" : 200})
+    return jsonify({"dashboard" : db.dashboardData(user), "status" : 200})
 
 
 
