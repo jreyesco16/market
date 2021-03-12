@@ -14,9 +14,12 @@ function dashboard(req, res){
 
         if(authenticate(token)){
 
-            dashabord_data = getUserDashboard(token)
+            let dashboard = {}
+            getUserDashboard(token).then(data => {
+                dashboard = data
+            })
 
-            console.log(dashabord_data)
+            console.log(dashboard)
 
             readFile('./html/dashboard.html', 'utf8', (err, html) => {
                 if (err) {
@@ -37,28 +40,32 @@ function dashboard(req, res){
 
 function getUserDashboard(token){
 
-    dash_data = {}
+    return new Promise((resolve, reject) => {
 
-    // get all the user data for the 
-    fetch(process.env.BACKEND + "/dashboard",
-        {
-            method: "POST",
-            mode: "cors",
-            headers: {
-                "Content-Type" : "application/json; charset=utf-8"
-            },
-            body: JSON.stringify({
-                token: token
-            })
 
-        }
-    ).then(response => response.json())
-    .then(data => 
-        {
-            console.log(data)
-        }
-    )
 
+        fetch(process.env.BACKEND + "/dashboard",
+            {
+                method: "POST",
+                mode: "cors",
+                headers: {
+                    "Content-Type" : "application/json; charset=utf-8"
+                },
+                body: JSON.stringify({
+                    token: token
+                })
+
+            }
+        ).then(response => {
+            return response.json()
+        })
+        .then(result => 
+            {
+                let dashboard=result['dashboard']
+                resolve(dashboard)
+            }
+        )
+    })
 }
 
 

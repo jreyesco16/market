@@ -171,7 +171,7 @@ from request
 -- query for feedback
 select 
     -- have to add a field for overall rating
-    user.first_name,user.last_name, services.providable_service 
+    user.first_name,user.last_name, services.providable_service, feedback.overall_rating
 from request
     inner join user 
         on request.reciever_id = user.user_id

@@ -3,6 +3,7 @@ from flask_cors import CORS
 import market_database as db
 import jwt, datetime
 from dotenv import load_dotenv
+import simplejson as json
 load_dotenv()
 import os
 
@@ -70,7 +71,7 @@ def dashboard():
     # get user data with email (if they have made it this far then they already should have access)
     # data = db.dashboardData(user)
         
-    return jsonify({"dashboard" : db.dashboardData(user), "status" : 200})
+    return json.dumps({"dashboard" : db.dashboardData(user), "status" : 200})
 
 
 
