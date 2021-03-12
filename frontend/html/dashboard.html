@@ -43,25 +43,9 @@
                 <br>
                 <div class="bootstrap-list">
                     <div class="list-group">
+                        <!-- insert the request list -->
                         <div id="request_list">
-                            <!-- <a href="#" class="list-group-item list-group-item-action" style="display: flex; font-size: medium;">
-                                <div style="width: 60%;"> Micheal Jordan <br>
-                                    5
-                                </div>
-                                <div style="width: 40%;">
-                                    Software Engineering
-                                </div>
-                            </a> -->
                         </div>
-                        <!-- <a href="#" class="list-group-item list-group-item-action">Request 2</a>
-                        <a href="#" class="list-group-item list-group-item-action">Request 3</a>
-                        <a href="#" class="list-group-item list-group-item-action">Request 4</a>
-                        <a href="#" class="list-group-item list-group-item-action">Request 5</a>
-                        <a href="#" class="list-group-item list-group-item-action">Request 6</a>
-                        <a href="#" class="list-group-item list-group-item-action">Request 7</a>
-                        <a href="#" class="list-group-item list-group-item-action">Request 8</a>
-                        <a href="#" class="list-group-item list-group-item-action">Request 9</a>
-                        <a href="#" class="list-group-item list-group-item-action">Request 10</a> -->
                     </div>
                 </div>
             </div>
@@ -72,17 +56,8 @@
                 <br>
                 <div class=bootstrap-list>
                     <div class="list-group">
+                        <!-- insert the feedback list -->
                         <div id="feedback-list">
-                        <!-- <a href="#" class="list-group-item list-group-item-action">Feedback 1</a>
-                        <a href="#" class="list-group-item list-group-item-action">Feedback 2</a>
-                        <a href="#" class="list-group-item list-group-item-action">Feedback 3</a>
-                        <a href="#" class="list-group-item list-group-item-action">Feedback 4</a>
-                        <a href="#" class="list-group-item list-group-item-action">Feedback 5</a>
-                        <a href="#" class="list-group-item list-group-item-action">Feedback 6</a>
-                        <a href="#" class="list-group-item list-group-item-action">Feedback 7</a>
-                        <a href="#" class="list-group-item list-group-item-action">Feedback 8</a>
-                        <a href="#" class="list-group-item list-group-item-action">Feedback 9</a>
-                        <a href="#" class="list-group-item list-group-item-action">Feedback 10</a> -->
                         </div>
                     </div>
                 </div>
@@ -125,13 +100,10 @@
                     .then(data => {
                         // entire dataset
                         dash_data = data.dashboard
-                        console.log(dash_data)
 
                         // insert users first name and last name
                         first_name = dash_data.first_name
                         last_name = dash_data.last_name
-                        console.log(first_name)
-                        console.log(last_name)
 
                         document.querySelector("#first_name").insertAdjacentHTML("afterbegin", first_name)
                         document.querySelector("#last_name").insertAdjacentHTML("afterbegin", last_name)
@@ -150,7 +122,6 @@
                             </a>
                             `)
                         }
-                        console.log(requests)
 
                         // insert feedback in feedback list
                         feedback = dash_data.feedback
@@ -166,10 +137,6 @@
                             </a>
                             `)
                         }
-
-                        console.log(feedback)
-
-
                         
                     }
                 )
