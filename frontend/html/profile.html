@@ -1,8 +1,87 @@
 <html>
     <head>
+        <link rel="stylesheet" type="text/css" href="profile.css">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+        <title>Profile</title>
 
     </head>
+
     <body>
-        Your Profile
+
+        <div class="back-button">
+            <button type="button" class="btn btn-secondary" style="width: 100px;height: 75; background-color: grey;border: none;" onclick="goBack()">
+                <img class="back-arrow" src="arrow-left.svg" alt="back-arrow">
+            </button>
+        </div>
+        
+
+        <div class="profile">
+            <!-- user avatar -->
+            <div class="avatar-div">
+                Settings
+                <img class="avatar" src="avatar.png" alt="avatar">
+                <p id="first_name" class="first_name"></p>
+                <p id="last_name" class="last_name"></p>
+            </div>
+        </div>
+
+
+
+        <div class="div-buttons">
+            <div class="div-buttons-layer-one">
+
+                <div class="bootstrap-button-div">
+                    <button type="button" class="btn btn-primary">
+                        Services
+                    </button>
+                </div>
+
+                <div class="bootstrap-button-div">
+                    <button type="button" class="btn btn-primary">
+                        History
+                    </button>
+                </div>
+
+                <div class="bootstrap-button-div">
+                    <button type="button" class="btn btn-primary">
+                        Activity
+                    </button>
+                </div>
+
+            </div>
+
+            <div class="div-buttons-layer-two">
+
+                <div class="bootstrap-button-div">
+                    <button type="button" class="btn btn-primary">
+                        Account
+                    </button>
+                </div>
+
+                <div class="bootstrap-button-div">
+                    <button type="button" class="btn btn-primary">
+                        Rules
+                    </button>
+                </div>
+
+                <div class="bootstrap-button-div">
+                    <button type="button" class="btn btn-primary">
+                        Contact Us
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- footer -->
+        <footer class="profile-footer">
+
+        </footer>
+
+        <script>
+            function goBack(){
+                location.replace("/dashboard")
+            }
+        </script>
     </body>
 </html>

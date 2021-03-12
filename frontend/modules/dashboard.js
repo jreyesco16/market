@@ -12,8 +12,6 @@ function dashboard(req, res){
 
         if(authenticate(token)){
 
-            vue._data.backend_url = `${process.env.BACKEND}/dashboard`
-
             readFile('./html/dashboard.html', 'utf8', (err, html) => {
                 if (err) {
                     res.redirect("/")

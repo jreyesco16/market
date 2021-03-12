@@ -1,5 +1,4 @@
 const { readFile } = require('fs')
-var jwt  = require('jsonwebtoken')
 const { authenticate } = require('../component/authenticate')
 require('cookie-parser')
 

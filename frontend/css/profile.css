@@ -1,0 +1,56 @@
+.back-button {
+    margin-top: 1%;
+    margin-left: 1%;
+}
+.back-arrow {
+    width: 50px;
+}
+
+.avatar-div {
+    /* display: inline; */
+    width: 100%;
+    text-align: center;
+    font-size: larger;
+    font-weight: 600;
+
+}
+.avatar {
+    width: 200px;
+    height: 200px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.div-buttons-layer-one {
+    
+    margin-top: 10%;
+    display: flex;
+}
+.div-buttons-layer-two {
+    margin-top: 5%;
+    margin-bottom: 5%;
+    display: flex;
+}
+.bootstrap-button-div {
+    width: 33%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+button.btn.btn-primary {
+    width: 280px;
+    height: 120px;
+    font-size: larger;
+}
+
+
+.profile-footer {
+    display: flex;
+    position: flex;
+    bottom: 0;
+    height: 80px;
+    background-color: dodgerblue;
+    text-align: center;
+    color: white;
+}
