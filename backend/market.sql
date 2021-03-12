@@ -145,7 +145,7 @@ select user_id,first_name,last_name from user WHERE email="jesserc.2@gmail.com";
 -- query for requests
 select
     -- have to add a field for user rating
-    user.first_name, user.last_name, services.providable_service
+    user.first_name, user.last_name, services.providable_service, user.user_rating
 from request 
     inner join payment
         on payment.request_id != request.request_id

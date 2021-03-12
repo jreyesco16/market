@@ -9,17 +9,18 @@ function messages(req, res) {
     const vue = new Vue({
         data: {
             url: req.url,
-            messages : getUserMessages()
+            messages : ''
         },
         // MUST add a template
         template: require('fs').readFileSync('./html/messages.html','utf-8')
     })
 
+    console.log(vue._data.messages) 
     // VUE CONFIG
-    vue.data = getUserMessages()
+    vue._data.messages = getUserMessages()
 
     // render the html file with vue components
-    renderer.renderToString(messages_vue, (err, html) => {
+    renderer.renderToString(vue, (err, html) => {
         if (err) {
             res.status(500).end("Internal Server Error")
             return

@@ -12,10 +12,6 @@ app.config['SECRET_KEY'] = os.getenv('USER_TOKEN_SECRET')
 # allows availability to/from all sources
 CORS(app)
 
-# @app.route('/')
-# def alphax_backend():
-#     return render_template("backend_login.html")
-
 @app.route('/login', methods = ['POST', 'GET'])
 def login():
     # return true if the user is found else return false
@@ -63,7 +59,7 @@ def signup():
 def dashboard():
 
     token = request.get_json(force=True)['token']
-    
+
     data = jwt.decode(token, os.getenv('ACCESS_TOKEN_SECRET'), algorithms=["HS256"])
 
     user = data['user']
