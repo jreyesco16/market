@@ -87,6 +87,9 @@ def dashboardData(user):
     csr.execute(query)
     feedback = csr.fetchall()
 
+    csr.close()
+    db.close()
+
     dashboard = {
         "first_name" :  first_name,
         "last_name" : last_name,
@@ -95,6 +98,27 @@ def dashboardData(user):
     }
 
     return  dashboard
+
+def profileData(user):
+
+    # get db components
+    db = connection()
+    csr = db.cursor()
+
+    query = "select user.first_name, user.last_name from user where user.email='" +str(user)+ "';"
+    csr.execute(query)
+    user_name = csr.fetchall()[0]
+
+    profile = {
+        "first_name": user_name[0],
+        "last_name": user_name[1]
+    }
+
+    csr.close()
+    db.close()
+
+    return profile
+
 
 
 # adds data to a given field    (always close a connection when passed)

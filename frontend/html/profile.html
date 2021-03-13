@@ -6,7 +6,7 @@
 
     </head>
 
-    <body>
+    <body onload="fethProfileData()">
 
         <div class="back-button">
             <button type="button" class="btn btn-secondary" style="width: 100px;height: 75; background-color: grey;border: none;" onclick="goBack()">
@@ -19,31 +19,54 @@
             <!-- user avatar -->
             <div class="avatar-div">
                 Settings
-                <img class="avatar" src="avatar.png" alt="avatar">
-                <p id="first_name" class="first_name"></p>
-                <p id="last_name" class="last_name"></p>
+                <img class="avatar" src="avatar.png" alt="avatar" onclick="openEditPhotoForm()">
+                <div class="edit-name-div" onclick="editName()">
+                    <p id="first_name" class="first_name"></p>
+                    <p id="last_name" class="last_name"></p>
+                </div>
             </div>
         </div>
 
-
+        <!-- pop up for changing picture -->
+        <div class="edit-photo-popup">
+            <div class="form-popup" id="popup-form">
+              <div class="form-container">
+                <img class="close-popup-form-x" src="x.svg" alt="close-popup-form-x" onclick="closeEditPhotoForm()">
+                <br>
+                <h2>Change Photo</h2>
+                <div class="uploaded-image">
+                    <img src="" alt="" id="new-img" class="new-img">
+                </div>
+                Select Image: 
+                <br>
+                <input type="file" id="edit-photo-img" name="img" accept="image/*">
+                <br><br>
+                Password: 
+                <br>
+                <input type="password" id="edit-photo-psw" placeholder="Your Password" name="psw" required>
+                <br><br>
+                <button type="submit" id="photo-edit-btn" class="photo-edit-btn" style="background-color: dodgerblue;color:white" onclick="updateProfilePhoto()">Make Change</button>
+              </div>
+            </div>
+          </div>
 
         <div class="div-buttons">
             <div class="div-buttons-layer-one">
 
                 <div class="bootstrap-button-div">
-                    <button type="button" class="btn btn-primary">
+                    <button type="button" class="btn btn-primary" onclick="editServices()">
                         Services
                     </button>
                 </div>
 
                 <div class="bootstrap-button-div">
-                    <button type="button" class="btn btn-primary">
+                    <button type="button" class="btn btn-primary" onclick="editHistory()">
                         History
                     </button>
                 </div>
 
                 <div class="bootstrap-button-div">
-                    <button type="button" class="btn btn-primary">
+                    <button type="button" class="btn btn-primary" onclick="editActivity()">
                         Activity
                     </button>
                 </div>
@@ -53,19 +76,19 @@
             <div class="div-buttons-layer-two">
 
                 <div class="bootstrap-button-div">
-                    <button type="button" class="btn btn-primary">
+                    <button type="button" class="btn btn-primary" onclick="editAccount()">
                         Account
                     </button>
                 </div>
 
                 <div class="bootstrap-button-div">
-                    <button type="button" class="btn btn-primary">
+                    <button type="button" class="btn btn-primary" onclick="editRules()">
                         Rules
                     </button>
                 </div>
 
                 <div class="bootstrap-button-div">
-                    <button type="button" class="btn btn-primary">
+                    <button type="button" class="btn btn-primary" onclick="editContactUs()">
                         Contact Us
                     </button>
                 </div>
@@ -79,6 +102,105 @@
         </footer>
 
         <script>
+
+            // fetch the user name
+            function fethProfileData(){
+
+                // get the users cookies
+                cookies = document.cookie.split(';')
+                market_token = ''
+
+                // retreive market_cookie from cookies
+                for(i = 0; i < cookies.length; i++){
+                    if(cookies[i].includes('market_token=')){
+                        market_token = cookies[i].split('market_token=')[1]
+                    }
+                }
+
+                fetch("http://127.0.0.1:5000/profile",
+                    {
+                        method: "POST",
+                        mode: "cors",
+                        headers: {
+                            "Content-Type" : "application/json; charset=utf-8"
+                        },
+                        body: JSON.stringify({
+                            token: market_token
+                        })
+                    }
+                ).then(response => response.json())
+                .then(data => {
+                    // entire dataset
+                    profile_data = data.profile
+
+                    // insert users first name and last name
+                    first_name = profile_data.first_name
+                    last_name = profile_data.last_name
+
+                    document.querySelector("#first_name").insertAdjacentHTML("afterbegin", first_name)
+                    document.querySelector("#last_name").insertAdjacentHTML("afterbegin", last_name)
+                })
+                
+            }
+
+            // change profile picture
+            function openEditPhotoForm(){
+                console.log("Changing Photo")
+                document.getElementById("popup-form").style.display = "block";
+            }
+            function closeEditPhotoForm() {
+                document.getElementById("popup-form").style.display = "none";
+            }
+            const img = document.querySelector("#new-img")
+            const photoEditButton = document.querySelector("#edit-photo-img")
+            photoEditButton.addEventListener("change", function(){
+                const file = this.files[0]
+                if(file){
+                    const reader = new FileReader()
+                    reader.onload = function(){
+                        const result = reader.result
+                        img.src = result
+                    }
+                    reader.readAsDataURL(file)
+                }
+            })
+            
+
+            // make changes in the users name
+            function editName(){
+                console.log("Changing Name")
+            }
+
+            // view the services settings
+            function editServices(){
+                console.log("Changing Services")
+            }
+
+            // view the history settings
+            function editHistory(){
+                console.log("Changing History")
+            }
+
+            // view activity settings 
+            function editActivity(){
+                console.log("Changing Activity")
+            }
+
+            // view account settings
+            function editAccount(){
+                console.log("Changing Account")
+            }
+
+            // view rules settings
+            function editRules(){
+                console.log("Viewing Rules")
+            }
+            
+            // send a contact us 
+            function editContactUs(){
+                console.log("Sending a Contact Us")
+            }
+            // function used for going back to dashboard
             function goBack(){
                 location.replace("/dashboard")
             }

@@ -69,6 +69,16 @@ def dashboard():
         
     return json.dumps({"dashboard" : db.dashboardData(user), "status" : 200})
 
+@app.route('/profile', methods = ['POST', 'GET'])
+def profile():
+    token = request.get_json(force=True)['token']
+
+    data = data = jwt.decode(token, os.getenv('ACCESS_TOKEN_SECRET'), algorithms=["HS256"])
+
+    user = data['user']
+
+    return jsonify({"profile" : db.profileData(user), "status" : 200})
+
 
 
 if __name__ == "__main__" :
