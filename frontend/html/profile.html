@@ -31,7 +31,8 @@
         <!-- pop up for changing picture -->
         <div class="edit-photo-popup">
             <div class="form-popup" id="popup-form">
-              <div class="form-container">
+              <!-- <div class="form-container"> -->
+            <form class="form-container" action="javascript:updateProfilePhoto()">
                 <img class="close-popup-form-x" src="x.svg" alt="close-popup-form-x" onclick="closeEditPhotoForm()">
                 <br>
                 <h2>Change Photo</h2>
@@ -41,15 +42,15 @@
                 </div>
                 Select Image: 
                 <br>
-                <input type="file" id="edit-photo-img" name="img" accept="image/*">
+                <input type="file" id="edit-photo-img" name="img" accept="image/*" required>
                 <br><br>
                 Password: 
                 <br>
                 <input type="password" id="edit-photo-psw" placeholder="Your Password" name="psw" required>
                 <br><br>
-                <button type="submit" id="photo-edit-btn" class="photo-edit-btn" style="background-color: dodgerblue;color:white" onclick="updateProfilePhoto()">Make Change</button>
+                <button type="submit" id="photo-edit-btn" class="photo-edit-btn" style="background-color: dodgerblue;color:white">Make Change</button>
               </div>
-            </div>
+            </form>
           </div>
 
         <div class="div-buttons">
@@ -201,12 +202,11 @@
 
 
             function updateProfilePhoto(){
-                if(img.src == 'http://localhost:3000/profile'){
-                    alert("No file uploaded")
-                }else{
-                    console.log("working on getting photo uploaded")
-                }
-                // console.log(img.src)
+
+                // upload the the new photo to database
+
+                console.log("working on getting photo uploaded")
+
             }
             
 
