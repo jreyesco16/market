@@ -2,6 +2,7 @@
     <head>
         <link rel="stylesheet" type="text/css" href="profile.css">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+        <script src="/heic2any.min.js"></script>
         <title>Profile</title>
 
     </head>
@@ -34,7 +35,8 @@
                 <img class="close-popup-form-x" src="x.svg" alt="close-popup-form-x" onclick="closeEditPhotoForm()">
                 <br>
                 <h2>Change Photo</h2>
-                <div class="uploaded-image">
+                <div class="uploaded-image" id="uploaded-image">
+                    <div class="loader" id="loader"></div>
                     <img src="" alt="" id="new-img" class="new-img">
                 </div>
                 Select Image: 
@@ -98,12 +100,13 @@
 
         <!-- footer -->
         <footer class="profile-footer">
+            <div class="loader"></div>
 
         </footer>
 
         <script>
 
-            // fetch the user name
+            /* initial fetch for all user data */
             function fethProfileData(){
 
                 // get the users cookies
@@ -143,27 +146,68 @@
                 
             }
 
-            // change profile picture
+            /* avatar photo edit section */
             function openEditPhotoForm(){
-                console.log("Changing Photo")
                 document.getElementById("popup-form").style.display = "block";
             }
             function closeEditPhotoForm() {
                 document.getElementById("popup-form").style.display = "none";
             }
             const img = document.querySelector("#new-img")
-            const photoEditButton = document.querySelector("#edit-photo-img")
-            photoEditButton.addEventListener("change", function(){
+            const uploadPhotoButton = document.querySelector("#edit-photo-img")
+            uploadPhotoButton.addEventListener("change", function(){
+
+                // this is no intially reset back to none then both the previous file will and loader will display
+                img.style.display = "none"
+
+                document.getElementById("loader").style.display = "-webkit-inline-box"
+
                 const file = this.files[0]
-                if(file){
+                if(file['type'] == "image/heic"){
+                    const objectURL = window.URL.createObjectURL(file)
+
+                    new_file = fetch(objectURL)
+                        .then((res) => res.blob())
+                        .then((blob) =>
+                            heic2any({
+                                blob,
+                                toType: "image/png",
+                                multiple: true,
+                            })
+                        )
+                        .then((conversionResult) => {
+                            image = conversionResult[0]
+                            var url = URL.createObjectURL(image);
+                            img.src = url;
+                            document.getElementById("loader").style.display = "none"
+                            img.style.display="revert"
+                        })
+                        .catch((e) => {
+                            // see error handling section
+                            console.log(e)
+                        });
+                        
+                }else if(file){
                     const reader = new FileReader()
                     reader.onload = function(){
                         const result = reader.result
                         img.src = result
+                        document.getElementById("loader").style.display = "none"
+                        img.style.display="revert"
                     }
                     reader.readAsDataURL(file)
                 }
             })
+
+
+            function updateProfilePhoto(){
+                if(img.src == 'http://localhost:3000/profile'){
+                    alert("No file uploaded")
+                }else{
+                    console.log("working on getting photo uploaded")
+                }
+                // console.log(img.src)
+            }
             
 
             // make changes in the users name

@@ -186,5 +186,12 @@ from request
 where request.servicer_id=1;
 
 
+-- query to get user first and last name based on their email
+select 
+    user.first_name, user.last_name
+from user
+where user.email='jesserc.2@gmail.com';
+
+
     
 

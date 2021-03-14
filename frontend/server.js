@@ -10,6 +10,7 @@ app.use(cookieParser())
 app.use(express.static(__dirname + '/html'));*/
 app.use(express.static(__dirname + '/css'))
 app.use(express.static(__dirname + '/images'))
+app.use(express.static(__dirname + '/node_modules/heic2any/dist/'))
 
 // import all routes
 app.use(require ('./routes'))
