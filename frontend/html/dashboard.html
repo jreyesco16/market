@@ -29,7 +29,7 @@
             <!-- user avatar -->
             <div class="avatar-div">
                 <a href="./profile">
-                    <img class="avatar" src="avatar.png" alt="avatar">
+                    <img class="avatar" alt="avatar" id="avatar">
                 </a>
                 <p id="first_name" class="first_name"></p>
                 <p id="last_name" class="last_name"></p>
@@ -137,6 +137,9 @@
                             </a>
                             `)
                         }
+
+                        // insert the base64 string to the avatar img
+                        document.getElementById("avatar").src = "data:image/png;base64," + dash_data.avatar
                         
                     }
                 )

@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, jsonify
 from flask_cors import CORS
+from PIL import Image
 import market_database as db
 import jwt, datetime
 from dotenv import load_dotenv
@@ -62,12 +63,9 @@ def dashboard():
 
     data = jwt.decode(token, os.getenv('ACCESS_TOKEN_SECRET'), algorithms=["HS256"])
 
-    user = data['user']
-
-    # get user data with email (if they have made it this far then they already should have access)
-    # data = db.dashboardData(user)
-        
-    return json.dumps({"dashboard" : db.dashboardData(user), "status" : 200})
+    dashboard = db.dashboardData(data['user'])
+          
+    return json.dumps({"dashboard" : dashboard, "status" : 200})
 
 @app.route('/profile', methods = ['POST', 'GET'])
 def profile():

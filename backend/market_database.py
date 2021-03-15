@@ -1,5 +1,6 @@
 import mysql.connector
-from flask import jsonify
+import base64
+from flask import jsonify, send_file
 
 # IMPORT .ENV CONFIGS
 import os
@@ -66,13 +67,17 @@ def dashboardData(user):
     csr = db.cursor()
 
     # get the user id, first name, last name
-    query = "select user_id,first_name,last_name from user WHERE email="+"'"+user+"';"
+    query = "select user_id,first_name,last_name, avatar from user WHERE email="+"'"+user+"';"
     csr.execute(query)
     result = csr.fetchall()[0]
 
     user_id = result[0]
     first_name = result[1]
     last_name = result[2]
+
+    # convert the user avatar to base64 string
+    with open("./images/"+result[3], "rb") as avatar_image:
+        avatar = base64.b64encode(avatar_image.read())
 
     feedback = {}
     request = {}
@@ -94,7 +99,8 @@ def dashboardData(user):
         "first_name" :  first_name,
         "last_name" : last_name,
         "request" :  requests,
-        "feedback" : feedback
+        "feedback" : feedback,
+        "avatar" : avatar
     }
 
     return  dashboard
