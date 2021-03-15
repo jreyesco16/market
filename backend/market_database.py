@@ -111,13 +111,17 @@ def profileData(user):
     db = connection()
     csr = db.cursor()
 
-    query = "select user.first_name, user.last_name from user where user.email='" +str(user)+ "';"
+    query = "select user.first_name, user.last_name, user.avatar from user where user.email='" +str(user)+ "';"
     csr.execute(query)
-    user_name = csr.fetchall()[0]
+    profile_data = csr.fetchall()[0]
+
+    with open("./images/"+profile_data[2], "rb") as avatar_image:
+        avatar = base64.b64encode(avatar_image.read())
 
     profile = {
-        "first_name": user_name[0],
-        "last_name": user_name[1]
+        "first_name": profile_data[0],
+        "last_name": profile_data[1],
+        "avatar" : avatar
     }
 
     csr.close()

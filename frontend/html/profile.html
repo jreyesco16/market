@@ -20,7 +20,7 @@
             <!-- user avatar -->
             <div class="avatar-div">
                 Settings
-                <img class="avatar" src="avatar.png" alt="avatar" onclick="openEditPhotoForm()">
+                <img class="avatar" alt="avatar" id="avatar" onclick="openEditPhotoForm()">
                 <div class="edit-name-div" onclick="editName()">
                     <p id="first_name" class="first_name"></p>
                     <p id="last_name" class="last_name"></p>
@@ -137,12 +137,9 @@
                     // entire dataset
                     profile_data = data.profile
 
-                    // insert users first name and last name
-                    first_name = profile_data.first_name
-                    last_name = profile_data.last_name
-
-                    document.querySelector("#first_name").insertAdjacentHTML("afterbegin", first_name)
-                    document.querySelector("#last_name").insertAdjacentHTML("afterbegin", last_name)
+                    document.querySelector("#first_name").insertAdjacentHTML("afterbegin", profile_data.first_name)
+                    document.querySelector("#last_name").insertAdjacentHTML("afterbegin", profile_data.last_name)
+                    document.getElementById("avatar").src = "data:image/png;base64," + profile_data.avatar
                 })
                 
             }
