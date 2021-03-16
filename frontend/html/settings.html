@@ -1,9 +1,9 @@
 <html>
     <head>
-        <link rel="stylesheet" type="text/css" href="profile.css">
+        <link rel="stylesheet" type="text/css" href="settings.css">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
         <script src="/heic2any.min.js"></script>
-        <title>Profile</title>
+        <title>Settings</title>
 
     </head>
 
@@ -32,7 +32,7 @@
         <div class="edit-photo-popup">
             <div class="form-popup" id="popup-form">
               <!-- <div class="form-container"> -->
-            <form class="form-container" action="javascript:updateProfilePhoto()">
+            <form class="form-container" action="javascript:updateAvatarPhoto()">
                 <img class="close-popup-form-x" src="x.svg" alt="close-popup-form-x" onclick="closeEditPhotoForm()">
                 <br>
                 <h2>Change Photo</h2>
@@ -152,12 +152,11 @@
                 document.getElementById("popup-form").style.display = "none";
             }
             const img = document.querySelector("#new-img")
-            const uploadPhotoButton = document.querySelector("#edit-photo-img")
-            uploadPhotoButton.addEventListener("change", function(){
+            const uploadAvatarButton = document.querySelector("#edit-photo-img")
+            uploadAvatarButton.addEventListener("change", function(){
 
                 // this is no intially reset back to none then both the previous file will and loader will display
                 img.style.display = "none"
-
                 document.getElementById("loader").style.display = "-webkit-inline-box"
 
                 const file = this.files[0]
@@ -198,11 +197,57 @@
             })
 
 
-            function updateProfilePhoto(){
+            function updateAvatarPhoto(){
 
                 // upload the the new photo to database
-
                 console.log("working on getting photo uploaded")
+
+                avatar = document.getElementById('new-img')
+                console.log(avatar.height)
+                console.log(avatar.width)
+
+
+                // convert the blob type to image
+                var canvas = document.createElement('canvas')
+                canvas.width  = 220;
+                canvas.height = 220;
+                var ctx = canvas.getContext("2d")
+                ctx.imageSmoothingEnabled = true
+                var img = document.getElementById('new-img')
+                ctx.drawImage(img,0,0, 220,220)
+
+                var jpegFile = canvas.toDataURL('image/png')
+                avatar.src = jpegFile
+                console.log(jpegFile)
+
+                // get the users cookies
+                cookies = document.cookie.split(';')
+                market_token = ''
+
+                // retreive market_cookie from cookies
+                for(i = 0; i < cookies.length; i++){
+                    if(cookies[i].includes('market_token=')){
+                        market_token = cookies[i].split('market_token=')[1]
+                    }
+                }
+                
+                // make post
+                fetch('http://127.0.0.1:5000/settings/avatar', 
+                    {
+                        method: "POST",
+                        mode: "cors",
+                        headers: {
+                            "Content-Type" : "application/json; charset=utf-8"
+                        },
+                        body: JSON.stringify({
+                            token: market_token,
+                            avatar: jpegFile
+                        })
+                    })
+                    .then(result => result.json())
+                    .then(data =>{
+                        console.log(data)
+                    })
 
             }
             

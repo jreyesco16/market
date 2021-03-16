@@ -3,14 +3,14 @@ const { authenticate } = require('../component/authenticate')
 require('cookie-parser')
 
 
-function profile(req, res){
+function settings(req, res){
     if(req.cookies.market_token != undefined){
 
         token = req.cookies.market_token
 
         if(authenticate(token)){
 
-            readFile('./html/profile.html', 'utf8', (err, html) => {
+            readFile('./html/settings.html', 'utf8', (err, html) => {
                 if (err) {
                     res.redirect("/dashboard")
                 }
@@ -26,4 +26,4 @@ function profile(req, res){
     }
 }
 
-module.exports.profile = profile
+module.exports.settings = settings

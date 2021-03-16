@@ -130,5 +130,21 @@ def profileData(user):
     return profile
 
 
+def getUserID(user):
+
+    # get db components
+    db = connection()
+    csr = db.cursor()
+
+    query = "select user.user_id from user where user.email='" +str(user)+ "';"
+    csr.execute(query)
+    profile_data = csr.fetchall()[0]
+
+    user_id = profile_data[0]
+
+    return user_id
+
+
+
 
 # adds data to a given field    (always close a connection when passed)

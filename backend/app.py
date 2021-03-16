@@ -7,6 +7,8 @@ from dotenv import load_dotenv
 import simplejson as json
 load_dotenv()
 import os
+import base64
+import io
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('USER_TOKEN_SECRET')
@@ -77,6 +79,36 @@ def profile():
 
     return jsonify({"profile" : db.profileData(user), "status" : 200})
 
+@app.route('/settings/<option>', methods = ['POST', 'GET'])
+def settings(option):
+
+    rest = request.get_json(force=True)
+
+    token = rest['token']
+
+    data = jwt.decode(token, os.getenv('ACCESS_TOKEN_SECRET'), algorithms=["HS256"])
+
+    user = data['user']
+
+    if option == "avatar":
+        new_avatar = str(rest['avatar']).split(",")[1]
+
+        print(new_avatar)
+
+        user_id = db.getUserID(user)
+
+        # convert the new_avatar which represents a file as a base64 to a jpeg file and save to images directory
+        avatar_img = base64.b64decode(new_avatar)
+        im = Image.open(io.BytesIO(base64.b64decode(new_avatar)))
+        im.show()
+        filename = './images/user_' + str(user_id) + '.jpeg'
+
+        # with open(filename, 'wb') as f:
+        #     f.write(avatar_img)
+        # im = Image.open(filename)
+        # im.show()
+
+    return jsonify({'Success' : 'Success', 'status' : 200})
 
 
 if __name__ == "__main__" :

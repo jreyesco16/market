@@ -6,7 +6,7 @@ var router = express.Router()
 const { index } = require('../modules/index')
 const { signup } = require('../modules/signup')
 const { dashboard } = require('../modules/dashboard')
-const { profile } = require('../modules/profile')
+const { settings } = require('../modules/settings')
 const { messages } = require('../modules/messages')
 const { community } = require('../modules/community')
 const { transactions } = require('../modules/transactions')
@@ -36,9 +36,9 @@ router.get('/dashboard', (req, res) => {
 })
 
 /* GET profile page. */
-router.get('/profile', (req, res) => {
+router.get('/settings', (req, res) => {
 
-    profile(req,res)
+    settings(req,res)
 
 })
 
