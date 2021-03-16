@@ -2,62 +2,111 @@
 <html>
     <head>
         <link rel="stylesheet" type="text/css" href="index.css">
+        <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+        <title>Market</title>
     </head>
-    <body>
+    <body class="index" onload="visiter()">
+        <header class="market-data">
+
+            <div class="currency-holder" style="margin-left: 10%;">
+                <i class="fas fa-dollar-sign">
+                    <span class="currency-price" id="dollar"></span>
+                </i>
+                <div class="loader" id="dollar-loader"></div>
+            </div>
+
+            <div class="currency-holder" style="margin-left: 1%;">
+                <i class="fas fa-euro-sign">
+                    <span class="currency-price" id="euro"></span>
+                </i>
+                <div class="loader" id="euro-loader"></div>
+            </div>
+
+            <div class="currency-holder" style="margin-left: 1%;">
+                <i class="fas fa-yen-sign">
+                    <span class="currency-price" id="yuan"></span>
+                </i>
+                <div class="loader" id="yuan-loader"></div>
+            </div>
+
+            <div class="currency-holder" style="margin-left: 1%;">
+                <i class="fab fa-btc" style="font-weight: 900;">
+                    <span class="currency-price" id="bitcoin" style="color: white;"></span>
+                </i>
+                <div class="loader" id="bitcoin-loader"></div>
+            </div>
+
+            <div class="currency-holder" style="margin-left: 1%;">
+                <i class="fab fa-ethereum" style="font-weight: 900;">
+                    <span class="currency-price" id="ethereum" style="color: white;"></span>
+                </i>
+                <div class="loader" id="ethereum-loader"></div>
+            </div>
+
+            <div class="currency-holder" style="margin-left: 1%;">
+                <i class="fas fa-coins" style="color: gold;">
+                    <span class="currency-price" id="gold" style="color: white;"></span>
+                </i>
+                <div class="loader" id="gold-loader"></div>
+            </div>
+
+            <div class="currency-holder" style="margin-left: 1%;">
+                <i class="fas fa-coins" style="color: silver;">
+                    <span class="currency-price" id="silver" style="color: white;"></span>
+                </i>
+                <div class="loader" id="silver-loader"></div>
+
+            </div>
+        </header>
         <br>
         <h1 id="DivContent"></h1>
-        <h1 class="banner" id="alphax"></h1>
-
-        <div class="login">
-            <input type="email" placeholder="email" name="email" id="email" required> <br><br>
-            <input type="password" placeholder="password" name="psw" id="password" required> <br><br>
-            <button type="submit" onclick="login()">Login</button>  <button type="submit" onclick="signup()">Sign up</button>
-        </div>
+        <h1 class="banner" id="market">
+            Market
+            <p class="statement">Innovating the Prehistoric</p>
+        </h1>
+        <h2 class="release">Summer 2021</h2>
+        <footer class="footer">
+        </footer>
 
         <script>
-            function alphax(){
-                return "Market".fontcolor("black")
-            }
-            document.getElementById("alphax").innerHTML = window.alphax();
 
-            function login(){
-                email = document.getElementById('email').value
-                password = document.getElementById('password').value
-                
+            function visiter(){
                 // make the post to the backend
-                fetch("http://127.0.0.1:5000/login",
+                fetch("http://127.0.0.1:5000/",
                     {
                         method : "POST",
                         mode: "cors",
                         headers : {
                             "Content-Type" : "application/json; charset=utf-8"
                         },
-                        body : JSON.stringify(
-                            {
-                                email: email,
-                                password : password
-                            }
-                        )
+                        body : JSON.stringify({})
                     }
                 ).then(response => response.json())
                 .then(data => 
                     {
-                        if (data["token"]) {
-                            // create cookie for user
-                            document.cookie = "market_token="+data['token']
-                            
-                            location.replace("/dashboard")
+                        currencies = data.currencies
+                        document.getElementById('dollar-loader').style.display = "none"
+                        document.getElementById('dollar').innerHTML = currencies.dollar
 
-                        }else{
-                            //inform backend user that login failed
-                            alert("Failure to login")
-                        }
+                        document.getElementById('euro-loader').style.display = "none"
+                        document.getElementById('euro').innerHTML = currencies.euro 
+
+                        document.getElementById('yuan').innerHTML = currencies.yuan
+                        document.getElementById('yuan-loader').style.display = "none"
+                        
+                        document.getElementById('bitcoin').innerHTML = currencies.bitcoin + '<sub> USD </sub>'
+                        document.getElementById('bitcoin-loader').style.display = "none"
+
+                        document.getElementById('ethereum').innerHTML = currencies.ethereum + '<sub> USD </sub>'
+                        document.getElementById('ethereum-loader').style.display = "none"
+
+                        document.getElementById('gold').innerHTML = currencies.gold + '<sub> USD </sub>'
+                        document.getElementById('gold-loader').style.display = "none"
+
+                        document.getElementById('silver').innerHTML = currencies.silver + '<sub> USD </sub>'
+                        document.getElementById('silver-loader').style.display = "none"
                     }
                 ) 
-            }
-
-            function signup(){
-                location.replace("/signup")
             }
 
 

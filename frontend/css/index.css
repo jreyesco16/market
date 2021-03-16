@@ -1,26 +1,68 @@
-body{
+.index{
     background-color: white;
+    height: 100%;
+}
+.market-data{
+    background-color: black;
+    height: 40px;
+    display: flex;
+
+}
+.currency-holder{
+    color: white;
+    width: 12.5%;
+    display: flex;
+}
+/* images within the currency holder */
+i {
+    margin-top: 10px;
+    font-size: 20px;
+}
+.currency-price {
+    font-size: 15px;
+    font-family: Sans-serif;
+}
+sub {
+    font-size: 9px;
 }
 .banner{
     text-align: center;
-    font-size: 100px;
+    color: dodgerblue;
+    font-size: 200px;
+    margin-top: 8%;
+    font-family: monospace;
 }
-.description{
-    color: white;
+.statement {
+    text-align: center;
+    color: black;
+    font-size: 30px;
+    margin-top: -30px;
+}
+.release {
+    font-family: Sans-serif;
     text-align: center;
 }
-.banner{
-    text-align: center;
-    font-size: 120px;
-    margin-top: 5%;
+.footer {
+    background-color: dodgerblue;
+    height: 80px;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+
 }
-.backend{
-    text-align: center;
-    font-size: 50px;
-    color: gainsboro;
-    font-family: Impact;
-}
-.login{
-    color: white;
-    text-align: center;
-}
+
+.loader {
+    margin-top: 10px;
+    border: 5px solid #f3f3f3; /* Light grey */
+    border-top: 5px solid #1E90FF; /* Dodger Blue */
+    border-radius: 50%;
+    width: 10px;
+    height: 10px;
+    animation: spin 2s linear infinite;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }

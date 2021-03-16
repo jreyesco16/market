@@ -1,8 +1,11 @@
 from flask import Flask, render_template, request, jsonify
 from flask_cors import CORS
 from PIL import Image
+from bs4 import BeautifulSoup
+import requests
 import market_database as db
 import jwt, datetime
+import yfinance as yf
 from dotenv import load_dotenv
 import simplejson as json
 load_dotenv()
@@ -15,101 +18,74 @@ app.config['SECRET_KEY'] = os.getenv('USER_TOKEN_SECRET')
 # allows availability to/from all sources
 CORS(app)
 
-@app.route('/login', methods = ['POST', 'GET'])
-def login():
-    # return true if the user is found else return false
-    login = "Failure"
+@app.route('/', methods = ['POST', 'GET'])
+def visiter():
 
-    data = request.get_json(force=True)
+    headers = {'User-Agent' : 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Safari/605.1.15'}
 
-    email = data['email']
-    password = data['password']
+    usd_url = 'https://finance.yahoo.com/quote/DX=F'
+    euro_url = 'https://finance.yahoo.com/quote/GE=F'
+    yuan_url = 'https://finance.yahoo.com/quote/CNY=X'
+    bitcoin_url = 'https://finance.yahoo.com/quote/BTC-USD'
+    ethereum_url = 'https://finance.yahoo.com/quote/ETH-USD'
+    gold_url = 'https://finance.yahoo.com/quote/GC=F'
+    silver_url = 'https://finance.yahoo.com/quote/SI=F'
 
-    if db.login(email,password):
-        user = email
-        login = "Success"
-        
-        # create a jwt token
-        token = jwt.encode({
-            'user' : user,
-            'exp' : datetime.datetime.utcnow() + datetime.timedelta(seconds=60*15),
-            'authorization' : os.getenv('USER_TOKEN_SECRET'),
+    #dollar
+    r = requests.get(usd_url)
+    currency = BeautifulSoup(r.text, 'html.parser')
+    usd = currency.find('div',{'D(ib) Mend(20px)'}).find_all('span')
+    dollar_price = usd[0].text
+    dollar_change = usd[1].text
+    # euro
+    r = requests.get(euro_url)
+    currency = BeautifulSoup(r.text, 'html.parser')
+    euro = currency.find('div',{'D(ib) Mend(20px)'}).find_all('span')
+    euro_price = euro[0].text
+    euro_change = euro[1].text
+    #yuan
+    r = requests.get(yuan_url)
+    currency = BeautifulSoup(r.text, 'html.parser')
+    yuan = currency.find('div',{'D(ib) Mend(20px)'}).find_all('span')
+    yuan_price = yuan[0].text
+    yuan_change = yuan[1].text
+    #bitcoin
+    r = requests.get(bitcoin_url)
+    currency = BeautifulSoup(r.text, 'html.parser')
+    bitcoin = currency.find('div',{'D(ib) Mend(20px)'}).find_all('span')
+    bitcoin_price = bitcoin[0].text
+    bitcoin_change = bitcoin[1].text
+    #ethereum
+    r = requests.get(ethereum_url)
+    currency = BeautifulSoup(r.text, 'html.parser')
+    ethereum = currency.find('div',{'D(ib) Mend(20px)'}).find_all('span')
+    ethereum_price = ethereum[0].text
+    ethereum_change = ethereum[1].text
+    #gold
+    r = requests.get(gold_url)
+    currency = BeautifulSoup(r.text, 'html.parser')
+    gold = currency.find('div',{'D(ib) Mend(20px)'}).find_all('span')
+    gold_price = gold[0].text
+    gold_change = gold[1].text
+    #silver
+    r = requests.get(silver_url)
+    currency = BeautifulSoup(r.text, 'html.parser')
+    silver = currency.find('div',{'D(ib) Mend(20px)'}).find_all('span')
+    silver_price = silver[0].text
+    silver_change = silver[1].text
+    
 
-        }, os.getenv('ACCESS_TOKEN_SECRET'), algorithm="HS256")
+    currencies = {
+        "dollar" : dollar_price,
+        "euro" : euro_price,
+        "yuan" : yuan_price,
+        "bitcoin" : bitcoin_price,
+        "ethereum" : ethereum_price,
+        "gold" : gold_price,
+        "silver" : silver_price
+    }
 
-        return jsonify({'token' : token, "login" : login, "status" : 200})
-
-    return jsonify({"login" : login, "status" : 200})
-
-@app.route('/signup', methods = ['POST', 'GET'])
-def signup():
-    # return true if the user is successfully added or false if the user (email) is already in the db
-    signup = "Failure"
-    data = request.get_json(force=True)
-
-    first_name = data['first_name']
-    last_name = data['last_name']
-    birthday = data['birthday']
-    email = data['email']
-    password = data['password']
-
-    if db.signup(first_name, last_name, birthday, email, password):
-        signup = "Success"
-
-    return jsonify({"Signup" : signup, "status" : 200})
-
-@app.route('/dashboard', methods = ['POST', 'GET'])
-def dashboard():
-
-    token = request.get_json(force=True)['token']
-
-    data = jwt.decode(token, os.getenv('ACCESS_TOKEN_SECRET'), algorithms=["HS256"])
-
-    dashboard = db.dashboardData(data['user'])
-          
-    return json.dumps({"dashboard" : dashboard, "status" : 200})
-
-@app.route('/profile', methods = ['POST', 'GET'])
-def profile():
-    token = request.get_json(force=True)['token']
-
-    data = data = jwt.decode(token, os.getenv('ACCESS_TOKEN_SECRET'), algorithms=["HS256"])
-
-    user = data['user']
-
-    return jsonify({"profile" : db.profileData(user), "status" : 200})
-
-@app.route('/settings/<option>', methods = ['POST', 'GET'])
-def settings(option):
-
-    rest = request.get_json(force=True)
-
-    token = rest['token']
-
-    data = jwt.decode(token, os.getenv('ACCESS_TOKEN_SECRET'), algorithms=["HS256"])
-
-    user = data['user']
-
-    if option == "avatar":
-        new_avatar = str(rest['avatar']).split(",")[1]
-
-        print(new_avatar)
-
-        user_id = db.getUserID(user)
-
-        # convert the new_avatar which represents a file as a base64 to a jpeg file and save to images directory
-        avatar_img = base64.b64decode(new_avatar)
-        im = Image.open(io.BytesIO(base64.b64decode(new_avatar)))
-        im.show()
-        filename = './images/user_' + str(user_id) + '.jpeg'
-
-        # with open(filename, 'wb') as f:
-        #     f.write(avatar_img)
-        # im = Image.open(filename)
-        # im.show()
-
-    return jsonify({'Success' : 'Success', 'status' : 200})
-
+    return jsonify({ "currencies" : currencies, "status" : 200})
 
 if __name__ == "__main__" :
     app.run(host='0.0.0.0',debug=True,port='5000')
