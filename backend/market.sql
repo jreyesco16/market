@@ -193,5 +193,12 @@ from user
 where user.email='jesserc.2@gmail.com';
 
 
+-- add a link to the users pic
+alter table user
+    add avatar varchar(50) default "avatar.png"
+    after password;
+
+alter table user drop COLUMN avatar;
+
     
 

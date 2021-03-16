@@ -11,10 +11,11 @@ services:
     ports:
       - "5000:5000"
   db:
-    image: mysql:5.7
+    image: mysql
+    platform: linux/amd64
     restart: always
     environment:
-      MYSQL_DATABASE: 'alphax'
+      MYSQL_DATABASE: 'market'
       MYSQL_USER: 'root'
       MYSQL_PASSWORD: 'Distant_7'
       MYSQL_ROOT_PASSWORD: 'Distant_7'

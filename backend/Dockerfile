@@ -1,10 +1,10 @@
-FROM python:3.6.1
+FROM python:3.9.2
 
 WORKDIR /backend
 
 COPY . /backend
 
-RUN pip install -r requirements.txt
+RUN pip3 install -r requirements.txt
 
 EXPOSE 5000
 
