@@ -2,7 +2,6 @@
 <html>
     <head>
         <link rel="stylesheet" type="text/css" href="index.css">
-        <script  src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
         <title>Market</title>
     </head>
     <body class="index" onload="visiter()">
@@ -57,7 +56,7 @@
 
             function visiter(){
                 // make the post to the backend
-                fetch("https://markettest.ddns.net/api/",
+                fetch("http://0.0.0.0:5000",
                     {
                         method : "POST",
                         mode: "cors",
@@ -85,10 +84,10 @@
                         document.getElementById('ethereum').innerHTML = currencies.ethereum + '<sub> USD </sub>'
                         document.getElementById('ethereum-loader').style.display = "none"
 
-                        document.getElementById('gold').innerHTML = currencies.gold + '<sub> USD </sub>'
+                        document.getElementById('gold').innerHTML = currencies.gold + '<sub> oz USD </sub>'
                         document.getElementById('gold-loader').style.display = "none"
 
-                        document.getElementById('silver').innerHTML = currencies.silver + '<sub> USD </sub>'
+                        document.getElementById('silver').innerHTML = currencies.silver + '<sub> oz USD </sub>'
                         document.getElementById('silver-loader').style.display = "none"
                     }
                 ) 

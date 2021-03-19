@@ -1,18 +1,11 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, request, jsonify
 from flask_cors import CORS
-from PIL import Image
 from bs4 import BeautifulSoup
 import requests
 import market_database as db
-import jwt, datetime
-import yfinance as yf
 from dotenv import load_dotenv
-import simplejson as json
 load_dotenv()
 import os
-import base64
-import io
-import time
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('USER_TOKEN_SECRET')
@@ -22,7 +15,8 @@ CORS(app)
 @app.route('/', methods = ['POST', 'GET'])
 def visiter():
 
-    print(request)
+    print("\n\nNew visiter\n\n")
+    db.updateVisiter()
 
     headers = {'User-Agent' : 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Safari/605.1.15'}
 
@@ -90,11 +84,8 @@ def visiter():
 
     return jsonify({ "currencies" : currencies, "status" : 200})
 
-# while True:
-#     time.sleep(600)
-#     print("10 minutes have passed.")
 
-# if __name__ == "__main__" :
-#     # app.run(host='0.0.0.0',debug=True,port='5000')
+if __name__ == "__main__" :
+    app.run(host='0.0.0.0',debug=True,port='5000')
 #     app.run(host='0.0.0.0')
 # return app
