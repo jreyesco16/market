@@ -14,11 +14,13 @@
     display: flex;
 }
 /* images within the currency holder */
-i {
-    margin-top: 10px;
-    font-size: 20px;
+.currency-img {
+    margin-top: 8px;
+    height: 20px;
+    width: 20px;
 }
 .currency-price {
+    margin: 8px;
     font-size: 15px;
     font-family: Sans-serif;
 }
