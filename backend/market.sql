@@ -8,6 +8,8 @@ create table visiter(
     PRIMARY KEY (visiter_id)
 );
 
+insert into visiter (visiter_count) value(0);
+
 update visiter set visiter_count=1 where visiter_id=1;
 
 select visiter_count from visiter where visiter_id = 1
