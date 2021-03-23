@@ -1,17 +1,10 @@
 version: "3.9"
 services:
   nginx:
-    image: nginx
+    build: nginx
     ports: 
       - "80:80"
       - "443:443"
-    volumes:
-      - ./data/nginx:/opt/homebrew/etc/nginx/
-      - ./data/certbot:/etc/letsencrypt
-  certbot:
-    image: certbot/certbot
-    volumes:
-      - ./data/certbot:/etc/letsencrypt
   frontend:
     build: frontend
     ports:
