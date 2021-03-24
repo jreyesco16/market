@@ -4,20 +4,15 @@ services:
     build: frontend
     ports:
       - "3000:3000" 
-    expose:
-      - "3000"
   backend: 
     build: backend
     ports:
       - "5000:5000"
   db:
     image: mysql
-    platform: linux/amd64
-    restart: always
+    platform: linux/x86_64
     environment:
       MYSQL_DATABASE: 'market'
-      MYSQL_USER: 'root'
-      MYSQL_PASSWORD: 'Distant_7'
       MYSQL_ROOT_PASSWORD: 'Distant_7'
     ports:
       # <Port exposed> : < MySQL Port running inside container>
