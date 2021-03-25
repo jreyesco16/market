@@ -158,6 +158,18 @@ def saveUserAvatar(user_id, filename):
     csr.close()
     db.close()
 
+def updateName(first_name, last_name, user_id):
+    db = connection()
+    csr = db.cursor()
+
+    query = "UPDATE user SET first_name='" + first_name + "', last_name='"+ last_name + "' where user_id='" + str(user_id) +"';"
+    csr.execute(query)
+    db.commit()
+
+
+    csr.close()
+    db.close()
+
 
 
 # adds data to a given field    (always close a connection when passed)

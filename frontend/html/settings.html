@@ -23,7 +23,7 @@
                 <br>
                 <div class="loader" id="profile-loader"></div>
                 <img class="avatar" alt="avatar" id="avatar" onclick="openEditPhotoForm()">
-                <div class="edit-name-div" onclick="editName()">
+                <div class="edit-name-div" onclick="openEditNameForm()">
                     <p id="first_name" class="first_name"></p>
                     <p id="last_name" class="last_name"></p>
                 </div>
@@ -51,6 +51,32 @@
               </div>
             </form>
           </div>
+        <!-- pop up for editing users name -->
+        <div class="edit-name-popup">
+            <div class="form-popup" id="name-popup-form">
+                <form class="form-container" action="javascript:editName()">
+                    <img class="close-popup-form-x" src="x.svg" alt="close-popup-form-x" onclick="closeEditNameForm()">
+                    <br>
+                    First Name:
+                    <br>
+                    <br>
+                    <input type="text" id="edited-first-name"required>
+                    <br>
+                    <br>
+                    Last Name:
+                    <br>
+                    <br>
+                    <input type="text" id="edited-last-name" required>
+                    <br>
+                    <br>
+                    <button type="submit" id="name-edit-btn" class="name-edit-btn" style="background-color: dodgerblue;color:white">Make Change</button>
+
+                </form>
+
+
+            </div>
+
+        </div>
 
         <div class="div-buttons">
             <div class="div-buttons-layer-one">
@@ -142,6 +168,9 @@
                     document.querySelector("#last_name").insertAdjacentHTML("afterbegin", profile_data.last_name)
                     document.getElementById("avatar").src = "data:image/png;base64," + profile_data.avatar
                     document.getElementById("avatar").style.display = "block"
+
+                    document.getElementById("edited-first-name").value = profile_data.first_name
+                    document.getElementById("edited-last-name").value = profile_data.last_name
                 })
                 
             }
@@ -238,9 +267,42 @@
             }
             
 
-            // make changes in the users name
+            // make changes to users name
             function editName(){
-                console.log("Changing Name")
+
+                first_name = document.getElementById("edited-first-name").value
+                last_name = document.getElementById("edited-last-name").value
+
+                // retreive market_cookie from cookies
+                for(i = 0; i < cookies.length; i++){
+                    if(cookies[i].includes('market_token=')){
+                        market_token = cookies[i].split('market_token=')[1]
+                    }
+                }
+
+                fetch("http://127.0.0.1:5500/settings/name",
+                    {
+                        method: "POST",
+                        mode: "cors",
+                        body: JSON.stringify({
+                            token: market_token,
+                            first_name : first_name,
+                            last_name : last_name
+                        })
+                    }
+                ).then( res => res.json())
+                .then( data => {
+                    location.replace("/settings")
+                })
+                .catch(err => {
+                    location.replace("/")
+                })
+            }
+            function openEditNameForm() {
+                document.getElementById("name-popup-form").style.display = "block"
+            }
+            function closeEditNameForm() {
+                document.getElementById('name-popup-form').style.display = "none"
             }
 
             // view the services settings

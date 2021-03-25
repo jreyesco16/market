@@ -92,11 +92,10 @@ def settings(option):
         return jsonify({'Success' : 'Failure', 'status' : 200})
 
     user = data['user']
+    user_id = db.getUserID(user)
 
     if option == "avatar":
         new_avatar = str(req['avatar']).split(",")[1]
-
-        user_id = db.getUserID(user)
 
         # convert the new_avatar which represents a file as a base64 to a png file and save to images directory
         avatar_img = base64.b64decode(new_avatar)
@@ -106,6 +105,13 @@ def settings(option):
             fo.write(avatar_img)
             # save the file name under the users_id
             db.saveUserAvatar(user_id, filename)
+    elif option == "name":
+
+        first_name = req['first_name']
+        last_name = req['last_name']
+
+        # update the users name with user_id
+        db.updateName(first_name, last_name, user_id)
 
     return jsonify({'Success' : 'Success', 'status' : 200})
 

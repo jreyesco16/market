@@ -22,6 +22,10 @@
     margin-right: auto;
     border-radius: 50%;
 }
+.edit-name-div {
+    margin-left: 30%;
+    margin-right: 30%;
+}
 
 .div-buttons-layer-one {
     
@@ -57,6 +61,11 @@ button.btn.btn-primary {
 }
 
 .edit-photo-popup{
+    position: relative;
+    text-align: center;
+    width: 100%;
+}
+.edit-name-popup {
     position: relative;
     text-align: center;
     width: 100%;
