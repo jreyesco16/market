@@ -19,7 +19,9 @@
         <div class="profile">
             <!-- user avatar -->
             <div class="avatar-div">
-                Settings
+                Settings 
+                <br>
+                <div class="loader" id="profile-loader"></div>
                 <img class="avatar" alt="avatar" id="avatar" onclick="openEditPhotoForm()">
                 <div class="edit-name-div" onclick="editName()">
                     <p id="first_name" class="first_name"></p>
@@ -36,17 +38,14 @@
                 <img class="close-popup-form-x" src="x.svg" alt="close-popup-form-x" onclick="closeEditPhotoForm()">
                 <br>
                 <h2>Change Photo</h2>
+                <br>
                 <div class="uploaded-image" id="uploaded-image">
-                    <div class="loader" id="loader"></div>
+                    <div class="loader" id="avatar-loader"></div>
                     <img src="" alt="" id="new-img" class="new-img">
                 </div>
                 Select Image: 
                 <br>
                 <input type="file" id="edit-photo-img" name="img" accept="image/*" required>
-                <br><br>
-                Password: 
-                <br>
-                <input type="password" id="edit-photo-psw" placeholder="Your Password" name="psw" required>
                 <br><br>
                 <button type="submit" id="photo-edit-btn" class="photo-edit-btn" style="background-color: dodgerblue;color:white">Make Change</button>
               </div>
@@ -110,6 +109,8 @@
             /* initial fetch for all user data */
             function fethProfileData(){
 
+                document.getElementById("profile-loader").style.display = "-webkit-inline-box"
+
                 // get the users cookies
                 cookies = document.cookie.split(';')
                 market_token = ''
@@ -136,10 +137,11 @@
                 .then(data => {
                     // entire dataset
                     profile_data = data.profile
-
+                    document.getElementById("profile-loader").style.display = "none"
                     document.querySelector("#first_name").insertAdjacentHTML("afterbegin", profile_data.first_name)
                     document.querySelector("#last_name").insertAdjacentHTML("afterbegin", profile_data.last_name)
                     document.getElementById("avatar").src = "data:image/png;base64," + profile_data.avatar
+                    document.getElementById("avatar").style.display = "block"
                 })
                 
             }
@@ -157,7 +159,7 @@
 
                 // this is no intially reset back to none then both the previous file will and loader will display
                 img.style.display = "none"
-                document.getElementById("loader").style.display = "-webkit-inline-box"
+                document.getElementById("avatar-loader").style.display = "-webkit-inline-box"
 
                 const file = this.files[0]
                 if(file['type'] == "image/heic"){
@@ -173,13 +175,12 @@
                             })
                         )
                         .then((conversionResult) => {
-
                             var reader = new FileReader();
                             reader.readAsDataURL(conversionResult[0])
                             reader.onload = function (){
                                 const result = reader.result
                                 img.src = result
-                                document.getElementById("loader").style.display = "none"
+                                document.getElementById("avatar-loader").style.display = "none"
                                 img.style.display="revert"
                             }
                         })
@@ -193,7 +194,7 @@
                     reader.onload = function(){
                         const result = reader.result
                         img.src = result
-                        document.getElementById("loader").style.display = "none"
+                        document.getElementById("avatar-loader").style.display = "none"
                         img.style.display="revert"
                     }
                     reader.readAsDataURL(file)
@@ -202,9 +203,7 @@
 
 
             function updateAvatarPhoto(){
-
                 avatar = document.getElementById('new-img')
-
                 cookies = document.cookie.split(';')
                 market_token = ''
 
@@ -231,6 +230,10 @@
                     .then(result => result.json())
                     .then(data =>{
                         console.log(data)
+                        location.replace("/settings")
+                    })
+                    .catch(err => {
+                        location.replace("/")
                     })
             }
             

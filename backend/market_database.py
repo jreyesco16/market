@@ -142,8 +142,21 @@ def getUserID(user):
 
     user_id = profile_data[0]
 
+    csr.close()
+    db.close()
+
     return user_id
 
+def saveUserAvatar(user_id, filename):
+    db = connection()
+    csr = db.cursor()
+
+    query = "UPDATE user SET avatar='" + filename + "' where user_id='" + str(user_id) +"';"
+    csr.execute(query)
+    db.commit()
+
+    csr.close()
+    db.close()
 
 
 

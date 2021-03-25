@@ -29,6 +29,7 @@
             <!-- user avatar -->
             <div class="avatar-div">
                 <a href="/settings">
+                    <div class="loader" id="avatar-loader"></div>
                     <img class="avatar" alt="avatar" id="avatar">
                 </a>
                 <p id="first_name" class="first_name"></p>
@@ -39,6 +40,8 @@
         <div class="user-history">
             <div class="requests">
                 Requests    
+
+                <div class="loader" id="request-loader"></div>
                 
                 <br>
                 <div class="bootstrap-list">
@@ -52,6 +55,8 @@
 
             <div class="feedback">
                 Feedback
+
+                <div class="loader" id="feedback-loader"></div>
 
                 <br>
                 <div class=bootstrap-list>
@@ -73,7 +78,9 @@
 
         <script>
             function getDashboard(){
-
+                document.getElementById("avatar-loader").style.display = "-webkit-inline-box"
+                document.getElementById("request-loader").style.display = "-webkit-inline-box"
+                document.getElementById("feedback-loader").style.display = "-webkit-inline-box"
                 // get the users cookies
                 cookies = document.cookie.split(';')
                 market_token = ''
@@ -110,6 +117,7 @@
 
                         // insert requests in requests list
                         requests = dash_data.request
+                        document.getElementById("request-loader").style.display = "none"
                         for(i = 0; i < requests.length; i++){
                             document.getElementById("request_list").insertAdjacentHTML("afterbegin",`
                             <a href="#" class="list-group-item list-group-item-action" style="display: flex; font-size: medium;">
@@ -125,6 +133,7 @@
 
                         // insert feedback in feedback list
                         feedback = dash_data.feedback
+                        document.getElementById("feedback-loader").style.display = "none"
                         for(i = 0; i < feedback.length; i++){
                             document.getElementById("feedback-list").insertAdjacentHTML("afterbegin", `
                             <a href="#" class="list-group-item list-group-item-action" style="display: flex; font-size: medium;">
@@ -139,7 +148,9 @@
                         }
 
                         // insert the base64 string to the avatar img
+                        document.getElementById("avatar-loader").style.display = "none"
                         document.getElementById("avatar").src = "data:image/png;base64," + dash_data.avatar
+                        document.getElementById("avatar").style.display = "block"
                     }
                 )
             }

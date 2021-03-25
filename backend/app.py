@@ -88,6 +88,9 @@ def settings(option):
 
     data = jwt.decode(token, os.getenv('ACCESS_TOKEN_SECRET'), algorithms=["HS256"])
 
+    if( data['authorization'] != os.getenv('USER_TOKEN_SECRET')):
+        return jsonify({'Success' : 'Failure', 'status' : 200})
+
     user = data['user']
 
     if option == "avatar":
@@ -95,16 +98,14 @@ def settings(option):
 
         user_id = db.getUserID(user)
 
-        # convert the new_avatar which represents a file as a base64 to a jpeg file and save to images directory
+        # convert the new_avatar which represents a file as a base64 to a png file and save to images directory
         avatar_img = base64.b64decode(new_avatar)
-        im = Image.open(io.BytesIO(base64.b64decode(new_avatar)))
-        im.show()
-        filename = './images/user_' + str(user_id) + '.jpeg'
-
-        # with open(filename, 'wb') as f:
-        #     f.write(avatar_img)
-        # im = Image.open(filename)
-        # im.show()
+        filename = 'user_' + str(user_id) + '.png'
+        
+        with open("./images/" + filename, "wb") as fo:
+            fo.write(avatar_img)
+            # save the file name under the users_id
+            db.saveUserAvatar(user_id, filename)
 
     return jsonify({'Success' : 'Success', 'status' : 200})
 
