@@ -56,6 +56,7 @@
             <div class="form-popup" id="name-popup-form">
                 <form class="form-container" action="javascript:editName()">
                     <img class="close-popup-form-x" src="x.svg" alt="close-popup-form-x" onclick="closeEditNameForm()">
+                    <h2>Edit Name</h2>
                     <br>
                     First Name:
                     <br>
@@ -70,23 +71,37 @@
                     <br>
                     <br>
                     <button type="submit" id="name-edit-btn" class="name-edit-btn" style="background-color: dodgerblue;color:white">Make Change</button>
-
                 </form>
-
-
             </div>
-
         </div>
 
         <div class="div-buttons">
             <div class="div-buttons-layer-one">
-
+                <!-- button for services -->
                 <div class="bootstrap-button-div">
-                    <button type="button" class="btn btn-primary" onclick="editServices()">
+                    <button type="button" class="btn btn-primary" id="services-button" onclick="openEditServices()">
                         Services
                     </button>
                 </div>
 
+                <!-- pop up for services -->
+                <div class="edit-services-popup">
+                    <div class="form-popup" id="service-popup-form">
+                        <form class="form-container" action="javascript:editServices()">
+                            <img class="close-popup-form-x" src="x.svg" alt="close-popup-form-x" onclick="closeEditServices()">
+                            <h2>Services</h2>
+                            <div class=bootstrap-list>
+                                <div class="list-group">
+                                    <!-- insert the feedback list -->
+                                    <div id="feedback-list">
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- button to view user history -->
                 <div class="bootstrap-button-div">
                     <button type="button" class="btn btn-primary" onclick="editHistory()">
                         History
@@ -308,6 +323,12 @@
             // view the services settings
             function editServices(){
                 console.log("Changing Services")
+            }
+            function openEditServices(){
+                document.getElementById("service-popup-form").style.display = "block"
+            }
+            function closeEditServices(){
+                document.getElementById("service-popup-form").style.display = "none"
             }
 
             // view the history settings

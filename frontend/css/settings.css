@@ -70,6 +70,11 @@ button.btn.btn-primary {
     text-align: center;
     width: 100%;
 }
+.edit-service-popup {
+    position: relative;
+    text-align: center;
+    width: 100%;
+}
 .new-img{
     vertical-align: center;
     height: 220px;
