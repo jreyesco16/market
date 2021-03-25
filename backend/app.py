@@ -73,7 +73,7 @@ def dashboard():
 def profile():
     token = request.get_json(force=True)['token']
 
-    data = data = jwt.decode(token, os.getenv('ACCESS_TOKEN_SECRET'), algorithms=["HS256"])
+    data = jwt.decode(token, os.getenv('ACCESS_TOKEN_SECRET'), algorithms=["HS256"])
 
     user = data['user']
 
@@ -82,18 +82,16 @@ def profile():
 @app.route('/settings/<option>', methods = ['POST', 'GET'])
 def settings(option):
 
-    rest = request.get_json(force=True)
+    req = request.get_json(force=True)
 
-    token = rest['token']
+    token = req['token']
 
     data = jwt.decode(token, os.getenv('ACCESS_TOKEN_SECRET'), algorithms=["HS256"])
 
     user = data['user']
 
     if option == "avatar":
-        new_avatar = str(rest['avatar']).split(",")[1]
-
-        print(new_avatar)
+        new_avatar = str(req['avatar']).split(",")[1]
 
         user_id = db.getUserID(user)
 

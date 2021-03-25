@@ -10,7 +10,7 @@
     <body onload="fethProfileData()">
 
         <div class="back-button">
-            <button type="button" class="btn btn-secondary" style="width: 100px;height: 75; background-color: grey;border: none;" onclick="goBack()">
+            <button type="button" class="btn btn-secondary" style="width: 100px;height: 75; background-color: black;border: none;" onclick="goBack()">
                 <img class="back-arrow" src="arrow-left.svg" alt="back-arrow">
             </button>
         </div>
@@ -121,7 +121,7 @@
                     }
                 }
 
-                fetch("http://127.0.0.1:5000/profile",
+                fetch("http://127.0.0.1:5500/profile",
                     {
                         method: "POST",
                         mode: "cors",
@@ -173,11 +173,15 @@
                             })
                         )
                         .then((conversionResult) => {
-                            image = conversionResult[0]
-                            var url = URL.createObjectURL(image);
-                            img.src = url;
-                            document.getElementById("loader").style.display = "none"
-                            img.style.display="revert"
+
+                            var reader = new FileReader();
+                            reader.readAsDataURL(conversionResult[0])
+                            reader.onload = function (){
+                                const result = reader.result
+                                img.src = result
+                                document.getElementById("loader").style.display = "none"
+                                img.style.display="revert"
+                            }
                         })
                         .catch((e) => {
                             // see error handling section
@@ -199,28 +203,8 @@
 
             function updateAvatarPhoto(){
 
-                // upload the the new photo to database
-                console.log("working on getting photo uploaded")
-
                 avatar = document.getElementById('new-img')
-                console.log(avatar.height)
-                console.log(avatar.width)
 
-
-                // convert the blob type to image
-                var canvas = document.createElement('canvas')
-                canvas.width  = 220;
-                canvas.height = 220;
-                var ctx = canvas.getContext("2d")
-                ctx.imageSmoothingEnabled = true
-                var img = document.getElementById('new-img')
-                ctx.drawImage(img,0,0, 220,220)
-
-                var jpegFile = canvas.toDataURL('image/png')
-                avatar.src = jpegFile
-                console.log(jpegFile)
-
-                // get the users cookies
                 cookies = document.cookie.split(';')
                 market_token = ''
 
@@ -232,7 +216,7 @@
                 }
                 
                 // make post
-                fetch('http://127.0.0.1:5000/settings/avatar', 
+                fetch('http://127.0.0.1:5500/settings/avatar', 
                     {
                         method: "POST",
                         mode: "cors",
@@ -241,14 +225,13 @@
                         },
                         body: JSON.stringify({
                             token: market_token,
-                            avatar: jpegFile
+                            avatar: avatar.src
                         })
                     })
                     .then(result => result.json())
                     .then(data =>{
                         console.log(data)
                     })
-
             }
             
 
