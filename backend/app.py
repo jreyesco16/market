@@ -113,7 +113,12 @@ def settings(option):
         # update the users name with user_id
         db.updateName(first_name, last_name, user_id)
 
+    elif option == "user-services":
+        # fetch all of users services from the backend
+        return jsonify({'Services' :  db.getUserServices(user_id),'Success' : 'Success', 'status' : 200})
+
     return jsonify({'Success' : 'Success', 'status' : 200})
+    
 
 
 if __name__ == "__main__" :

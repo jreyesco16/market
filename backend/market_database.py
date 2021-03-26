@@ -170,6 +170,29 @@ def updateName(first_name, last_name, user_id):
     csr.close()
     db.close()
 
+def getUserServices(user_id):
+    db = connection()
+    csr = db.cursor()
+
+    user_services = {}
+
+    # create a query to fetch all user services based on their user_id
+    # 1. service
+    # 2. price
+    # 3. duration
+    # 4. rating
+    query = ""
+    csr.execute(query)
+    result = csr.fetchall()
+
+    # loop through the fetch and add to dictionary
+
+    csr.close()
+    db.close()
+
+    return user_services
+
+
 
 
 # adds data to a given field    (always close a connection when passed)

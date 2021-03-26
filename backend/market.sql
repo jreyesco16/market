@@ -2,92 +2,123 @@
 create database market;
 
 /* create user(first name, last name, birthday, email, password) table */
-create table user(
-	user_id int NOT NULL auto_increment,
+create table users(
+	id int NOT NULL auto_increment,
     first_name varchar(50) not null,
     last_name varchar(50) not null,
     birthday date not null,
     email varchar(80) not null unique,
     password varchar(50) not null,
-    user_rating DECIMAL (2,1) DEFAULT 0,
-    primary key(user_id)
+    rating DECIMAL (2,1) DEFAULT 0,
+    avatar varchar(50) default "user.png",
+    date date NOT NULL,
+    primary key(id)
 );
 
-drop table user;
+drop table users;
+
+create table businesses(
+	id int NOT NULL auto_increment,
+    business varchar(75) not null,
+    business_start date not null,
+    first_name varchar(50) not null,
+    last_name varchar(50) not null,
+    birthday date not null,
+    email varchar(80) not null unique,
+    password varchar(50) not null,
+    rating DECIMAL (2,1) DEFAULT 0,
+    avatar varchar(50) default "business.png",
+    date date NOT NULL,
+    primary key(id)
+);
+
+drop table business;
+
 
 /* create table to holds all the services provided by all users */
 create table services(
-    services_id int NOT NULL AUTO_INCREMENT ,
-    providable_service varchar(50) not null UNIQUE,
-    primary key(services_id)
+    id int NOT NULL AUTO_INCREMENT ,
+    service varchar(50) not null UNIQUE,
+    primary key(id)
 );
 
 DROP TABLE services;
 
-/* create user services */
-create table user_services(
-    user_service_id INT NOT NULL AUTO_INCREMENT,
-    user_id INT NOT NULL,
-    services_id INT NOT NULL,
-    price DECIMAL(18,2) NOT NULL,
-    duration INT NULL NULL,
-    service_rating DECIMAL (2,1) DEFAULT 0,
-    PRIMARY KEY (user_service_id),
-    FOREIGN KEY (user_id) REFERENCES user(user_id) ON UPDATE CASCADE,
-    FOREIGN KEY (services_id) REFERENCES services(services_id) ON UPDATE CASCADE
+/* create table that holds all products provided by all users */
+create table products(
+    id int NOT NULL AUTO_INCREMENT ,
+    product varchar(50) not null UNIQUE,
+    PRIMARY KEY (id)
+
 );
 
-drop table user_services;
+DROP TABLE  products;
+
+/* create table that holds user services & products they provide*/
+create table users_services_products(
+    id INT NOT NULL AUTO_INCREMENT,
+    user_id INT NULL,
+    business_id INT NULL,
+    service_id INT NULL,    -- although service_id and product_id both can't be NULL
+    product_id INT NULL,
+    fee DECIMAL(18,2) NOT NULL,
+    duration INT NULL NULL,
+    rating DECIMAL (2,1) DEFAULT 0,
+    PRIMARY KEY (id),
+    FOREIGN KEY (user_id) REFERENCES users(id) ON UPDATE CASCADE,
+    FOREIGN KEY (business_id) REFERENCES businesses(id) ON UPDATE CASCADE,
+    FOREIGN KEY (service_id) REFERENCES services(id) ON UPDATE CASCADE,
+    FOREIGN KEY  (product_id) REFERENCES  products(id) ON UPDATE CASCADE
+);
+
+drop table users_services_products;
 
 /* create a request table */
-create table request(
-    request_id INT AUTO_INCREMENT NOT NULL,
+create table requests(
+    id INT AUTO_INCREMENT NOT NULL,
     -- user providing the service       // python make sure that the user aren't the same(easier to handle the error)
     servicer_id INT NOT NULL,
     -- user recieving the service
     reciever_id INT NOT NULL,
-    user_service_id INT NOT NULL,
-    PRIMARY KEY (request_id),
-    FOREIGN KEY (servicer_id) REFERENCES  user(user_id),
-    FOREIGN KEY (reciever_id) REFERENCES user(user_id),
-    FOREIGN KEY (user_service_id) REFERENCES user_services(user_service_id)
+    service_id INT,
+    product_id INT,
+    fee DECIMAL(18,2) NOT NULL,
+    duration INT NOT NULL,
+    rating INT NOT NULL,
+    date date NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (servicer_id) REFERENCES  users(id),
+    FOREIGN KEY (reciever_id) REFERENCES users(id),
+    FOREIGN KEY (service_id) REFERENCES services(id),
+    FOREIGN KEY (product_id) REFERENCES products(id)
 );
 
-drop table request;
+drop table requests;
 
-create table payment(
-    payment_id INT AUTO_INCREMENT NOT NULL,
+create table payments(
+    id INT AUTO_INCREMENT NOT NULL,
     request_id INT NOT NULL,
-    payment_date date NOT NULL,
-    PRIMARY KEY (payment_id),
-    FOREIGN KEY (request_id) REFERENCES request(request_id)
+    date date NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (request_id) REFERENCES requests(id)
 );
 
-drop table payment;
+drop table payments;
 
 create table feedback(
-    feedback_id INT AUTO_INCREMENT NOT NULL,
+    id INT AUTO_INCREMENT NOT NULL,
     payment_id INT NOT NULL,
     quality DECIMAL(2,1) NOT NULL,
     speed DECIMAL(2,1) NOT NULL,
     price DECIMAL(2,1) NOT NULL,
-    overall_rating DECIMAL (2,1) DEFAULT 0,
+    rating DECIMAL (2,1) DEFAULT 0,
     comment VARCHAR(100) NULL,
-    PRIMARY KEY (feedback_id),
-    FOREIGN KEY (payment_id) REFERENCES payment(payment_id)
+    PRIMARY KEY (id),
+    FOREIGN KEY (payment_id) REFERENCES payments(id)
 );
 
 drop table feedback;
 
-create table business(
-    business_id INT AUTO_INCREMENT NOT NULL,
-    user_id INT NOT NULL,
-    name varchar(100) NOT NULL,
-    PRIMARY KEY (business_id),
-    FOREIGN KEY (user_id) REFERENCES user(user_id) ON UPDATE CASCADE
-);
-
-drop table business;
 
 
 
