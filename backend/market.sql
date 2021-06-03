@@ -55,7 +55,7 @@ create table products(
 DROP TABLE  products;
 
 /* create table that holds user services & products they provide*/
-create table users_services_products(
+create table users_providables(
     id INT NOT NULL AUTO_INCREMENT,
     user_id INT NULL,
     business_id INT NULL,
@@ -71,13 +71,14 @@ create table users_services_products(
     FOREIGN KEY  (product_id) REFERENCES  products(id) ON UPDATE CASCADE
 );
 
-drop table users_services_products;
+drop table users_providables;
 
 /* create a request table */
 create table requests(
     id INT AUTO_INCREMENT NOT NULL,
     -- user providing the service       // python make sure that the user aren't the same(easier to handle the error)
-    servicer_id INT NOT NULL,
+    user_servicer_id INT NULL,
+    business_servicer_id INT NULL,
     -- user recieving the service
     reciever_id INT NOT NULL,
     service_id INT,
@@ -87,7 +88,8 @@ create table requests(
     rating INT NOT NULL,
     date date NOT NULL,
     PRIMARY KEY (id),
-    FOREIGN KEY (servicer_id) REFERENCES  users(id),
+    FOREIGN KEY (user_servicer_id) REFERENCES  users(id),
+    FOREIGN KEY (business_servicer_id) REFERENCES businesses(id),
     FOREIGN KEY (reciever_id) REFERENCES users(id),
     FOREIGN KEY (service_id) REFERENCES services(id),
     FOREIGN KEY (product_id) REFERENCES products(id)

@@ -1,9 +1,12 @@
 import mysql.connector
 import base64
+from datetime import datetime
 from flask import jsonify, send_file
 
 # IMPORT .ENV CONFIGS
 import os
+
+print(datetime.today().strftime('%Y-%m-%d'))
 
 # return the connection of the database
 def connection():
@@ -19,7 +22,7 @@ def login(email, password):
     db = connection()
     csr = db.cursor()
 
-    sql_command = "select * from user where email="+ "'" + email +"'"
+    sql_command = "select * from users where email="+ "'" + email +"'"
     csr.execute(sql_command)
     result = csr.fetchall()
 
@@ -42,12 +45,12 @@ def signup(first_name, last_name, birthday, email, password):
     db = connection()
     csr = db.cursor()
 
-    query = "select * from user where email="+ "'" + email +"'"
+    query = "select * from users where email="+ "'" + email +"'"
     csr.execute(query)
     result = csr.fetchall()
     
     if(result==[]):
-        query = "insert into user (first_name, last_name, birthday, email, password) values (\"%s\", \"%s\", \"%s\", \"%s\", \"%s\");" % (first_name,last_name,birthday,email,password)
+        query = "insert into users (first_name, last_name, birthday, email, password, date) values (\"%s\", \"%s\", \"%s\", \"%s\", \"%s\", \"%s\");" % (first_name,last_name,birthday,email,password, datetime.today().strftime('%Y-%m-%d'))
         csr.execute(query)
         db.commit()
         signup = True
@@ -67,7 +70,7 @@ def dashboardData(user):
     csr = db.cursor()
 
     # get the user id, first name, last name
-    query = "select user_id,first_name,last_name, avatar from user WHERE email="+"'"+user+"';"
+    query = "select id,first_name,last_name, avatar from users WHERE email="+"'"+user+"';"
     csr.execute(query)
     result = csr.fetchall()[0]
 
@@ -83,12 +86,12 @@ def dashboardData(user):
     request = {}
 
     # get all user requests
-    query = "select user.first_name, user.last_name, services.providable_service, user.user_rating from request inner join payment on payment.request_id != request.request_id inner join feedback on payment.payment_id = feedback.payment_id inner join user_services on request.user_service_id = user_services.user_service_id inner join services on user_services.services_id = services.services_id inner join user on request.reciever_id = user.user_id where request.servicer_id ="+str(user_id)+ ";"
+    query = "select users.first_name, users.last_name, services.providable_service, users.rating from requests inner join payments on payments.request_id != requests.id inner join feedback on payments.id = feedback.payment_id inner join user_services on request.user_service_id = user_services.id inner join services on user_services.services_id = services.id inner join users on request.reciever_id = users.id where request.servicer_id ="+str(user_id)+ ";"
     csr.execute(query)
     requests = csr.fetchall()
 
     # get all user feedback
-    query = "select user.first_name,user.last_name, services.providable_service, feedback.overall_rating from request inner join user on request.reciever_id = user.user_id inner join user_services on request.user_service_id = user_services.user_service_id inner join services on user_services.services_id = services.services_id inner join payment on request.request_id = payment.request_id inner join feedback on payment.payment_id = feedback.payment_id where request.servicer_id="+str(user_id)+ ";"
+    query = "select users.first_name,users.last_name, services.providable_service, feedback.rating from requests inner join users on request.reciever_id = users.id inner join user_services on request.user_service_id = user_services.id inner join services on user_services.services_id = services.id inner join payment on requests.id = payment.request_id inner join feedback on payment.id = feedback.payment_id where request.servicer_id="+str(user_id)+ ";"
     csr.execute(query)
     feedback = csr.fetchall()
 
