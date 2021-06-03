@@ -70,9 +70,11 @@ def dashboardData(user):
     csr = db.cursor()
 
     # get the user id, first name, last name
-    query = "select id,first_name,last_name, avatar from users WHERE email="+"'"+user+"';"
+    query = "SELECT users.id, users.first_name, users.last_name, users.avatar FROM users WHERE users.email="+"'"+user+"';"
     csr.execute(query)
     result = csr.fetchall()[0]
+
+    print(result)
 
     user_id = result[0]
     first_name = result[1]
@@ -86,12 +88,12 @@ def dashboardData(user):
     request = {}
 
     # get all user requests
-    query = "select users.first_name, users.last_name, services.providable_service, users.rating from requests inner join payments on payments.request_id != requests.id inner join feedback on payments.id = feedback.payment_id inner join user_services on request.user_service_id = user_services.id inner join services on user_services.services_id = services.id inner join users on request.reciever_id = users.id where request.servicer_id ="+str(user_id)+ ";"
+    query = "SELECT users.first_name, users.last_name, services.service, users.rating FROM requests INNER JOIN services ON requests.service_id = services.id INNER JOIN users ON requests.user_servicer_id = users.id WHERE requests.user_servicer_id ="+str(user_id)+ ";"
     csr.execute(query)
     requests = csr.fetchall()
 
     # get all user feedback
-    query = "select users.first_name,users.last_name, services.providable_service, feedback.rating from requests inner join users on request.reciever_id = users.id inner join user_services on request.user_service_id = user_services.id inner join services on user_services.services_id = services.id inner join payment on requests.id = payment.request_id inner join feedback on payment.id = feedback.payment_id where request.servicer_id="+str(user_id)+ ";"
+    query = "SELECT users.first_name,users.last_name, services.service, feedback.rating FROM requests INNER JOIN users ON requests.reciever_id = users.id INNER JOIN payments ON requests.id = payments.request_id INNER JOIN feedback ON payments.id = feedback.payment_id INNER JOIN services ON requests.service_id = services.id WHERE requests.user_servicer_id="+str(user_id)+ ";"
     csr.execute(query)
     feedback = csr.fetchall()
 
