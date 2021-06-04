@@ -11,11 +11,11 @@
         <div class="login">
             <input type="email" placeholder="email" name="email" id="email" required> <br><br>
             <input type="password" placeholder="password" name="psw" id="password" required> <br><br>
-            <Button variant="primary" type="submit" onclick="login()">Login</Button>  <Button type="submit" onclick="signup()">Sign up</Button>
+            <Button variant="primary" type="submit" onclick="login()">Login</Button>  
+            <Button type="submit" onclick="signup()">Sign up</Button>
         </div>
 
         <script>
-
             async function login(){
                 email = document.getElementById('email').value
                 password = document.getElementById('password').value
@@ -49,8 +49,6 @@
             function signup(){
                 location.replace("/signup")
             }
-
-
         </script>
 
 
