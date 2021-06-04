@@ -26,7 +26,6 @@ function dashboard(req, res){
     }else{
         res.redirect("/")
     }
-
 }
 
 module.exports.dashboard = dashboard
