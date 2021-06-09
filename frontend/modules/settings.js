@@ -1,5 +1,5 @@
 const { readFile } = require('fs')
-const { authenticate } = require('../component/authenticate')
+const { authenticate } = require('../component/authentication')
 require('cookie-parser')
 
 

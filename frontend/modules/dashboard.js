@@ -1,7 +1,6 @@
-const { response } = require('express')
 const { readFile } = require('fs')
 require('cookie-parser')
-const { authenticate }= require('../component/authenticate');
+const { authenticate }= require('../component/authentication');
 
 
 function dashboard(req, res){
@@ -9,6 +8,8 @@ function dashboard(req, res){
     if(req.cookies.market_token != undefined){
 
         token = req.cookies.market_token
+
+        console.log(token)
 
         if(authenticate(token)){
 

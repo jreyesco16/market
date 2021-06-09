@@ -20,7 +20,7 @@
                 email = document.getElementById('email').value
                 password = document.getElementById('password').value
 
-                const url = "http://localhost:5500/login"
+                const url = "http://localhost:8000/login"
                 const headers = {"Content-Type" : "application/json; charset=utf-8"}
                 const body = JSON.stringify({ email: email, password: password})
                 
@@ -39,7 +39,10 @@
                         // CREATE COOKIE FOR USER
                         document.cookie = "market_token="+data['token'] 
                         location.replace("/dashboard")
+                        return
                     }
+
+                    throw error
 
                 } catch(err) {
                     alert("Failure to login")

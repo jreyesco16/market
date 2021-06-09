@@ -21,5 +21,5 @@ app.get((req, res) => {
 })
 
 app.listen(process.env.PORT, () => {
-  console.log('\nApp available on http://localhost:4000')
+  console.log('\nApp available on http://localhost:3000')
 })
