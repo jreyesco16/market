@@ -3,25 +3,18 @@
     <head id="">
         <link rel="stylesheet" type="text/css" href="dashboard.css">
         <title>Dashboard</title>
-
-        <!-- LINKS -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-
-        <script>
-            src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
-            
-        </script>
-
+        <link rel="stylesheet" href="/css/bootstrap.min.css">
+        <script src="/js/bootstrap.min.js"></script>
     </head>
+
     <body class=dashboard-body onLoad="getDashboard()">
 
         <nav class="user-nav">
-            <a class="transaction-nav" style="margin-right: 1%;" href="/transactions">Transaction</a>
-            <a class="people-nav" href="/community">Community</a>
-            <a class="messagas-nav" href="/messages">Messages</a>
+            <Button onclick={location.replace('/transactions")}>Transactions</Button>
+            <Button onclick={location.replace("/community")}>Community</Button>
+            <Button onclick={location.replace("/messages")}>Messages</Button>
+            <Button onclick={location.replace("/settings")}>Settings</Button>
         </nav>  
-        
-        <br>
 
         <h1 class="banner">Market</h1>
 
@@ -39,7 +32,7 @@
 
         <div class="user-history">
             <div class="requests">
-                Requests    
+                Requests  
 
                 <div class="loader" id="request-loader"></div>
                 
@@ -70,27 +63,14 @@
 
         </div>
 
-        <br>
-
-        <footer class="dashboard-footer">
-            
-        </footer>
-
         <script>
             function getDashboard(){
+
                 document.getElementById("avatar-loader").style.display = "-webkit-inline-box"
                 document.getElementById("request-loader").style.display = "-webkit-inline-box"
                 document.getElementById("feedback-loader").style.display = "-webkit-inline-box"
-                // get the users cookies
-                cookies = document.cookie.split(';')
-                market_token = ''
-
-                // retreive market_cookie from cookies
-                for(i = 0; i < cookies.length; i++){
-                    if(cookies[i].includes('market_token=')){
-                        market_token = cookies[i].split('market_token=')[1]
-                    }
-                }
+                
+                market_token = getMarketToken()
 
                 fetch("http://127.0.0.1:8000/dashboard",
                     {
@@ -156,7 +136,7 @@
             }
 
             // used to get color associations with the ratings (can be used later for starts etc)
-            function getRatingConfig(num){
+            const getRatingConfig = (num) => {
                 rating = String(num)
                 if(num >= 4.5){
                     return rating.fontcolor("green")
@@ -173,6 +153,20 @@
                 }
 
                 return rating
+            }
+
+            const getMarketToken = () => {
+                cookies = document.cookie.split(';')
+                market_token = ''
+
+                // retreive market_cookie from cookies
+                for(i = 0; i < cookies.length; i++){
+                    if(cookies[i].includes('market_token=')){
+                        market_token = cookies[i].split('market_token=')[1]
+                    }
+                }
+
+                return market_token
             }
             
         </script>
