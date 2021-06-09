@@ -9,8 +9,6 @@ function dashboard(req, res){
 
         token = req.cookies.market_token
 
-        console.log(token)
-
         if(authenticate(token)){
 
             readFile('./html/dashboard.html', 'utf8', (err, html) => {

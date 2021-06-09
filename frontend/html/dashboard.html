@@ -4,7 +4,9 @@
         <link rel="stylesheet" type="text/css" href="dashboard.css">
         <title>Dashboard</title>
         <link rel="stylesheet" href="/css/bootstrap.min.css">
-        <script src="/js/bootstrap.min.js"></script>
+        <script src="/js/bootstrap.min.js">
+            
+        </script>
     </head>
 
     <body class=dashboard-body onLoad="getDashboard()">
@@ -64,75 +66,34 @@
         </div>
 
         <script>
-            function getDashboard(){
+            async function getDashboard(){
 
-                document.getElementById("avatar-loader").style.display = "-webkit-inline-box"
-                document.getElementById("request-loader").style.display = "-webkit-inline-box"
-                document.getElementById("feedback-loader").style.display = "-webkit-inline-box"
+                start_dashboard_loaders()
                 
                 market_token = getMarketToken()
 
-                fetch("http://127.0.0.1:8000/dashboard",
-                    {
-                        method: "POST",
-                        mode: "cors",
-                        headers: {
-                            "Content-Type" : "application/json; charset=utf-8"
-                        },
-                        body: JSON.stringify({
-                            token: market_token
-                        })
-                    }
-                    ).then(response => response.json())
-                    .then(data => {
-                        // entire dataset
-                        dash_data = data.dashboard
 
-                        // insert users first name and last name
-                        first_name = dash_data.first_name
-                        last_name = dash_data.last_name
+                const backendURL = "http://127.0.0.1:8000/dashboard"
+                const headers = {"Content-Type" : "application/json; charset=utf-8"}
+                const body = JSON.stringify({token: market_token})
 
-                        document.querySelector("#first_name").insertAdjacentHTML("afterbegin", first_name)
-                        document.querySelector("#last_name").insertAdjacentHTML("afterbegin", last_name)
+                const res = await fetch(backendURL, {
+                    method : "POST", 
+                    mode: "cors",
+                    headers : headers, 
+                    body : body
+                })
 
-                        // insert requests in requests list
-                        requests = dash_data.request
-                        document.getElementById("request-loader").style.display = "none"
-                        for(i = 0; i < requests.length; i++){
-                            document.getElementById("request_list").insertAdjacentHTML("afterbegin",`
-                            <a href="#" class="list-group-item list-group-item-action" style="display: flex; font-size: medium;">
-                                <div style="width: 60%;"> ${requests[i][0] + " " + requests[i][1]} <br>
-                                    ${getRatingConfig(requests[i][3])}
-                                </div>
-                                <div style="width: 40%;">
-                                    ${requests[i][2]}
-                                </div>
-                            </a>
-                            `)
-                        }
+                const dashboard_res = await res.json()
+                const data = dashboard_res.dashboard
 
-                        // insert feedback in feedback list
-                        feedback = dash_data.feedback
-                        document.getElementById("feedback-loader").style.display = "none"
-                        for(i = 0; i < feedback.length; i++){
-                            document.getElementById("feedback-list").insertAdjacentHTML("afterbegin", `
-                            <a href="#" class="list-group-item list-group-item-action" style="display: flex; font-size: medium;">
-                                <div style="width: 60%;"> ${feedback[i][0] + " " + feedback[i][1]} <br>
-                                    ${feedback[i][2]}
-                                </div>
-                                <div style="width: 40%;">
-                                    ${getRatingConfig(feedback[i][3])}
-                                </div>
-                            </a>
-                            `)
-                        }
 
-                        // insert the base64 string to the avatar img
-                        document.getElementById("avatar-loader").style.display = "none"
-                        document.getElementById("avatar").src = "data:image/png;base64," + dash_data.avatar
-                        document.getElementById("avatar").style.display = "block"
-                    }
-                )
+
+                /* INSERT DATA */
+                insertName(data.first_name, data.last_name)
+                insertRequests(data.request)
+                insertFeedback(data.feedback)
+                insertAvatar(data.avatar)
             }
 
             // used to get color associations with the ratings (can be used later for starts etc)
@@ -159,14 +120,67 @@
                 cookies = document.cookie.split(';')
                 market_token = ''
 
-                // retreive market_cookie from cookies
                 for(i = 0; i < cookies.length; i++){
                     if(cookies[i].includes('market_token=')){
                         market_token = cookies[i].split('market_token=')[1]
+                        break
                     }
                 }
 
                 return market_token
+            }
+
+            const start_dashboard_loaders = () => {
+                document.getElementById("avatar-loader").style.display = "-webkit-inline-box"
+                document.getElementById("request-loader").style.display = "-webkit-inline-box"
+                document.getElementById("feedback-loader").style.display = "-webkit-inline-box"
+            }
+
+            const insertName = (first_name, last_name) => {
+                // insert users first name and last name
+                document.querySelector("#first_name").insertAdjacentHTML("afterbegin",first_name)
+                document.querySelector("#last_name").insertAdjacentHTML("afterbegin", last_name)
+            }
+
+            const insertRequests = (requests) => {
+                document.getElementById("request-loader").style.display = "none"
+
+                for(i = 0; i < requests.length; i++){
+                    document.getElementById("request_list").insertAdjacentHTML("afterbegin",`
+                    <a href="#" class="list-group-item list-group-item-action" style="display: flex; font-size: medium;">
+                        <div style="width: 60%;"> ${requests[i][0] + " " + requests[i][1]} <br>
+                            ${getRatingConfig(requests[i][3])}
+                        </div>
+                        <div style="width: 40%;">
+                            ${requests[i][2]}
+                        </div>
+                    </a>
+                    `)
+                }
+            }
+
+            const insertFeedback = (feedback) => {
+                document.getElementById("feedback-loader").style.display = "none"
+
+                for(i = 0; i < feedback.length; i++){
+                    document.getElementById("feedback-list").insertAdjacentHTML("afterbegin", `
+                    <a href="#" class="list-group-item list-group-item-action" style="display: flex; font-size: medium;">
+                        <div style="width: 60%;"> ${feedback[i][0] + " " + feedback[i][1]} <br>
+                            ${feedback[i][2]}
+                        </div>
+                        <div style="width: 40%;">
+                            ${getRatingConfig(feedback[i][3])}
+                        </div>
+                    </a>
+                    `)
+                }
+            }
+
+            const insertAvatar = (avatar) => {
+                document.getElementById("avatar-loader").style.display = "none"
+
+                document.getElementById("avatar").src = "data:image/png;base64," + avatar
+                document.getElementById("avatar").style.display = "block"
             }
             
         </script>
