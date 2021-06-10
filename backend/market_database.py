@@ -74,8 +74,6 @@ def dashboardData(user):
     csr.execute(query)
     result = csr.fetchall()[0]
 
-    print(result)
-
     user_id = result[0]
     first_name = result[1]
     last_name = result[2]
@@ -88,7 +86,7 @@ def dashboardData(user):
     request = {}
 
     # get all user requests
-    query = "SELECT users.first_name, users.last_name, services.service, users.rating FROM requests INNER JOIN services ON requests.service_id = services.id INNER JOIN users ON requests.user_servicer_id = users.id WHERE requests.user_servicer_id ="+str(user_id)+ ";"
+    query = "SELECT users.first_name, users.last_name, services.service, users.rating FROM requests INNER JOIN services ON requests.service_id = services.id INNER JOIN users ON requests.reciever_id = users.id WHERE requests.user_servicer_id ="+str(user_id)+ ";"
     csr.execute(query)
     requests = csr.fetchall()
 
@@ -100,15 +98,7 @@ def dashboardData(user):
     csr.close()
     db.close()
 
-    dashboard = {
-        "first_name" :  first_name,
-        "last_name" : last_name,
-        "request" :  requests,
-        "feedback" : feedback,
-        "avatar" : avatar
-    }
-
-    return  dashboard
+    return  {"first_name" :  first_name, "last_name" : last_name, "request" :  requests, "feedback" : feedback, "avatar" : avatar}
 
 def profileData(user):
 

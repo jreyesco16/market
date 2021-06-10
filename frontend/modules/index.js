@@ -4,7 +4,6 @@ require('cookie-parser')
 
 
 function index(req, res){
-
     try{
 
         token = getToken(req)
