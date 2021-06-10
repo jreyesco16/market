@@ -10,7 +10,7 @@
     <body onload="fethProfileData()">
 
         <div class="back-button">
-            <button type="button" class="btn btn-secondary" style="width: 100px;height: 75; background-color: grey;border: none;" onclick="goBack()">
+            <button type="button" class="btn btn-secondary" style="width: 100px;height: 75; background-color: black;border: none;" onclick="goBack()">
                 <img class="back-arrow" src="arrow-left.svg" alt="back-arrow">
             </button>
         </div>
@@ -19,9 +19,11 @@
         <div class="profile">
             <!-- user avatar -->
             <div class="avatar-div">
-                Settings
+                Settings 
+                <br>
+                <div class="loader" id="profile-loader"></div>
                 <img class="avatar" alt="avatar" id="avatar" onclick="openEditPhotoForm()">
-                <div class="edit-name-div" onclick="editName()">
+                <div class="edit-name-div" onclick="openEditNameForm()">
                     <p id="first_name" class="first_name"></p>
                     <p id="last_name" class="last_name"></p>
                 </div>
@@ -36,32 +38,76 @@
                 <img class="close-popup-form-x" src="x.svg" alt="close-popup-form-x" onclick="closeEditPhotoForm()">
                 <br>
                 <h2>Change Photo</h2>
+                <br>
                 <div class="uploaded-image" id="uploaded-image">
-                    <div class="loader" id="loader"></div>
+                    <div class="loader" id="avatar-loader"></div>
                     <img src="" alt="" id="new-img" class="new-img">
                 </div>
                 Select Image: 
                 <br>
                 <input type="file" id="edit-photo-img" name="img" accept="image/*" required>
                 <br><br>
-                Password: 
-                <br>
-                <input type="password" id="edit-photo-psw" placeholder="Your Password" name="psw" required>
-                <br><br>
                 <button type="submit" id="photo-edit-btn" class="photo-edit-btn" style="background-color: dodgerblue;color:white">Make Change</button>
               </div>
             </form>
           </div>
+        <!-- pop up for editing users name -->
+        <div class="edit-name-popup">
+            <div class="form-popup" id="name-popup-form">
+                <form class="form-container" action="javascript:editName()">
+                    <img class="close-popup-form-x" src="x.svg" alt="close-popup-form-x" onclick="closeEditNameForm()">
+                    <h2>Edit Name</h2>
+                    <br>
+                    First Name:
+                    <br>
+                    <br>
+                    <input type="text" id="edited-first-name"required>
+                    <br>
+                    <br>
+                    Last Name:
+                    <br>
+                    <br>
+                    <input type="text" id="edited-last-name" required>
+                    <br>
+                    <br>
+                    <button type="submit" id="name-edit-btn" class="name-edit-btn" style="background-color: dodgerblue;color:white">Make Change</button>
+                </form>
+            </div>
+        </div>
 
         <div class="div-buttons">
             <div class="div-buttons-layer-one">
-
+                <!-- button for services -->
                 <div class="bootstrap-button-div">
-                    <button type="button" class="btn btn-primary" onclick="editServices()">
+                    <button type="button" class="btn btn-primary" id="services-button" onclick="openEditServices()">
                         Services
                     </button>
                 </div>
 
+                <!-- pop up for services -->
+                <div class="edit-services-popup">
+                    <div class="form-popup" id="service-popup-form">
+                        <form class="form-container" action="javascript:editServices()">
+                            <img class="close-popup-form-x" src="x.svg" alt="close-popup-form-x" onclick="closeEditServices()">
+                            <h2>Services</h2>
+                            <!-- loader for while user services are being fetched -->
+                            <div class="loader" id="service-loader-fetch"></div>
+                            <br>
+                            <!-- service list -->
+                            <div class=bootstrap-list>
+                                <div class="list-group">
+                                    <div id="services-list">
+                                        <!-- insert the services list -->
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <button type="submit" id="service-edit-btn" class="service-edit-btn" style="background-color: dodgerblue;color:white;width: 60%;margin-left: 20%; margin-right: 20%">+ Add</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- button to view user history -->
                 <div class="bootstrap-button-div">
                     <button type="button" class="btn btn-primary" onclick="editHistory()">
                         History
@@ -101,7 +147,6 @@
 
         <!-- footer -->
         <footer class="profile-footer">
-            <div class="loader"></div>
 
         </footer>
 
@@ -109,6 +154,8 @@
 
             /* initial fetch for all user data */
             function fethProfileData(){
+
+                document.getElementById("profile-loader").style.display = "-webkit-inline-box"
 
                 // get the users cookies
                 cookies = document.cookie.split(';')
@@ -121,7 +168,7 @@
                     }
                 }
 
-                fetch("http://127.0.0.1:5000/profile",
+                fetch("http://127.0.0.1:5500/profile",
                     {
                         method: "POST",
                         mode: "cors",
@@ -136,10 +183,14 @@
                 .then(data => {
                     // entire dataset
                     profile_data = data.profile
-
+                    document.getElementById("profile-loader").style.display = "none"
                     document.querySelector("#first_name").insertAdjacentHTML("afterbegin", profile_data.first_name)
                     document.querySelector("#last_name").insertAdjacentHTML("afterbegin", profile_data.last_name)
                     document.getElementById("avatar").src = "data:image/png;base64," + profile_data.avatar
+                    document.getElementById("avatar").style.display = "block"
+
+                    document.getElementById("edited-first-name").value = profile_data.first_name
+                    document.getElementById("edited-last-name").value = profile_data.last_name
                 })
                 
             }
@@ -157,7 +208,7 @@
 
                 // this is no intially reset back to none then both the previous file will and loader will display
                 img.style.display = "none"
-                document.getElementById("loader").style.display = "-webkit-inline-box"
+                document.getElementById("avatar-loader").style.display = "-webkit-inline-box"
 
                 const file = this.files[0]
                 if(file['type'] == "image/heic"){
@@ -173,11 +224,14 @@
                             })
                         )
                         .then((conversionResult) => {
-                            image = conversionResult[0]
-                            var url = URL.createObjectURL(image);
-                            img.src = url;
-                            document.getElementById("loader").style.display = "none"
-                            img.style.display="revert"
+                            var reader = new FileReader();
+                            reader.readAsDataURL(conversionResult[0])
+                            reader.onload = function (){
+                                const result = reader.result
+                                img.src = result
+                                document.getElementById("avatar-loader").style.display = "none"
+                                img.style.display="revert"
+                            }
                         })
                         .catch((e) => {
                             // see error handling section
@@ -189,7 +243,7 @@
                     reader.onload = function(){
                         const result = reader.result
                         img.src = result
-                        document.getElementById("loader").style.display = "none"
+                        document.getElementById("avatar-loader").style.display = "none"
                         img.style.display="revert"
                     }
                     reader.readAsDataURL(file)
@@ -198,29 +252,7 @@
 
 
             function updateAvatarPhoto(){
-
-                // upload the the new photo to database
-                console.log("working on getting photo uploaded")
-
                 avatar = document.getElementById('new-img')
-                console.log(avatar.height)
-                console.log(avatar.width)
-
-
-                // convert the blob type to image
-                var canvas = document.createElement('canvas')
-                canvas.width  = 220;
-                canvas.height = 220;
-                var ctx = canvas.getContext("2d")
-                ctx.imageSmoothingEnabled = true
-                var img = document.getElementById('new-img')
-                ctx.drawImage(img,0,0, 220,220)
-
-                var jpegFile = canvas.toDataURL('image/png')
-                avatar.src = jpegFile
-                console.log(jpegFile)
-
-                // get the users cookies
                 cookies = document.cookie.split(';')
                 market_token = ''
 
@@ -232,7 +264,7 @@
                 }
                 
                 // make post
-                fetch('http://127.0.0.1:5000/settings/avatar', 
+                fetch('http://127.0.0.1:5500/settings/avatar', 
                     {
                         method: "POST",
                         mode: "cors",
@@ -241,25 +273,121 @@
                         },
                         body: JSON.stringify({
                             token: market_token,
-                            avatar: jpegFile
+                            avatar: avatar.src
                         })
                     })
                     .then(result => result.json())
                     .then(data =>{
                         console.log(data)
+                        location.replace("/settings")
                     })
-
+                    .catch(err => {
+                        location.replace("/")
+                    })
             }
             
 
-            // make changes in the users name
+            // make changes to users name
             function editName(){
-                console.log("Changing Name")
+
+                first_name = document.getElementById("edited-first-name").value
+                last_name = document.getElementById("edited-last-name").value
+
+                // retreive market_cookie from cookies
+                for(i = 0; i < cookies.length; i++){
+                    if(cookies[i].includes('market_token=')){
+                        market_token = cookies[i].split('market_token=')[1]
+                    }
+                }
+
+                fetch("http://127.0.0.1:5500/settings/name",
+                    {
+                        method: "POST",
+                        mode: "cors",
+                        body: JSON.stringify({
+                            token: market_token,
+                            first_name : first_name,
+                            last_name : last_name
+                        })
+                    }
+                ).then( res => res.json())
+                .then( data => {
+                    location.replace("/settings")
+                })
+                .catch(err => {
+                    location.replace("/")
+                })
+            }
+            function openEditNameForm() {
+                document.getElementById("name-popup-form").style.display = "block"
+            }
+            function closeEditNameForm() {
+                document.getElementById('name-popup-form').style.display = "none"
             }
 
             // view the services settings
             function editServices(){
+
+                `
+                    <a href="#" class="list-group-item list-group-item-action" style="display: flex; font-size: medium;">
+                        <div style="width: 60%;"> feedback[i][0] + " " + feedback[i][1] <br>
+                                    feedback[i][2]
+                        </div>
+                        <div style="width: 40%;">
+                                    
+                        </div>
+                    </a>
+                `
+
+
                 console.log("Changing Services")
+            }
+            function openEditServices(){
+                document.getElementById("service-popup-form").style.display = "block"
+
+                // display loader while fetching the users services
+                document.getElementById("service-loader-fetch").style.display = "-webkit-inline-box"
+
+                cookies = document.cookie.split(';')
+                market_token = ''
+
+                // retreive market_cookie from cookies
+                for(i = 0; i < cookies.length; i++){
+                    if(cookies[i].includes('market_token=')){
+                        market_token = cookies[i].split('market_token=')[1]
+                    }
+                }
+
+                // create fetch that calls the backend for all the users services
+                fetch('http://localhost:5500/settings/user-services',
+                    {
+                        method: "POST",
+                        mode: "cors",
+                        headers: {
+                            "Content-Type" : "application/json; charset=utf-8"
+                        },
+                        body: JSON.stringify(
+                            {
+                                token: market_token
+                            }
+                        )
+                    }
+                )
+                .then(result => result.json())
+                .then(data => {
+
+                    console.log(data)
+                    // stop the loader
+                    document.getElementById("service-loader-fetch").style.display = "none"
+                    // insert the service data inside the service list
+
+                })
+                .catch(err => {
+                    location.replace("/")
+                })
+            }
+            function closeEditServices(){
+                document.getElementById("service-popup-form").style.display = "none"
             }
 
             // view the history settings

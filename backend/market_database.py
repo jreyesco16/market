@@ -1,9 +1,12 @@
 import mysql.connector
 import base64
+from datetime import datetime
 from flask import jsonify, send_file
 
 # IMPORT .ENV CONFIGS
 import os
+
+print(datetime.today().strftime('%Y-%m-%d'))
 
 # return the connection of the database
 def connection():
@@ -19,7 +22,7 @@ def login(email, password):
     db = connection()
     csr = db.cursor()
 
-    sql_command = "select * from user where email="+ "'" + email +"'"
+    sql_command = "select * from users where email="+ "'" + email +"'"
     csr.execute(sql_command)
     result = csr.fetchall()
 
@@ -42,12 +45,12 @@ def signup(first_name, last_name, birthday, email, password):
     db = connection()
     csr = db.cursor()
 
-    query = "select * from user where email="+ "'" + email +"'"
+    query = "select * from users where email="+ "'" + email +"'"
     csr.execute(query)
     result = csr.fetchall()
     
     if(result==[]):
-        query = "insert into user (first_name, last_name, birthday, email, password) values (\"%s\", \"%s\", \"%s\", \"%s\", \"%s\");" % (first_name,last_name,birthday,email,password)
+        query = "insert into users (first_name, last_name, birthday, email, password, date) values (\"%s\", \"%s\", \"%s\", \"%s\", \"%s\", \"%s\");" % (first_name,last_name,birthday,email,password, datetime.today().strftime('%Y-%m-%d'))
         csr.execute(query)
         db.commit()
         signup = True
@@ -67,7 +70,7 @@ def dashboardData(user):
     csr = db.cursor()
 
     # get the user id, first name, last name
-    query = "select user_id,first_name,last_name, avatar from user WHERE email="+"'"+user+"';"
+    query = "SELECT users.id, users.first_name, users.last_name, users.avatar FROM users WHERE users.email="+"'"+user+"';"
     csr.execute(query)
     result = csr.fetchall()[0]
 
@@ -83,27 +86,19 @@ def dashboardData(user):
     request = {}
 
     # get all user requests
-    query = "select user.first_name, user.last_name, services.providable_service, user.user_rating from request inner join payment on payment.request_id != request.request_id inner join feedback on payment.payment_id = feedback.payment_id inner join user_services on request.user_service_id = user_services.user_service_id inner join services on user_services.services_id = services.services_id inner join user on request.reciever_id = user.user_id where request.servicer_id ="+str(user_id)+ ";"
+    query = "SELECT users.first_name, users.last_name, services.service, users.rating FROM requests INNER JOIN services ON requests.service_id = services.id INNER JOIN users ON requests.reciever_id = users.id WHERE requests.user_servicer_id ="+str(user_id)+ ";"
     csr.execute(query)
     requests = csr.fetchall()
 
     # get all user feedback
-    query = "select user.first_name,user.last_name, services.providable_service, feedback.overall_rating from request inner join user on request.reciever_id = user.user_id inner join user_services on request.user_service_id = user_services.user_service_id inner join services on user_services.services_id = services.services_id inner join payment on request.request_id = payment.request_id inner join feedback on payment.payment_id = feedback.payment_id where request.servicer_id="+str(user_id)+ ";"
+    query = "SELECT users.first_name,users.last_name, services.service, feedback.rating FROM requests INNER JOIN users ON requests.reciever_id = users.id INNER JOIN payments ON requests.id = payments.request_id INNER JOIN feedback ON payments.id = feedback.payment_id INNER JOIN services ON requests.service_id = services.id WHERE requests.user_servicer_id="+str(user_id)+ ";"
     csr.execute(query)
     feedback = csr.fetchall()
 
     csr.close()
     db.close()
 
-    dashboard = {
-        "first_name" :  first_name,
-        "last_name" : last_name,
-        "request" :  requests,
-        "feedback" : feedback,
-        "avatar" : avatar
-    }
-
-    return  dashboard
+    return  {"first_name" :  first_name, "last_name" : last_name, "request" :  requests, "feedback" : feedback, "avatar" : avatar}
 
 def profileData(user):
 
@@ -142,7 +137,55 @@ def getUserID(user):
 
     user_id = profile_data[0]
 
+    csr.close()
+    db.close()
+
     return user_id
+
+def saveUserAvatar(user_id, filename):
+    db = connection()
+    csr = db.cursor()
+
+    query = "UPDATE user SET avatar='" + filename + "' where user_id='" + str(user_id) +"';"
+    csr.execute(query)
+    db.commit()
+
+    csr.close()
+    db.close()
+
+def updateName(first_name, last_name, user_id):
+    db = connection()
+    csr = db.cursor()
+
+    query = "UPDATE user SET first_name='" + first_name + "', last_name='"+ last_name + "' where user_id='" + str(user_id) +"';"
+    csr.execute(query)
+    db.commit()
+
+
+    csr.close()
+    db.close()
+
+def getUserServices(user_id):
+    db = connection()
+    csr = db.cursor()
+
+    user_services = {}
+
+    # create a query to fetch all user services based on their user_id
+    # 1. service
+    # 2. price
+    # 3. duration
+    # 4. rating
+    query = ""
+    csr.execute(query)
+    result = csr.fetchall()
+
+    # loop through the fetch and add to dictionary
+
+    csr.close()
+    db.close()
+
+    return user_services
 
 
 

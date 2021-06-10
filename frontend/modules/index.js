@@ -1,26 +1,21 @@
 const { readFile } = require('fs')
-const { authenticate } = require('../component/authenticate')
+const { authenticate, getToken } = require('../component/authentication')
 require('cookie-parser')
 
 
 function index(req, res){
+    try{
 
-    if(req.cookies.market_token != undefined){
-
-        token = req.cookies.market_token
+        token = getToken(req)
 
         if(authenticate(token)){
             res.redirect("/dashboard")
-        }else{
-            readFile('./html/index.html', 'utf8', (err, html) => {
-                if (err) {
-                    res.status(500).send('sorry, out of order')
-                }
-                res.send(html)
-            })
+            return
         }
 
-    }else{
+        throw error
+
+    }catch(error){
         
         readFile('./html/index.html', 'utf8', (err, html) => {
             if (err) {

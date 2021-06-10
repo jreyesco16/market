@@ -1,32 +1,30 @@
-const { response } = require('express')
 const { readFile } = require('fs')
 require('cookie-parser')
-const { authenticate }= require('../component/authenticate');
+const { authenticate, getToken } = require('../component/authentication')
 
 
 function dashboard(req, res){
 
-    if(req.cookies.market_token != undefined){
+    try {
 
-        token = req.cookies.market_token
+        token = getToken(req)
+
+        console.log(token)
 
         if(authenticate(token)){
-
             readFile('./html/dashboard.html', 'utf8', (err, html) => {
                 if (err) {
-                    res.redirect("/")
+                    res.status(500).send('sorry, out of order')
                 }
                 res.send(html)
-            });
-
-        }else{
-            res.redirect("/")
+            })
+            return
         }
+        throw error
 
-    }else{
+    }catch(error){
         res.redirect("/")
     }
-
 }
 
 module.exports.dashboard = dashboard

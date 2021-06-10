@@ -73,7 +73,7 @@ def dashboard():
 def profile():
     token = request.get_json(force=True)['token']
 
-    data = data = jwt.decode(token, os.getenv('ACCESS_TOKEN_SECRET'), algorithms=["HS256"])
+    data = jwt.decode(token, os.getenv('ACCESS_TOKEN_SECRET'), algorithms=["HS256"])
 
     user = data['user']
 
@@ -82,34 +82,44 @@ def profile():
 @app.route('/settings/<option>', methods = ['POST', 'GET'])
 def settings(option):
 
-    rest = request.get_json(force=True)
+    req = request.get_json(force=True)
 
-    token = rest['token']
+    token = req['token']
 
     data = jwt.decode(token, os.getenv('ACCESS_TOKEN_SECRET'), algorithms=["HS256"])
 
+    if( data['authorization'] != os.getenv('USER_TOKEN_SECRET')):
+        return jsonify({'Success' : 'Failure', 'status' : 200})
+
     user = data['user']
+    user_id = db.getUserID(user)
 
     if option == "avatar":
-        new_avatar = str(rest['avatar']).split(",")[1]
+        new_avatar = str(req['avatar']).split(",")[1]
 
-        print(new_avatar)
-
-        user_id = db.getUserID(user)
-
-        # convert the new_avatar which represents a file as a base64 to a jpeg file and save to images directory
+        # convert the new_avatar which represents a file as a base64 to a png file and save to images directory
         avatar_img = base64.b64decode(new_avatar)
-        im = Image.open(io.BytesIO(base64.b64decode(new_avatar)))
-        im.show()
-        filename = './images/user_' + str(user_id) + '.jpeg'
+        filename = 'user_' + str(user_id) + '.png'
+        
+        with open("./images/" + filename, "wb") as fo:
+            fo.write(avatar_img)
+            # save the file name under the users_id
+            db.saveUserAvatar(user_id, filename)
+    elif option == "name":
 
-        # with open(filename, 'wb') as f:
-        #     f.write(avatar_img)
-        # im = Image.open(filename)
-        # im.show()
+        first_name = req['first_name']
+        last_name = req['last_name']
+
+        # update the users name with user_id
+        db.updateName(first_name, last_name, user_id)
+
+    elif option == "user-services":
+        # fetch all of users services from the backend
+        return jsonify({'Services' :  db.getUserServices(user_id),'Success' : 'Success', 'status' : 200})
 
     return jsonify({'Success' : 'Success', 'status' : 200})
+    
 
 
 if __name__ == "__main__" :
-    app.run(host='0.0.0.0',debug=True,port='5000')
+    app.run(host='0.0.0.0',debug=True,port='8000')
