@@ -5,9 +5,6 @@ const authenticate = (token) => {
 
     access = false
 
-    // TESTING
-    console.log(token)
-
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, algorithms=['HS256'], function(err, decoded) {
         if(decoded != null  && decoded.authorization==process.env.USER_TOKEN_SECRET){
             access = true

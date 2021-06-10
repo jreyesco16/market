@@ -1,18 +1,16 @@
-<!Doctype html>
+<!Doctype HTML>
 <html>
     <head id="">
         <link rel="stylesheet" type="text/css" href="dashboard.css">
         <title>Dashboard</title>
         <link rel="stylesheet" href="/css/bootstrap.min.css">
-        <script src="/js/bootstrap.min.js">
-            
-        </script>
+        <script src="/js/bootstrap.min.js"></script>
     </head>
 
     <body class=dashboard-body onLoad="getDashboard()">
 
         <nav class="user-nav">
-            <Button onclick={location.replace('/transactions")}>Transactions</Button>
+            <Button onclick={location.replace("/transactions")}>Transactions</Button>
             <Button onclick={location.replace("/community")}>Community</Button>
             <Button onclick={location.replace("/messages")}>Messages</Button>
             <Button onclick={location.replace("/settings")}>Settings</Button>
@@ -35,10 +33,7 @@
         <div class="user-history">
             <div class="requests">
                 Requests  
-
                 <div class="loader" id="request-loader"></div>
-                
-                <br>
                 <div class="bootstrap-list">
                     <div class="list-group">
                         <!-- insert the request list -->
@@ -50,10 +45,7 @@
 
             <div class="feedback">
                 Feedback
-
                 <div class="loader" id="feedback-loader"></div>
-
-                <br>
                 <div class=bootstrap-list>
                     <div class="list-group">
                         <!-- insert the feedback list -->
@@ -72,7 +64,6 @@
                 
                 market_token = getMarketToken()
 
-
                 const backendURL = "http://127.0.0.1:8000/dashboard"
                 const headers = {"Content-Type" : "application/json; charset=utf-8"}
                 const body = JSON.stringify({token: market_token})
@@ -87,10 +78,8 @@
                 const dashboard_res = await res.json()
                 const data = dashboard_res.dashboard
 
-
-
                 /* INSERT DATA */
-                insertName(data.first_name, data.last_name)
+                insertUserName(data.first_name, data.last_name)
                 insertRequests(data.request)
                 insertFeedback(data.feedback)
                 insertAvatar(data.avatar)
@@ -112,8 +101,6 @@
                 }else{
                     return rating.fontcolor("red")
                 }
-
-                return rating
             }
 
             const getMarketToken = () => {
@@ -126,7 +113,6 @@
                         break
                     }
                 }
-
                 return market_token
             }
 
@@ -136,8 +122,7 @@
                 document.getElementById("feedback-loader").style.display = "-webkit-inline-box"
             }
 
-            const insertName = (first_name, last_name) => {
-                // insert users first name and last name
+            const insertUserName = (first_name, last_name) => {
                 document.querySelector("#first_name").insertAdjacentHTML("afterbegin",first_name)
                 document.querySelector("#last_name").insertAdjacentHTML("afterbegin", last_name)
             }
@@ -181,8 +166,7 @@
 
                 document.getElementById("avatar").src = "data:image/png;base64," + avatar
                 document.getElementById("avatar").style.display = "block"
-            }
-            
+            } 
         </script>
 
     </body>
