@@ -78,12 +78,6 @@
 
         <div class="div-buttons">
             <div class="div-buttons-layer-one">
-                <!-- button for services -->
-                <div class="bootstrap-button-div">
-                    <button type="button"id="services-button" onclick="openEditServices()">
-                        SERVICES
-                    </button>
-                </div>
 
                 <!-- pop up for services -->
                 <div class="edit-services-popup">
@@ -109,47 +103,27 @@
                 </div>
 
                 <!-- button to view user history -->
-                <div class="bootstrap-button-div">
-                    <Button type="button" onclick="editHistory()">
-                        HISTORY
-                    </Button>
-                </div>
+            <div class="button-layer">
+                <Button type="button"id="services-button" onclick="openEditServices()">SERVICES </Button>
 
-                <div class="bootstrap-button-div">
-                    <Button type="button" onclick="editActivity()">
-                        ACTIVITY
-                    </Button>
-                </div>
+                <Button type="button" onclick="editAccount()"> ACCOUNT </Button>
 
+                <Button type="button" onclick="editHistory()"> HISTORY </Button>
             </div>
 
-            <div class="div-buttons-layer-two">
-                <div class="bootstrap-button-div">
-                    <Button type="button" onclick="editAccount()">
-                        ACCOUNT
-                    </Button>
-                </div>
+            <div class="button-layer">
+                <Button type="button" onclick="editActivity()"> ACTIVITY </Button>
+                
+                <Button type="button" onclick="editRules()"> RULES </Button>
 
-                <div class="bootstrap-button-div">
-                    <button type="button" onclick="editRules()">
-                        RULES
-                    </button>
-                </div>
-
-                <div class="bootstrap-button-div">
-                    <Button type="button" onclick="editContactUs()">
-                        CONTACT US
-                    </Button>
-                </div>
+                <Button type="button" onclick="editContactUs()"> CONTACT US </Button>
             </div>
-            
+
         </div>
 
         <!-- footers are for losers -->
     
         <script>
-
-            /* initial fetch for all user data */
             async function fethSettings(){
 
                 document.getElementById("profile-loader").style.display = "-webkit-inline-box"
@@ -281,12 +255,7 @@
                 first_name = document.getElementById("edited-first-name").value
                 last_name = document.getElementById("edited-last-name").value
 
-                // retreive market_cookie from cookies
-                for(i = 0; i < cookies.length; i++){
-                    if(cookies[i].includes('market_token=')){
-                        market_token = cookies[i].split('market_token=')[1]
-                    }
-                }
+                const market_token = getMarketToken()
 
                 fetch("http://localhost:8000/settings/name",
                     {
