@@ -72,7 +72,7 @@ def dashboard():
 @app.route('/profile', methods = ['POST', 'GET'])
 def profile():
     token = request.get_json(force=True)['token']
-
+    
     data = jwt.decode(token, os.getenv('ACCESS_TOKEN_SECRET'), algorithms=["HS256"])
 
     user = data['user']

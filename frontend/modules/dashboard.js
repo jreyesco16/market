@@ -1,12 +1,10 @@
 const { readFile } = require('fs')
+const { Http2ServerResponse, Http2ServerRequest } = require('http2')
 require('cookie-parser')
 const { authenticate, getToken } = require('../component/authentication')
 
-
 function dashboard(req, res){
-
     try {
-
         token = getToken(req)
 
         console.log(token)

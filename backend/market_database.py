@@ -106,7 +106,7 @@ def profileData(user):
     db = connection()
     csr = db.cursor()
 
-    query = "select user.first_name, user.last_name, user.avatar from user where user.email='" +str(user)+ "';"
+    query = "select users.first_name, users.last_name, users.avatar from users where users.email='" +str(user)+ "';"
     csr.execute(query)
     profile_data = csr.fetchall()[0]
 
