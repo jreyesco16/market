@@ -1,4 +1,5 @@
 var jwt = require('jsonwebtoken')
+const { readFile } = require('fs')
 
 /* function is used to verifies jwt token, returns true if able to decode otherwise false*/
 const authenticate = (token) => {
@@ -23,5 +24,15 @@ const getToken = (req) => {
     }
 }
 
+const static_render = (html_pass, failed_location, res) => {
+    return readFile(html_pass, 'utf8', (err, html) => {
+        if (err) {
+            res.redirect(failed_location)
+        }
+        res.send(html)
+    })
+}
+
+exports.static_render = static_render
 exports.authenticate = authenticate
 exports.getToken = getToken

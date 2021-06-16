@@ -106,7 +106,7 @@ def profileData(user):
     db = connection()
     csr = db.cursor()
 
-    query = "select user.first_name, user.last_name, user.avatar from user where user.email='" +str(user)+ "';"
+    query = "select users.first_name, users.last_name, users.avatar from users where users.email='" +str(user)+ "';"
     csr.execute(query)
     profile_data = csr.fetchall()[0]
 
@@ -131,7 +131,7 @@ def getUserID(user):
     db = connection()
     csr = db.cursor()
 
-    query = "select user.user_id from user where user.email='" +str(user)+ "';"
+    query = "select id from users where email='" +str(user)+ "';"
     csr.execute(query)
     profile_data = csr.fetchall()[0]
 
@@ -157,7 +157,7 @@ def updateName(first_name, last_name, user_id):
     db = connection()
     csr = db.cursor()
 
-    query = "UPDATE user SET first_name='" + first_name + "', last_name='"+ last_name + "' where user_id='" + str(user_id) +"';"
+    query = "UPDATE users SET first_name='" + first_name + "', last_name='"+ last_name + "' where id='" + str(user_id) +"';"
     csr.execute(query)
     db.commit()
 

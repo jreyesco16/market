@@ -6,7 +6,7 @@
     width: 50px;
 }
 
-.avatar-div {
+.profile {
     /* display: inline; */
     width: 100%;
     text-align: center;
@@ -27,37 +27,9 @@
     margin-right: 30%;
 }
 
-.div-buttons-layer-one {
-    
-    margin-top: 10%;
-    display: flex;
-}
-.div-buttons-layer-two {
-    margin-top: 5%;
-    margin-bottom: 5%;
-    display: flex;
-}
-.bootstrap-button-div {
-    width: 33%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-button.btn.btn-primary {
-    width: 280px;
-    height: 120px;
-    font-size: larger;
-}
-
-
-.profile-footer {
-    display: flex;
-    position: flex;
-    bottom: 0;
-    height: 80px;
-    background-color: dodgerblue;
+.button-layer {
+    margin-top : 20px;
     text-align: center;
-    color: white;
 }
 
 .edit-photo-popup{
@@ -88,6 +60,21 @@ div#popup-form{
     background-color: white;
 }
 
+.settings-popup {
+    /* position: relative;
+    text-align: center;
+    width: 100%; */
+    display: none;
+    position: fixed;
+    left: 50%;
+    top: 15%;
+    transform: translate(-50%, 5%);
+    border: 3px solid #999999;
+    z-index: 9;
+    background-color: white;
+    text-align: center;
+}
+
 .form-popup {
     display: none;
     position: fixed;
@@ -102,6 +89,7 @@ div#popup-form{
     max-width: 500px;
     padding: 20px;
     background-color: #fff;
+    display: inline-grid;
 }
 
 .close-popup-form-x{
@@ -113,7 +101,7 @@ div#popup-form{
 /* loader configurations */
 .loader {
     border: 16px solid #f3f3f3; /* Light grey */
-    border-top: 16px solid #3498db; /* Blue */
+    border-top: 16px solid black; /* Blue */
     border-radius: 50%;
     width: 120px;
     height: 120px;

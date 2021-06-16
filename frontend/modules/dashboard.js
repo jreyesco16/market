@@ -1,23 +1,13 @@
-const { readFile } = require('fs')
+const { Http2ServerResponse, Http2ServerRequest } = require('http2')
 require('cookie-parser')
-const { authenticate, getToken } = require('../component/authentication')
-
+const { authenticate, getToken, static_render } = require('../component/authentication')
 
 function dashboard(req, res){
-
     try {
-
         token = getToken(req)
 
-        console.log(token)
-
         if(authenticate(token)){
-            readFile('./html/dashboard.html', 'utf8', (err, html) => {
-                if (err) {
-                    res.status(500).send('sorry, out of order')
-                }
-                res.send(html)
-            })
+            static_render('./html/dashboard.html', "/", res)
             return
         }
         throw error
