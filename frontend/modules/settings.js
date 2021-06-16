@@ -1,27 +1,19 @@
 const { readFile } = require('fs')
-const { authenticate } = require('../component/authentication')
+const { authenticate , getToken, static_render} = require('../component/authentication')
 require('cookie-parser')
 
 
 function settings(req, res){
-    if(req.cookies.market_token != undefined){
-
-        token = req.cookies.market_token
+    try{
+        token = getToken(req)
 
         if(authenticate(token)){
-
-            readFile('./html/settings.html', 'utf8', (err, html) => {
-                if (err) {
-                    res.redirect("/dashboard")
-                }
-                res.send(html)
-            });
-
-        }else{
-            res.redirect("/dashboard")
+            static_render('./html/settings.html', "/dashboard", res)
+            return 
         }
+        throw error
 
-    }else{
+    }catch(error){
         res.redirect("/dashboard")
     }
 }

@@ -110,6 +110,8 @@ def settings(option):
         first_name = req['first_name']
         last_name = req['last_name']
 
+        print("/n/n/n",first_name, last_name, "/n/n/n")
+
         # update the users name with user_id
         db.updateName(first_name, last_name, user_id)
 

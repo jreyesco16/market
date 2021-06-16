@@ -6,7 +6,7 @@
     width: 50px;
 }
 
-.avatar-div {
+.profile {
     /* display: inline; */
     width: 100%;
     text-align: center;
@@ -27,16 +27,10 @@
     margin-right: 30%;
 }
 
-/** 
-* button crap
-*/
-
 .button-layer {
     margin-top : 20px;
-    margin-left : 620px;
+    text-align: center;
 }
-
-
 
 .edit-photo-popup{
     position: relative;
@@ -66,6 +60,21 @@ div#popup-form{
     background-color: white;
 }
 
+.settings-popup {
+    /* position: relative;
+    text-align: center;
+    width: 100%; */
+    display: none;
+    position: fixed;
+    left: 50%;
+    top: 15%;
+    transform: translate(-50%, 5%);
+    border: 3px solid #999999;
+    z-index: 9;
+    background-color: white;
+    text-align: center;
+}
+
 .form-popup {
     display: none;
     position: fixed;
@@ -80,6 +89,7 @@ div#popup-form{
     max-width: 500px;
     padding: 20px;
     background-color: #fff;
+    display: inline-grid;
 }
 
 .close-popup-form-x{
