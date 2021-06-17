@@ -22,10 +22,10 @@
         </div>
 
         <!-- pop up for changing picture -->
-        <div class="edit-photo-popup">
-            <div class="form-popup" id="popup-form">
+        <!-- <div class="edit-photo-popup">
+            <div class="form-popup" id="popup-form"> -->
               <!-- <div class="form-container"> -->
-            <form class="form-container" action="javascript:updateAvatarPhoto()">
+            <!-- <form class="form-container" action="javascript:updateAvatarPhoto()">
                 <img class="close-popup-form-x" src="x.svg" alt="close-popup-form-x" onclick="closeEditPhotoForm()">
                 <br>
                 <h2>Change Photo</h2>
@@ -41,7 +41,7 @@
                 <button type="submit" id="photo-edit-btn" class="photo-edit-btn" style="background-color: dodgerblue;color:white">Make Change</button>
               </div>
             </form>
-        </div>
+        </div> -->
 
         <!-- pop up for services -->
         <div class="edit-services-popup">
@@ -130,64 +130,56 @@
                 
             }
 
-            /* avatar photo edit section */
-            function openEditPhotoForm(){
-                document.getElementById("popup-form").style.display = "block";
-            }
             
-            function closeEditPhotoForm() {
-                document.getElementById("popup-form").style.display = "none";
-            }
+            // const img = document.querySelector("#new-img")
             
-            const img = document.querySelector("#new-img")
+            // const uploadAvatarButton = document.querySelector("#edit-photo-img")
             
-            const uploadAvatarButton = document.querySelector("#edit-photo-img")
-            
-            uploadAvatarButton.addEventListener("change", function(){
+            // uploadAvatarButton.addEventListener("change", function(){
 
-                // this is no intially reset back to none then both the previous file will and loader will display
-                img.style.display = "none"
-                document.getElementById("avatar-loader").style.display = "-webkit-inline-box"
+            //     // this is no intially reset back to none then both the previous file will and loader will display
+            //     img.style.display = "none"
+            //     document.getElementById("avatar-loader").style.display = "-webkit-inline-box"
 
-                const file = this.files[0]
-                if(file['type'] == "image/heic"){
-                    const objectURL = window.URL.createObjectURL(file)
+            //     const file = this.files[0]
+            //     if(file['type'] == "image/heic"){
+            //         const objectURL = window.URL.createObjectURL(file)
 
-                    new_file = fetch(objectURL)
-                        .then((res) => res.blob())
-                        .then((blob) =>
-                            heic2any({
-                                blob,
-                                toType: "image/png",
-                                multiple: true,
-                            })
-                        )
-                        .then((conversionResult) => {
-                            var reader = new FileReader();
-                            reader.readAsDataURL(conversionResult[0])
-                            reader.onload = function (){
-                                const result = reader.result
-                                img.src = result
-                                document.getElementById("avatar-loader").style.display = "none"
-                                img.style.display="revert"
-                            }
-                        })
-                        .catch((e) => {
-                            // see error handling section
-                            console.log(e)
-                        });
+            //         new_file = fetch(objectURL)
+            //             .then((res) => res.blob())
+            //             .then((blob) =>
+            //                 heic2any({
+            //                     blob,
+            //                     toType: "image/png",
+            //                     multiple: true,
+            //                 })
+            //             )
+            //             .then((conversionResult) => {
+            //                 var reader = new FileReader();
+            //                 reader.readAsDataURL(conversionResult[0])
+            //                 reader.onload = function (){
+            //                     const result = reader.result
+            //                     img.src = result
+            //                     document.getElementById("avatar-loader").style.display = "none"
+            //                     img.style.display="revert"
+            //                 }
+            //             })
+            //             .catch((e) => {
+            //                 // see error handling section
+            //                 console.log(e)
+            //             });
                         
-                }else if(file){
-                    const reader = new FileReader()
-                    reader.onload = function(){
-                        const result = reader.result
-                        img.src = result
-                        document.getElementById("avatar-loader").style.display = "none"
-                        img.style.display="revert"
-                    }
-                    reader.readAsDataURL(file)
-                }
-            })
+            //     }else if(file){
+            //         const reader = new FileReader()
+            //         reader.onload = function(){
+            //             const result = reader.result
+            //             img.src = result
+            //             document.getElementById("avatar-loader").style.display = "none"
+            //             img.style.display="revert"
+            //         }
+            //         reader.readAsDataURL(file)
+            //     }
+            // })
 
             async function updateAvatarPhoto(){
                 avatar = document.getElementById('new-img')
@@ -314,6 +306,10 @@
                 const first_name = document.querySelector("#first_name").innerHTML
                 const last_name = document.querySelector("#last_name").innerHTML
 
+                const avatar = document.querySelector("#avatar")
+
+                console.log("AVATAR SRC", avatar.src)
+
                 document.getElementById("popup-view").innerHTML = `
                 <form class="form-container" action={handleAccountChange()}>
                     <h2>Edit Account</h2>
@@ -322,7 +318,7 @@
                     
                     <div class="uploaded-image" id="uploaded-image">
                         <div class="loader" id="avatar-loader"></div>
-                        <img src="" alt="" id="new-img" class="new-img">
+                        <img src=${avatar.src} alt="" id="new-img" class="new-img">
                     </div>
                     Select Image: 
                     
@@ -340,6 +336,9 @@
 
                     <Button type="submit" id="name-edit-btn" class="name-edit-btn"> Make Change </Button>
                 </form>`
+
+
+                console.log(document.querySelector("#new-img"))
             }
 
             // make changes to users name
