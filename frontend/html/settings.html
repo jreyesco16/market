@@ -21,51 +21,6 @@
             </div>
         </div>
 
-        <!-- pop up for changing picture -->
-        <!-- <div class="edit-photo-popup">
-            <div class="form-popup" id="popup-form"> -->
-              <!-- <div class="form-container"> -->
-            <!-- <form class="form-container" action="javascript:updateAvatarPhoto()">
-                <img class="close-popup-form-x" src="x.svg" alt="close-popup-form-x" onclick="closeEditPhotoForm()">
-                <br>
-                <h2>Change Photo</h2>
-                <br>
-                <div class="uploaded-image" id="uploaded-image">
-                    <div class="loader" id="avatar-loader"></div>
-                    <img src="" alt="" id="new-img" class="new-img">
-                </div>
-                Select Image: 
-                <br>
-                <input type="file" id="edit-photo-img" name="img" accept="image/*" required>
-                <br><br>
-                <button type="submit" id="photo-edit-btn" class="photo-edit-btn" style="background-color: dodgerblue;color:white">Make Change</button>
-              </div>
-            </form>
-        </div> -->
-
-        <!-- pop up for services -->
-        <div class="edit-services-popup">
-            <div class="form-popup" id="service-popup-form">
-                <form class="form-container" action="javascript:editServices()">
-                    <img class="close-popup-form-x" src="x.svg" alt="close-popup-form-x" onclick="closeEditServices()">
-                    <h2>Services</h2>
-                    <!-- loader for while user services are being fetched -->
-                    <div class="loader" id="service-loader-fetch"></div>
-                    <br>
-                    <!-- service list -->
-                    <div class=bootstrap-list>
-                        <div class="list-group">
-                            <div id="services-list">
-                                <!-- insert the services list -->
-                            </div>
-                        </div>
-                    </div>
-                    <br>
-                    <button type="submit" id="service-edit-btn" class="service-edit-btn" style="background-color: dodgerblue;color:white;width: 60%;margin-left: 20%; margin-right: 20%">+ Add</button>
-                </form>
-            </div>
-        </div>
-
         <!-- HANDLE ALL SETTINGS ADJUSTMENTS -->
         <div class="popup-setting">
 
@@ -337,8 +292,58 @@
                     <Button type="submit" id="name-edit-btn" class="name-edit-btn"> Make Change </Button>
                 </form>`
 
+                const new_img = document.querySelector("#new-img")
+                const avatar_input = document.querySelector("#edit-photo-img")
 
-                console.log(document.querySelector("#new-img"))
+                avatar_input.addEventListener( "change", () => {displayNewAvatar(avatar_input, new_img)})
+            }
+
+            const displayNewAvatar = (avatar_input, new_img) => {
+
+                const avatar = avatar_input.files[0]
+
+
+                new_img.style.display="none"
+                document.getElementById("avatar-loader").style.display = "-webkit-inline-box"
+
+                const file = avatar
+                if(file['type'] == "image/heic"){
+                    const URL = window.URL.createObjectURL(file)
+
+                    new_file = fetch(URL)
+                        .then((res) => res.blob())
+                        .then((blob) =>
+                            heic2any({
+                                blob,
+                                toType: "image/png",
+                                multiple: true,
+                            })
+                        )
+                        .then((conversionResult) => {
+                            var reader = new FileReader();
+                            reader.readAsDataURL(conversionResult[0])
+                            reader.onload = function (){
+                                const result = reader.result
+                                new_img.src = result
+                                document.getElementById("avatar-loader").style.display = "none"
+                                new_img.style.display="revert"
+                            }
+                        })
+                        .catch((e) => {
+                            // see error handling section
+                            console.log(e)
+                        });
+                        
+                }else if(file){
+                    const reader = new FileReader()
+                    reader.onload = function(){
+                        const result = reader.result
+                        new_img.src = result
+                        document.getElementById("avatar-loader").style.display = "none"
+                        new_img.style.display="revert"
+                    }
+                    reader.readAsDataURL(file)
+                }
             }
 
             // make changes to users name
