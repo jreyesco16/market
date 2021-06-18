@@ -21,55 +21,6 @@
             </div>
         </div>
 
-        <!-- pop up for changing picture -->
-        <div class="edit-photo-popup">
-            <div class="form-popup" id="popup-form">
-              <!-- <div class="form-container"> -->
-            <form class="form-container" action="javascript:updateAvatarPhoto()">
-                <img class="close-popup-form-x" src="x.svg" alt="close-popup-form-x" onclick="closeEditPhotoForm()">
-                <br>
-                <h2>Change Photo</h2>
-                <br>
-                <div class="uploaded-image" id="uploaded-image">
-                    <div class="loader" id="avatar-loader"></div>
-                    <img src="" alt="" id="new-img" class="new-img">
-                </div>
-                Select Image: 
-                <br>
-                <input type="file" id="edit-photo-img" name="img" accept="image/*" required>
-                <br><br>
-                <button type="submit" id="photo-edit-btn" class="photo-edit-btn" style="background-color: dodgerblue;color:white">Make Change</button>
-              </div>
-            </form>
-        </div>
-
-        <!-- pop up for services -->
-        <div class="edit-services-popup">
-            <div class="form-popup" id="service-popup-form">
-                <form class="form-container" action="javascript:editServices()">
-                    <img class="close-popup-form-x" src="x.svg" alt="close-popup-form-x" onclick="closeEditServices()">
-                    <h2>Services</h2>
-                    <!-- loader for while user services are being fetched -->
-                    <div class="loader" id="service-loader-fetch"></div>
-                    <br>
-                    <!-- service list -->
-                    <div class=bootstrap-list>
-                        <div class="list-group">
-                            <div id="services-list">
-                                <!-- insert the services list -->
-                            </div>
-                        </div>
-                    </div>
-                    <br>
-                    <button type="submit" id="service-edit-btn" class="service-edit-btn" style="background-color: dodgerblue;color:white;width: 60%;margin-left: 20%; margin-right: 20%">+ Add</button>
-                </form>
-            </div>
-        </div>
-
-        <!-- HANDLE ALL SETTINGS ADJUSTMENTS -->
-        <div class="popup-setting">
-
-        </div>
 
         <!-- GENERIC POP-UP -->
         <div class="settings-popup" id="settings-popup">
@@ -130,64 +81,56 @@
                 
             }
 
-            /* avatar photo edit section */
-            function openEditPhotoForm(){
-                document.getElementById("popup-form").style.display = "block";
-            }
             
-            function closeEditPhotoForm() {
-                document.getElementById("popup-form").style.display = "none";
-            }
+            // const img = document.querySelector("#new-img")
             
-            const img = document.querySelector("#new-img")
+            // const uploadAvatarButton = document.querySelector("#edit-photo-img")
             
-            const uploadAvatarButton = document.querySelector("#edit-photo-img")
-            
-            uploadAvatarButton.addEventListener("change", function(){
+            // uploadAvatarButton.addEventListener("change", function(){
 
-                // this is no intially reset back to none then both the previous file will and loader will display
-                img.style.display = "none"
-                document.getElementById("avatar-loader").style.display = "-webkit-inline-box"
+            //     // this is no intially reset back to none then both the previous file will and loader will display
+            //     img.style.display = "none"
+            //     document.getElementById("avatar-loader").style.display = "-webkit-inline-box"
 
-                const file = this.files[0]
-                if(file['type'] == "image/heic"){
-                    const objectURL = window.URL.createObjectURL(file)
+            //     const file = this.files[0]
+            //     if(file['type'] == "image/heic"){
+            //         const objectURL = window.URL.createObjectURL(file)
 
-                    new_file = fetch(objectURL)
-                        .then((res) => res.blob())
-                        .then((blob) =>
-                            heic2any({
-                                blob,
-                                toType: "image/png",
-                                multiple: true,
-                            })
-                        )
-                        .then((conversionResult) => {
-                            var reader = new FileReader();
-                            reader.readAsDataURL(conversionResult[0])
-                            reader.onload = function (){
-                                const result = reader.result
-                                img.src = result
-                                document.getElementById("avatar-loader").style.display = "none"
-                                img.style.display="revert"
-                            }
-                        })
-                        .catch((e) => {
-                            // see error handling section
-                            console.log(e)
-                        });
+            //         new_file = fetch(objectURL)
+            //             .then((res) => res.blob())
+            //             .then((blob) =>
+            //                 heic2any({
+            //                     blob,
+            //                     toType: "image/png",
+            //                     multiple: true,
+            //                 })
+            //             )
+            //             .then((conversionResult) => {
+            //                 var reader = new FileReader();
+            //                 reader.readAsDataURL(conversionResult[0])
+            //                 reader.onload = function (){
+            //                     const result = reader.result
+            //                     img.src = result
+            //                     document.getElementById("avatar-loader").style.display = "none"
+            //                     img.style.display="revert"
+            //                 }
+            //             })
+            //             .catch((e) => {
+            //                 // see error handling section
+            //                 console.log(e)
+            //             });
                         
-                }else if(file){
-                    const reader = new FileReader()
-                    reader.onload = function(){
-                        const result = reader.result
-                        img.src = result
-                        document.getElementById("avatar-loader").style.display = "none"
-                        img.style.display="revert"
-                    }
-                    reader.readAsDataURL(file)
-                }
-            })
+            //     }else if(file){
+            //         const reader = new FileReader()
+            //         reader.onload = function(){
+            //             const result = reader.result
+            //             img.src = result
+            //             document.getElementById("avatar-loader").style.display = "none"
+            //             img.style.display="revert"
+            //         }
+            //         reader.readAsDataURL(file)
+            //     }
+            // })
 
             async function updateAvatarPhoto(){
                 avatar = document.getElementById('new-img')
@@ -215,74 +158,7 @@
                 //** STILL IN PROGRESS */
                 data ? location.replace("/settings") : location.replace("/")
             }
-            
-            // view the services settings
-            function editServices(){
-
-                `
-                    <a href="#" class="list-group-item list-group-item-action" style="display: flex; font-size: medium;">
-                        <div style="width: 60%;"> feedback[i][0] + " " + feedback[i][1] <br>
-                                    feedback[i][2]
-                        </div>
-                        <div style="width: 40%;">
-                                    
-                        </div>
-                    </a>
-                `
-
-
-                console.log("Changing Services")
-            }
-            
-            function openEditServices(){
-                document.getElementById("service-popup-form").style.display = "block"
-
-                // display loader while fetching the users services
-                document.getElementById("service-loader-fetch").style.display = "-webkit-inline-box"
-
-                cookies = document.cookie.split(';')
-                market_token = ''
-
-                // retreive market_cookie from cookies
-                for(i = 0; i < cookies.length; i++){
-                    if(cookies[i].includes('market_token=')){
-                        market_token = cookies[i].split('market_token=')[1]
-                    }
-                }
-
-                // create fetch that calls the backend for all the users services
-                fetch('http://localhost:8000/settings/user-services',
-                    {
-                        method: "POST",
-                        mode: "cors",
-                        headers: {
-                            "Content-Type" : "application/json; charset=utf-8"
-                        },
-                        body: JSON.stringify(
-                            {
-                                token: market_token
-                            }
-                        )
-                    }
-                )
-                .then(result => result.json())
-                .then(data => {
-
-                    console.log(data)
-                    // stop the loader
-                    document.getElementById("service-loader-fetch").style.display = "none"
-                    // insert the service data inside the service list
-
-                })
-                .catch(err => {
-                    location.replace("/")
-                })
-            }
-            
-            function closeEditServices(){
-                document.getElementById("service-popup-form").style.display = "none"
-            }
-
+        
             // view the history settings
             function editHistory(){
                 console.log("Changing History")
@@ -314,15 +190,17 @@
                 const first_name = document.querySelector("#first_name").innerHTML
                 const last_name = document.querySelector("#last_name").innerHTML
 
+                const avatar = document.querySelector("#avatar")
+
                 document.getElementById("popup-view").innerHTML = `
-                <form class="form-container" action={handleAccountChange()}>
+                <form class="form-container" onsubmit="handleAccountChange()">
                     <h2>Edit Account</h2>
 
                     <h4>Edit Avatar</h4>
                     
                     <div class="uploaded-image" id="uploaded-image">
                         <div class="loader" id="avatar-loader"></div>
-                        <img src="" alt="" id="new-img" class="new-img">
+                        <img src=${avatar.src} alt="" id="new-img" class="new-img">
                     </div>
                     Select Image: 
                     
@@ -340,18 +218,60 @@
 
                     <Button type="submit" id="name-edit-btn" class="name-edit-btn"> Make Change </Button>
                 </form>`
+
+                const new_img = document.querySelector("#new-img")
+                const avatar_input = document.querySelector("#edit-photo-img")
+
+                avatar_input.addEventListener( "change", () => {displayNewAvatar(avatar_input, new_img)})
+            }
+
+            const displayNewAvatar = async (avatar_input, new_img) => {
+
+                let file = avatar_input.files[0]
+
+                const reader = new FileReader()
+
+                new_img.style.display="none"
+                document.getElementById("avatar-loader").style.display = "-webkit-inline-box"
+
+                try {
+                    if(file['type'] == "image/heic"){
+                        const URL = await window.URL.createObjectURL(file)
+                        
+                        const res = await fetch(URL)
+
+                        const blob = await res.blob()
+
+                        const png = await heic2any({blob, toType: "image/png", multiple: "true",})
+
+                        file = png[0]
+                    }
+                    reader.readAsDataURL(file)
+
+                    reader.onload = () => {
+                        new_img.src = reader.result
+                    }
+                } catch(error) {
+                    console.log(error)
+                }
+
+                document.getElementById("avatar-loader").style.display = "none"
+                new_img.style.display="revert"
             }
 
             // make changes to users name
-            async function handleAccountChange(){
+            const handleAccountChange = async () => {
 
                 const first_name = document.getElementById("edited-first-name").value
                 const last_name = document.getElementById("edited-last-name").value
+                const avatar = document.getElementById('new-img')
 
                 const market_token = getMarketToken()
 
-                const URL = "http://localhost:8000/settings/name"
-                const body = JSON.stringify({ token: market_token, first_name : first_name, last_name : last_name })
+                console.log(market_token)
+
+                const URL = "http://localhost:8000/settings/account"
+                const body = JSON.stringify({ token: market_token, first_name : first_name, last_name : last_name , avatar: avatar.src})
                 const headers = {"Content-Type" : "application/json; charset=utf-8"}
 
                 try {
@@ -365,14 +285,14 @@
                     const res = await req.json()
 
                     if(res) {
-                        location.replace("/settings") 
+                        // location.replace("/settings") 
                         return 
                     }
 
                     throw error
 
                 } catch(error) {
-                    location.replace("/")
+                    // location.replace("/")
                 }
             }
 
