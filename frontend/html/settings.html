@@ -263,8 +263,6 @@
 
                 const avatar = document.querySelector("#avatar")
 
-                console.log("AVATAR SRC", avatar.src)
-
                 document.getElementById("popup-view").innerHTML = `
                 <form class="form-container" action={handleAccountChange()}>
                     <h2>Edit Account</h2>
@@ -298,52 +296,45 @@
                 avatar_input.addEventListener( "change", () => {displayNewAvatar(avatar_input, new_img)})
             }
 
-            const displayNewAvatar = (avatar_input, new_img) => {
+            const displayNewAvatar = async (avatar_input, new_img) => {
 
-                const avatar = avatar_input.files[0]
+                let file = avatar_input.files[0]
 
+                let result = null
+
+                const reader = new FileReader()
 
                 new_img.style.display="none"
                 document.getElementById("avatar-loader").style.display = "-webkit-inline-box"
 
-                const file = avatar
-                if(file['type'] == "image/heic"){
-                    const URL = window.URL.createObjectURL(file)
-
-                    new_file = fetch(URL)
-                        .then((res) => res.blob())
-                        .then((blob) =>
-                            heic2any({
-                                blob,
-                                toType: "image/png",
-                                multiple: true,
-                            })
-                        )
-                        .then((conversionResult) => {
-                            var reader = new FileReader();
-                            reader.readAsDataURL(conversionResult[0])
-                            reader.onload = function (){
-                                const result = reader.result
-                                new_img.src = result
-                                document.getElementById("avatar-loader").style.display = "none"
-                                new_img.style.display="revert"
-                            }
-                        })
-                        .catch((e) => {
-                            // see error handling section
-                            console.log(e)
-                        });
+                try {
+                    if(file['type'] == "image/heic"){
+                        const URL = window.URL.createObjectURL(file)
                         
-                }else if(file){
-                    const reader = new FileReader()
-                    reader.onload = function(){
-                        const result = reader.result
-                        new_img.src = result
-                        document.getElementById("avatar-loader").style.display = "none"
-                        new_img.style.display="revert"
+                        const res = await fetch(URL)
+
+                        const blob = await res.blob()
+
+                        const png = await heic2any({blob, toType: "image/png", multiple: "true",})
+
+                        file = png[0]
                     }
                     reader.readAsDataURL(file)
+
+                    reader.onload = () => {
+                        new_img.src = reader.result
+                    }
+
+                    // console.log("RESULT", result)
+
+                    // new_img.src = result
+
+                } catch(error) {
+                    console.log(error)
                 }
+
+                document.getElementById("avatar-loader").style.display = "none"
+                new_img.style.display="revert"
             }
 
             // make changes to users name
