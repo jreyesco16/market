@@ -21,10 +21,6 @@
             </div>
         </div>
 
-        <!-- HANDLE ALL SETTINGS ADJUSTMENTS -->
-        <div class="popup-setting">
-
-        </div>
 
         <!-- GENERIC POP-UP -->
         <div class="settings-popup" id="settings-popup">
@@ -162,74 +158,7 @@
                 //** STILL IN PROGRESS */
                 data ? location.replace("/settings") : location.replace("/")
             }
-            
-            // view the services settings
-            function editServices(){
-
-                `
-                    <a href="#" class="list-group-item list-group-item-action" style="display: flex; font-size: medium;">
-                        <div style="width: 60%;"> feedback[i][0] + " " + feedback[i][1] <br>
-                                    feedback[i][2]
-                        </div>
-                        <div style="width: 40%;">
-                                    
-                        </div>
-                    </a>
-                `
-
-
-                console.log("Changing Services")
-            }
-            
-            function openEditServices(){
-                document.getElementById("service-popup-form").style.display = "block"
-
-                // display loader while fetching the users services
-                document.getElementById("service-loader-fetch").style.display = "-webkit-inline-box"
-
-                cookies = document.cookie.split(';')
-                market_token = ''
-
-                // retreive market_cookie from cookies
-                for(i = 0; i < cookies.length; i++){
-                    if(cookies[i].includes('market_token=')){
-                        market_token = cookies[i].split('market_token=')[1]
-                    }
-                }
-
-                // create fetch that calls the backend for all the users services
-                fetch('http://localhost:8000/settings/user-services',
-                    {
-                        method: "POST",
-                        mode: "cors",
-                        headers: {
-                            "Content-Type" : "application/json; charset=utf-8"
-                        },
-                        body: JSON.stringify(
-                            {
-                                token: market_token
-                            }
-                        )
-                    }
-                )
-                .then(result => result.json())
-                .then(data => {
-
-                    console.log(data)
-                    // stop the loader
-                    document.getElementById("service-loader-fetch").style.display = "none"
-                    // insert the service data inside the service list
-
-                })
-                .catch(err => {
-                    location.replace("/")
-                })
-            }
-            
-            function closeEditServices(){
-                document.getElementById("service-popup-form").style.display = "none"
-            }
-
+        
             // view the history settings
             function editHistory(){
                 console.log("Changing History")
@@ -264,7 +193,7 @@
                 const avatar = document.querySelector("#avatar")
 
                 document.getElementById("popup-view").innerHTML = `
-                <form class="form-container" action={handleAccountChange()}>
+                <form class="form-container" onsubmit="handleAccountChange()">
                     <h2>Edit Account</h2>
 
                     <h4>Edit Avatar</h4>
@@ -300,8 +229,6 @@
 
                 let file = avatar_input.files[0]
 
-                let result = null
-
                 const reader = new FileReader()
 
                 new_img.style.display="none"
@@ -309,7 +236,7 @@
 
                 try {
                     if(file['type'] == "image/heic"){
-                        const URL = window.URL.createObjectURL(file)
+                        const URL = await window.URL.createObjectURL(file)
                         
                         const res = await fetch(URL)
 
@@ -324,11 +251,6 @@
                     reader.onload = () => {
                         new_img.src = reader.result
                     }
-
-                    // console.log("RESULT", result)
-
-                    // new_img.src = result
-
                 } catch(error) {
                     console.log(error)
                 }
@@ -338,15 +260,18 @@
             }
 
             // make changes to users name
-            async function handleAccountChange(){
+            const handleAccountChange = async () => {
 
                 const first_name = document.getElementById("edited-first-name").value
                 const last_name = document.getElementById("edited-last-name").value
+                const avatar = document.getElementById('new-img')
 
                 const market_token = getMarketToken()
 
-                const URL = "http://localhost:8000/settings/name"
-                const body = JSON.stringify({ token: market_token, first_name : first_name, last_name : last_name })
+                console.log(market_token)
+
+                const URL = "http://localhost:8000/settings/account"
+                const body = JSON.stringify({ token: market_token, first_name : first_name, last_name : last_name , avatar: avatar.src})
                 const headers = {"Content-Type" : "application/json; charset=utf-8"}
 
                 try {
@@ -360,14 +285,14 @@
                     const res = await req.json()
 
                     if(res) {
-                        location.replace("/settings") 
+                        // location.replace("/settings") 
                         return 
                     }
 
                     throw error
 
                 } catch(error) {
-                    location.replace("/")
+                    // location.replace("/")
                 }
             }
 

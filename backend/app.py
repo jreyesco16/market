@@ -94,8 +94,21 @@ def settings(option):
     user = data['user']
     user_id = db.getUserID(user)
 
-    if option == "avatar":
+    if option == "account":
+
+        first_name = req['first_name']
+        last_name = req['last_name']
+
+        print(first_name, last_name)
+
         new_avatar = str(req['avatar']).split(",")[1]
+
+        print(first_name, last_name, new_avatar)
+
+
+        print ("\n\nHELO\n\n")
+        # update the users name with user_id
+        db.updateName(first_name, last_name, user_id)
 
         # convert the new_avatar which represents a file as a base64 to a png file and save to images directory
         avatar_img = base64.b64decode(new_avatar)
@@ -105,15 +118,6 @@ def settings(option):
             fo.write(avatar_img)
             # save the file name under the users_id
             db.saveUserAvatar(user_id, filename)
-    elif option == "name":
-
-        first_name = req['first_name']
-        last_name = req['last_name']
-
-        print("/n/n/n",first_name, last_name, "/n/n/n")
-
-        # update the users name with user_id
-        db.updateName(first_name, last_name, user_id)
 
     elif option == "user-services":
         # fetch all of users services from the backend
