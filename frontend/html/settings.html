@@ -12,9 +12,9 @@
         <img class="back-arrow" src="arrow-left.svg" alt="back-arrow" onclick={location.replace('/dashboard')}>
         
         <div class="profile">
-            Settings 
+            <h2>SETTINGS</h2> 
             <div class="loader" id="profile-loader"></div>
-            <img class="avatar" alt="avatar" id="avatar" onclick="openEditPhotoForm()">
+            <img class="avatar" alt="avatar" id="avatar">
             <div class="edit-name-div">
                 <p id="first_name" class="first_name"></p>
                 <p id="last_name" class="last_name"></p>
@@ -29,22 +29,23 @@
         </div>
 
         <div class="button-layer">
-            <Button type="button" onclick="editAccountPopup()"> ACCOUNT </Button>
+            <Button type="button" onclick={editAccountPopup()}> ACCOUNT </Button>
 
-            <Button type="button"id="services-button" onclick="openEditServices()">SERVICES </Button>
+            <Button type="button"id="services-button" onclick={openEditPopup()}>SERVICES </Button>
 
-            <Button type="button" onclick="editHistory()"> HISTORY </Button>
+            <Button type="button" onclick="editAccountPopup()"> HISTORY </Button>
         </div>
 
         <div class="button-layer">
-            <Button type="button" onclick="editActivity()"> ACTIVITY </Button>
+            <Button type="button" onclick="editAccountPopup()"> ACTIVITY </Button>
             
-            <Button type="button" onclick="editRules()"> RULES </Button>
+            <Button type="button" onclick="editAccountPopup()"> RULES </Button>
 
-            <Button type="button" onclick="editContactUs()"> CONTACT US </Button>
+            <Button type="button" onclick="editAccountPopup()"> CONTACT US </Button>
         </div>
     
         <script>
+
             async function FetchSettings(){
 
                 document.getElementById("profile-loader").style.display = "-webkit-inline-box"
@@ -80,111 +81,8 @@
                 }
                 
             }
-
-            
-            // const img = document.querySelector("#new-img")
-            
-            // const uploadAvatarButton = document.querySelector("#edit-photo-img")
-            
-            // uploadAvatarButton.addEventListener("change", function(){
-
-            //     // this is no intially reset back to none then both the previous file will and loader will display
-            //     img.style.display = "none"
-            //     document.getElementById("avatar-loader").style.display = "-webkit-inline-box"
-
-            //     const file = this.files[0]
-            //     if(file['type'] == "image/heic"){
-            //         const objectURL = window.URL.createObjectURL(file)
-
-            //         new_file = fetch(objectURL)
-            //             .then((res) => res.blob())
-            //             .then((blob) =>
-            //                 heic2any({
-            //                     blob,
-            //                     toType: "image/png",
-            //                     multiple: true,
-            //                 })
-            //             )
-            //             .then((conversionResult) => {
-            //                 var reader = new FileReader();
-            //                 reader.readAsDataURL(conversionResult[0])
-            //                 reader.onload = function (){
-            //                     const result = reader.result
-            //                     img.src = result
-            //                     document.getElementById("avatar-loader").style.display = "none"
-            //                     img.style.display="revert"
-            //                 }
-            //             })
-            //             .catch((e) => {
-            //                 // see error handling section
-            //                 console.log(e)
-            //             });
-                        
-            //     }else if(file){
-            //         const reader = new FileReader()
-            //         reader.onload = function(){
-            //             const result = reader.result
-            //             img.src = result
-            //             document.getElementById("avatar-loader").style.display = "none"
-            //             img.style.display="revert"
-            //         }
-            //         reader.readAsDataURL(file)
-            //     }
-            // })
-
-            async function updateAvatarPhoto(){
-                avatar = document.getElementById('new-img')
-                cookies = document.cookie.split(';')
-
-                const market_token = getMarketToken()
-
-                const URL = "http://localhost:8000/settings/avatar"
-                const headers = {"Content-Type" : "application/json; charset=utf-8"}
-                const body = JSON.stringify({
-                    token : market_token,
-                    avatar : avatar.src
-                })
-
-                // make post
-                const res = await fetch('http://localhost:8000/settings/avatar', {
-                    method: "POST",
-                    mode: "cors",
-                    headers: headers,
-                    body: body
-                })
-
-                const data = await req.json()  
-
-                //** STILL IN PROGRESS */
-                data ? location.replace("/settings") : location.replace("/")
-            }
-        
-            // view the history settings
-            function editHistory(){
-                console.log("Changing History")
-            }
-
-            // view activity settings 
-            function editActivity(){
-                console.log("Changing Activity")
-            }
-
-            // view account settings
-            function editAccount(){
-                console.log("Changing Account")
-            }
-
-            // view rules settings
-            function editRules(){
-                console.log("Viewing Rules")
-            }
-            
-            // send a contact us 
-            function editContactUs(){
-                console.log("Sending a Contact Us")
-            }
      
-            function editAccountPopup(){
+            const editAccountPopup = () => {
                 document.getElementById("settings-popup").style.display = "block"
 
                 const first_name = document.querySelector("#first_name").innerHTML
@@ -193,7 +91,7 @@
                 const avatar = document.querySelector("#avatar")
 
                 document.getElementById("popup-view").innerHTML = `
-                <form class="form-container" onsubmit="handleAccountChange()">
+                <div class="form-container">
                     <h2>Edit Account</h2>
 
                     <h4>Edit Avatar</h4>
@@ -216,8 +114,8 @@
 
                     <input type="text" id="edited-last-name" value="${last_name}" required>
 
-                    <Button type="submit" id="name-edit-btn" class="name-edit-btn"> Make Change </Button>
-                </form>`
+                    <Button type="submit" id="name-edit-btn" class="name-edit-btn" onClick="handleAccountChange()"> Make Change </Button>
+                </div>`
 
                 const new_img = document.querySelector("#new-img")
                 const avatar_input = document.querySelector("#edit-photo-img")
@@ -225,8 +123,77 @@
                 avatar_input.addEventListener( "change", () => {displayNewAvatar(avatar_input, new_img)})
             }
 
-            const displayNewAvatar = async (avatar_input, new_img) => {
+            const handleAccountChange = async () => {
 
+                const first_name = document.getElementById("edited-first-name").value
+                const last_name = document.getElementById("edited-last-name").value
+                const avatar = document.getElementById('new-img')
+
+                const market_token = getMarketToken()
+
+                const URL = "http://localhost:8000/settings/account"
+                const body = JSON.stringify({ token: market_token, first_name : first_name, last_name : last_name , avatar: avatar.src})
+                const headers = {"Content-Type" : "application/json; charset=utf-8"}
+
+                try {
+                    const req = await fetch(URL, {
+                        method: "POST",
+                        mode: "cors",
+                        headers: headers,
+                        body: body
+                    })
+
+                    const res = await req.json()
+
+                    res ? location.replace("/settings") : location.replace("/")
+
+                } catch(error) {
+                    console.log(error)
+                }
+            }
+
+            const openEditPopup = async () => {
+
+                document.getElementById("settings-popup").style.display = "block"
+
+                const first_name = document.querySelector("#first_name").innerHTML
+                const last_name = document.querySelector("#last_name").innerHTML
+
+                const services = FetchServices()
+
+                console.log(services)
+
+                document.getElementById("popup-view").innerHTML = `
+                    <div class="form-container">
+                        <h2> Edit Services </h2>
+
+                    </div>`
+
+            }
+
+            function closePopup(){
+                document.getElementById("settings-popup").style.display = "none"
+            }
+
+            // function used for going back to dashboard
+            function goBack(){
+                location.replace("/dashboard")
+            }
+
+            // *  HELPERS */
+            const getMarketToken = () => {
+                cookies = document.cookie.split(';')
+                market_token = null
+
+                for(i = 0; i < cookies.length; i++){
+                    if(cookies[i].includes('market_token=')){
+                        return market_token = cookies[i].split('market_token=')[1]
+                    }
+                }
+                return market_token
+            }
+
+            const displayNewAvatar = async (avatar_input, new_img) => {
                 let file = avatar_input.files[0]
 
                 const reader = new FileReader()
@@ -237,7 +204,7 @@
                 try {
                     if(file['type'] == "image/heic"){
                         const URL = await window.URL.createObjectURL(file)
-                        
+        
                         const res = await fetch(URL)
 
                         const blob = await res.blob()
@@ -259,64 +226,14 @@
                 new_img.style.display="revert"
             }
 
-            // make changes to users name
-            const handleAccountChange = async () => {
+            const FetchServices = () => {
 
-                const first_name = document.getElementById("edited-first-name").value
-                const last_name = document.getElementById("edited-last-name").value
-                const avatar = document.getElementById('new-img')
+                return [
+                            {id: 5, service: "Software Development"},
+                            {id: 4, service: "Software Egineering"},
+                            {id: 6, service: "Web Development"}
+                        ]
 
-                const market_token = getMarketToken()
-
-                console.log(market_token)
-
-                const URL = "http://localhost:8000/settings/account"
-                const body = JSON.stringify({ token: market_token, first_name : first_name, last_name : last_name , avatar: avatar.src})
-                const headers = {"Content-Type" : "application/json; charset=utf-8"}
-
-                try {
-                    const req = await fetch(URL, {
-                        method: "POST",
-                        mode: "cors",
-                        headers: headers,
-                        body: body
-                    })
-
-                    const res = await req.json()
-
-                    if(res) {
-                        // location.replace("/settings") 
-                        return 
-                    }
-
-                    throw error
-
-                } catch(error) {
-                    // location.replace("/")
-                }
-            }
-
-            function closePopup(){
-                document.getElementById("settings-popup").style.display = "none"
-            }
-
-            // function used for going back to dashboard
-            function goBack(){
-                location.replace("/dashboard")
-            }
-
-            // *  HELPERS */
-            const getMarketToken = () => {
-                cookies = document.cookie.split(';')
-                market_token = null
-
-                // retreive market_cookie from cookies
-                for(i = 0; i < cookies.length; i++){
-                    if(cookies[i].includes('market_token=')){
-                        return market_token = cookies[i].split('market_token=')[1]
-                    }
-                }
-                return market_token
             }
         </script>
     </body>

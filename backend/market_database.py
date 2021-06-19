@@ -146,7 +146,7 @@ def saveUserAvatar(user_id, filename):
     db = connection()
     csr = db.cursor()
 
-    query = "UPDATE user SET avatar='" + filename + "' where user_id='" + str(user_id) +"';"
+    query = "UPDATE users SET avatar='" + filename + "' where id='" + str(user_id) +"';"
     csr.execute(query)
     db.commit()
 
