@@ -12,7 +12,7 @@
         <img class="back-arrow" src="arrow-left.svg" alt="back-arrow" onclick={location.replace('/dashboard')}>
         
         <div class="profile">
-            Settings 
+            <h2>SETTINGS</h2> 
             <div class="loader" id="profile-loader"></div>
             <img class="avatar" alt="avatar" id="avatar" onclick="openEditPhotoForm()">
             <div class="edit-name-div">
@@ -81,57 +81,6 @@
                 
             }
 
-            
-            // const img = document.querySelector("#new-img")
-            
-            // const uploadAvatarButton = document.querySelector("#edit-photo-img")
-            
-            // uploadAvatarButton.addEventListener("change", function(){
-
-            //     // this is no intially reset back to none then both the previous file will and loader will display
-            //     img.style.display = "none"
-            //     document.getElementById("avatar-loader").style.display = "-webkit-inline-box"
-
-            //     const file = this.files[0]
-            //     if(file['type'] == "image/heic"){
-            //         const objectURL = window.URL.createObjectURL(file)
-
-            //         new_file = fetch(objectURL)
-            //             .then((res) => res.blob())
-            //             .then((blob) =>
-            //                 heic2any({
-            //                     blob,
-            //                     toType: "image/png",
-            //                     multiple: true,
-            //                 })
-            //             )
-            //             .then((conversionResult) => {
-            //                 var reader = new FileReader();
-            //                 reader.readAsDataURL(conversionResult[0])
-            //                 reader.onload = function (){
-            //                     const result = reader.result
-            //                     img.src = result
-            //                     document.getElementById("avatar-loader").style.display = "none"
-            //                     img.style.display="revert"
-            //                 }
-            //             })
-            //             .catch((e) => {
-            //                 // see error handling section
-            //                 console.log(e)
-            //             });
-                        
-            //     }else if(file){
-            //         const reader = new FileReader()
-            //         reader.onload = function(){
-            //             const result = reader.result
-            //             img.src = result
-            //             document.getElementById("avatar-loader").style.display = "none"
-            //             img.style.display="revert"
-            //         }
-            //         reader.readAsDataURL(file)
-            //     }
-            // })
-
             async function updateAvatarPhoto(){
                 avatar = document.getElementById('new-img')
                 cookies = document.cookie.split(';')
@@ -193,7 +142,7 @@
                 const avatar = document.querySelector("#avatar")
 
                 document.getElementById("popup-view").innerHTML = `
-                <form class="form-container" onsubmit="handleAccountChange()">
+                <div class="form-container">
                     <h2>Edit Account</h2>
 
                     <h4>Edit Avatar</h4>
@@ -216,8 +165,8 @@
 
                     <input type="text" id="edited-last-name" value="${last_name}" required>
 
-                    <Button type="submit" id="name-edit-btn" class="name-edit-btn"> Make Change </Button>
-                </form>`
+                    <Button type="submit" id="name-edit-btn" class="name-edit-btn" onClick="handleAccountChange()"> Make Change </Button>
+                </div>`
 
                 const new_img = document.querySelector("#new-img")
                 const avatar_input = document.querySelector("#edit-photo-img")
@@ -268,8 +217,6 @@
 
                 const market_token = getMarketToken()
 
-                console.log(market_token)
-
                 const URL = "http://localhost:8000/settings/account"
                 const body = JSON.stringify({ token: market_token, first_name : first_name, last_name : last_name , avatar: avatar.src})
                 const headers = {"Content-Type" : "application/json; charset=utf-8"}
@@ -284,15 +231,10 @@
 
                     const res = await req.json()
 
-                    if(res) {
-                        // location.replace("/settings") 
-                        return 
-                    }
-
-                    throw error
+                    res ? location.replace("/settings") : location.replace("/")
 
                 } catch(error) {
-                    // location.replace("/")
+                    console.log(error)
                 }
             }
 
