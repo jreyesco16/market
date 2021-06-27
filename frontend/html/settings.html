@@ -162,14 +162,13 @@
 
                 const services = await FetchServices()
 
+                console.log("SERVICES",services)
+
                 document.getElementById("popup-view").innerHTML = `
                     <div class="form-container">
                         <h2> Edit Services </h2>
 
                     </div>`
-
-
-                console.log(FetchServices())
             }
 
             function closePopup(){
@@ -247,11 +246,11 @@
 
                     if(!res) throw Error
 
-                    console.log(res)
+                    return res.Services
 
                 } catch(error) {
                     console.log(error)
-                    // location.replace('/')
+                    location.replace('/')
                 }
 
 
