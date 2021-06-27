@@ -196,3 +196,15 @@ select
 from users
 where users.email='jesserc.2@gmail.com';
 
+-- query to get all services from users
+SELECT
+       users_providables.id,
+       users_providables.fee,
+       users_providables.duration,
+       users_providables.rating,
+       services.id,
+       services.service
+FROM users_providables
+INNER JOIN services
+    ON users_providables.service_id = services.id
+WHERE user_id=USER_ID;

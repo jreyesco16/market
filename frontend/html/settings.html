@@ -149,6 +149,7 @@
 
                 } catch(error) {
                     console.log(error)
+                    location.replace('/')
                 }
             }
 
@@ -159,9 +160,7 @@
                 const first_name = document.querySelector("#first_name").innerHTML
                 const last_name = document.querySelector("#last_name").innerHTML
 
-                const services = FetchServices()
-
-                console.log(services)
+                const services = await FetchServices()
 
                 document.getElementById("popup-view").innerHTML = `
                     <div class="form-container">
@@ -169,6 +168,8 @@
 
                     </div>`
 
+
+                console.log(FetchServices())
             }
 
             function closePopup(){
@@ -226,13 +227,33 @@
                 new_img.style.display="revert"
             }
 
-            const FetchServices = () => {
+            const FetchServices = async () => {
 
-                return [
-                            {id: 5, service: "Software Development"},
-                            {id: 4, service: "Software Egineering"},
-                            {id: 6, service: "Web Development"}
-                        ]
+                const market_token = getMarketToken()
+
+                const URL = "http://localhost:8000/settings/services"
+                const body = JSON.stringify({ token : market_token })
+                const headers = {"Content-Type" : "application/json; charset=utf-8"}
+
+                try {
+                    const req = await fetch(URL, {
+                        method: "POST",
+                        mode: "cors",
+                        headers: headers,
+                        body: body
+                    })
+
+                    const res = await req.json()
+
+                    if(!res) throw Error
+
+                    console.log(res)
+
+                } catch(error) {
+                    console.log(error)
+                    // location.replace('/')
+                }
+
 
             }
         </script>

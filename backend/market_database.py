@@ -170,17 +170,15 @@ def getUserServices(user_id):
     csr = db.cursor()
 
     user_services = {}
-
-    # create a query to fetch all user services based on their user_id
-    # 1. service
-    # 2. price
-    # 3. duration
-    # 4. rating
-    query = ""
+    
+    query = "SELECT users_providables.id, users_providables.fee, users_providables.duration, users_providables.rating, services.id, services.service FROM users_providables INNER JOIN services ON users_providables.service_id = services.id WHERE user_id='" + str(user_id)+"';"
     csr.execute(query)
     result = csr.fetchall()
 
     # loop through the fetch and add to dictionary
+    print("USER SERVICES",result)
+    for s in result:
+        print(s)
 
     csr.close()
     db.close()
