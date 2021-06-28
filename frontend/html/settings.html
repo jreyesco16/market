@@ -25,7 +25,7 @@
         <!-- GENERIC POP-UP -->
         <div class="settings-popup" id="settings-popup">
             <img class="close-popup-form-x" src="x.svg" onclick={closePopup()}>
-            <div id="popup-view"></div>
+            <div id="popup-view" style="display: -webkit-flex;"></div>
         </div>
 
         <div class="button-layer">
@@ -173,13 +173,19 @@
                 
                 services.forEach(s => {
                     document.getElementById("service-list").insertAdjacentHTML("afterbegin", `
-                    <a href="#" style="display: flex; font-size: medium;">
-                        <div>
-                            ${s.service}
+                        <br/>
+                        <div id="serices" style="display: inline-flex;">
+                          <input type="text" value="${s.service}"  disabled="true" style="width: 200px;"></input> 
+                          $ <input type="number" value="${s.fee}" style="width: 100px;"> </input>
+                          <input type="number" value="${s.duration}" style="width: 100px;"> </input>
+                          <input type="text" value="${s.rating}" disabled="true" style="width: 40px;margin-right: 5px;"> </input> 
+                          <button style="width: 50px; margin-right: 10px;"> Save </button>
+                          <button style="width: 60px"> Delete </button>
                         </div>
-                    </a>
                     `)
                 })
+
+                // document.getElementById(ser)
             }
 
             function closePopup(){
