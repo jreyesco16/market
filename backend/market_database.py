@@ -126,8 +126,6 @@ def profileData(user):
 
 
 def getUserID(user):
-
-    # get db components
     db = connection()
     csr = db.cursor()
 
@@ -168,19 +166,16 @@ def updateName(first_name, last_name, user_id):
 def getUserServices(user_id):
     db = connection()
     csr = db.cursor()
+    
 
-    user_services = {}
-
-    # create a query to fetch all user services based on their user_id
-    # 1. service
-    # 2. price
-    # 3. duration
-    # 4. rating
-    query = ""
+    user_services = []
+    
+    query = "SELECT users_providables.id, users_providables.fee, users_providables.duration, users_providables.rating, services.id, services.service FROM users_providables INNER JOIN services ON users_providables.service_id = services.id WHERE user_id='" + str(user_id)+"';"
     csr.execute(query)
     result = csr.fetchall()
 
-    # loop through the fetch and add to dictionary
+    for s in result:
+        user_services.append({"id": s[0], "fee" : s[1], "duration" : s[2], "rating": s[3], "service_id": s[4], "service": s[5]})
 
     csr.close()
     db.close()
