@@ -112,9 +112,6 @@ def settings(option):
             db.saveUserAvatar(user_id, filename)
 
     elif option == "services":
-
-
-        print("\n\nSERVICES\n\n")
         # fetch all of users services from the backend
         return jsonify({'Services' :  db.getUserServices(user_id),'Success' : 'Success', 'status' : 200})
 

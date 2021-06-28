@@ -162,7 +162,7 @@
 
                 const services = await FetchServices()
 
-                console.log("SERVICES",services)
+                console.log("SERVICES", services)
 
                 document.getElementById("popup-view").innerHTML = `
                     <div class="form-container">
@@ -179,13 +179,13 @@
                           $ <input type="number" value="${s.fee}" style="width: 100px;"> </input>
                           <input type="number" value="${s.duration}" style="width: 100px;"> </input>
                           <input type="text" value="${s.rating}" disabled="true" style="width: 40px;margin-right: 5px;"> </input> 
-                          <button style="width: 50px; margin-right: 10px;"> Save </button>
-                          <button style="width: 60px"> Delete </button>
+                          <img class="edit-service" src="pencil.svg" onclick={console.log("EDITING")}>
+                          <img class="close-popup-form-x" src="x.svg" onclick={console.log("DELETING")}>
                         </div>
                     `)
                 })
 
-                // document.getElementById(ser)
+                // CREATE WAY TO ADD A NEW SERVICE
             }
 
             function closePopup(){
