@@ -86,8 +86,6 @@ def settings(option):
 
     token = req['token']
 
-    print("\n\nSETTINGS\n\n")
-
     data = jwt.decode(token, os.getenv('ACCESS_TOKEN_SECRET'), algorithms=["HS256"])
 
     if( data['authorization'] != os.getenv('USER_TOKEN_SECRET')):

@@ -167,8 +167,19 @@
                 document.getElementById("popup-view").innerHTML = `
                     <div class="form-container">
                         <h2> Edit Services </h2>
-
+                        <div id="service-list">
+                        </div>
                     </div>`
+                
+                services.forEach(s => {
+                    document.getElementById("service-list").insertAdjacentHTML("afterbegin", `
+                    <a href="#" style="display: flex; font-size: medium;">
+                        <div>
+                            ${s.service}
+                        </div>
+                    </a>
+                    `)
+                })
             }
 
             function closePopup(){
