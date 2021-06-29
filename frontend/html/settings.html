@@ -163,13 +163,11 @@
                     `)
                 })
 
-                // CREATE WAY TO ADD A NEW SERVICE
                 services.forEach(s => {
                     document.getElementById("service-select").insertAdjacentHTML("afterbegin", `
                         <option value=${s.id}> ${s.service} </option>
                     `)
-                })
-                
+                }) 
             }
 
             function closePopup(){
@@ -192,11 +190,8 @@
                 try {
                     if(file['type'] == "image/heic"){
                         const URL = await window.URL.createObjectURL(file)
-        
                         const res = await fetch(URL)
-
                         const blob = await res.blob()
-
                         const png = await heic2any({blob, toType: "image/png", multiple: "true",})
 
                         file = png[0]
@@ -254,7 +249,7 @@
 
             const MakeFetch = async (URL, body) => {
                 const headers = {"Content-Type" : "application/json; charset=utf-8"}
-
+                
                 try{
                     const req = await fetch(URL, {
                         method: "POST",
