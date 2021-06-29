@@ -47,7 +47,6 @@
         <script>
 
             async function FetchSettings(){
-
                 document.getElementById("profile-loader").style.display = "-webkit-inline-box"
 
                 const market_token = getMarketToken()
@@ -55,32 +54,19 @@
                 const headers = {"Content-Type" : "application/json; charset=utf-8"}
                 const body = JSON.stringify({token: market_token})
 
-                try{
+                const res = await MakeFetch(URL, body)
 
-                    const res = await fetch(URL,{
-                        method: "POST",
-                        mode: "cors",
-                        headers: headers,
-                        body: body
-                    })
+                const data = res.profile
 
-                    const res_body = await res.json()
-                    const data = await res_body.profile
-
-                    if(!data) throw Error
                     
-                    document.getElementById("profile-loader").style.display = "none"
-                    document.querySelector("#first_name").insertAdjacentHTML("afterbegin", data.first_name)
-                    document.querySelector("#last_name").insertAdjacentHTML("afterbegin", data.last_name)
-                    document.getElementById("avatar").src = "data:image/png;base64," + data.avatar
-                    document.getElementById("avatar").style.display = "block"
-
-                }catch (error) {
-                    console.log(error)
-                    location.replace('/')
-                }
-                
+                document.getElementById("profile-loader").style.display = "none"
+                document.querySelector("#first_name").insertAdjacentHTML("afterbegin", data.first_name)
+                document.querySelector("#last_name").insertAdjacentHTML("afterbegin", data.last_name)
+                document.getElementById("avatar").src = "data:image/png;base64," + data.avatar
+                document.getElementById("avatar").style.display = "block"
             }
+
+            // ACCOUNT
      
             const editAccountPopup = () => {
                 document.getElementById("settings-popup").style.display = "block"
@@ -135,23 +121,12 @@
                 const body = JSON.stringify({ token: market_token, first_name : first_name, last_name : last_name , avatar: avatar.src})
                 const headers = {"Content-Type" : "application/json; charset=utf-8"}
 
-                try {
-                    const req = await fetch(URL, {
-                        method: "POST",
-                        mode: "cors",
-                        headers: headers,
-                        body: body
-                    })
+                const res = await MakeFetch(URL, body)
 
-                    const res = await req.json()
-
-                    res ? location.replace("/settings") : location.replace("/")
-
-                } catch(error) {
-                    console.log(error)
-                    location.replace('/')
-                }
+                res ? location.replace("/settings") : location.replace("/")
             }
+
+            // SERVICES
 
             const openEditPopup = async () => {
 
@@ -161,6 +136,7 @@
                 const last_name = document.querySelector("#last_name").innerHTML
 
                 const user_services = await FetchUserServices()
+                const services = await FetchServices()
 
                 document.getElementById("popup-view").innerHTML = `
                     <div class="form-container">
@@ -169,8 +145,8 @@
                         <div id="add-service" style="display: inline-flex; margin-top: 10px;">
                           <select id="service-select" style="width: 220px; margin-right: 7px;"> </select>
                           $ <input type="number" placeholder="fee" style="width: 100px;margin-right: 7px;"></input> 
-                          <input type="number" placeholder="days" style="width: 100px;margin-right: 7px;"> </input>
-                          <img src="plus-lg.svg" onclick={console.log("ADDING NEW SERVICE")}>
+                          <input type="number" placeholder="days" style="width: 100px;margin-right: 15px;"> </input>
+                          <img class="add-service-button" src="plus-lg.svg" onclick={console.log("ADDING")}>
                         </div>
                     </div>`
                 
@@ -186,10 +162,6 @@
                         </div>
                     `)
                 })
-
-
-                const res = await FetchServices()
-                const services = res.Services
 
                 // CREATE WAY TO ADD A NEW SERVICE
                 services.forEach(s => {
@@ -248,40 +220,23 @@
 
                 const URL = "http://localhost:8000/settings/userservices"
                 const body = JSON.stringify({ token : market_token })
-                const headers = {"Content-Type" : "application/json; charset=utf-8"}
 
-                try {
-                    const req = await fetch(URL, {
-                        method: "POST",
-                        mode: "cors",
-                        headers: headers,
-                        body: body
-                    })
+                const res = await MakeFetch(URL, body)
+                const user_services = res.UserServices
 
-                    const res = await req.json()
-
-                    if(!res) throw Error
-
-                    return res.UserServices
-
-                } catch(error) {
-                    console.log(error)
-                    location.replace('/')
-                }
-
-
+                return user_services
             }
 
             const FetchServices= async () => {
                 const market_token = getMarketToken()
 
-
                 const URL="http://localhost:8000/settings/services"
                 const body = JSON.stringify({token: market_token})
                 
                 const res = await MakeFetch(URL, body)
+                const services = res.Services
 
-                return res
+                return services
             }
 
             // *  HELPERS */
@@ -298,7 +253,6 @@
             }
 
             const MakeFetch = async (URL, body) => {
-
                 const headers = {"Content-Type" : "application/json; charset=utf-8"}
 
                 try{
