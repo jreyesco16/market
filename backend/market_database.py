@@ -164,23 +164,40 @@ def updateName(first_name, last_name, user_id):
     db.close()
 
 def getUserServices(user_id):
-    db = connection()
-    csr = db.cursor()
-    
-
     user_services = []
     
     query = "SELECT users_providables.id, users_providables.fee, users_providables.duration, users_providables.rating, services.id, services.service FROM users_providables INNER JOIN services ON users_providables.service_id = services.id WHERE user_id='" + str(user_id)+"';"
-    csr.execute(query)
-    result = csr.fetchall()
+    result = executeQuery(query)
+
+    for us in result:
+        user_services.append({"id": us[0], "fee" : us[1], "duration" : us[2], "rating": us[3], "service_id": us[4], "service": us[5]})
+
+
+    return user_services
+
+def getServices():
+    services = []
+
+    query = "SELECT id, service FROM services ORDER BY service DESC;"
+
+    result = executeQuery(query)
 
     for s in result:
-        user_services.append({"id": s[0], "fee" : s[1], "duration" : s[2], "rating": s[3], "service_id": s[4], "service": s[5]})
+        services.append({"id" : s[0], "service": s[1]})
+    
+    return services
+
+def executeQuery(query):
+    db = connection()
+    csr = db.cursor()
+
+    csr.execute(query)
+    result = csr.fetchall()
 
     csr.close()
     db.close()
 
-    return user_services
+    return result
 
 
 

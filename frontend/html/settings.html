@@ -160,32 +160,44 @@
                 const first_name = document.querySelector("#first_name").innerHTML
                 const last_name = document.querySelector("#last_name").innerHTML
 
-                const services = await FetchServices()
-
-                console.log("SERVICES", services)
+                const user_services = await FetchUserServices()
 
                 document.getElementById("popup-view").innerHTML = `
                     <div class="form-container">
                         <h2> Edit Services </h2>
-                        <div id="service-list">
+                        <div id="service-list" style="margin-top: 10px;"></div>
+                        <div id="add-service" style="display: inline-flex; margin-top: 10px;">
+                          <select id="service-select" style="width: 220px; margin-right: 7px;"> </select>
+                          $ <input type="number" placeholder="fee" style="width: 100px;margin-right: 7px;"></input> 
+                          <input type="number" placeholder="days" style="width: 100px;margin-right: 7px;"> </input>
+                          <img src="plus-lg.svg" onclick={console.log("ADDING NEW SERVICE")}>
                         </div>
                     </div>`
                 
-                services.forEach(s => {
+                user_services.forEach(us => {
                     document.getElementById("service-list").insertAdjacentHTML("afterbegin", `
-                        <br/>
-                        <div id="serices" style="display: inline-flex;">
-                          <input type="text" value="${s.service}"  disabled="true" style="width: 200px;"></input> 
-                          $ <input type="number" value="${s.fee}" style="width: 100px;"> </input>
-                          <input type="number" value="${s.duration}" style="width: 100px;"> </input>
-                          <input type="text" value="${s.rating}" disabled="true" style="width: 40px;margin-right: 5px;"> </input> 
+                        <div id="serices" style="display: inline-flex; margin-top: 10px;">
+                          <input type="text" value="${us.service}"  disabled="true" style="width: 200px;"></input> 
+                          $ <input type="number" value="${us.fee}" style="width: 100px;"> </input>
+                          <input type="number" value="${us.duration}" style="width: 100px;"> </input>
+                          <input type="text" value="${us.rating}" disabled="true" style="width: 40px;margin-right: 5px;"> </input> 
                           <img class="edit-service" src="pencil.svg" onclick={console.log("EDITING")}>
                           <img class="close-popup-form-x" src="x.svg" onclick={console.log("DELETING")}>
                         </div>
                     `)
                 })
 
+
+                const res = await FetchServices()
+                const services = res.Services
+
                 // CREATE WAY TO ADD A NEW SERVICE
+                services.forEach(s => {
+                    document.getElementById("service-select").insertAdjacentHTML("afterbegin", `
+                        <option value=${s.id}> ${s.service} </option>
+                    `)
+                })
+                
             }
 
             function closePopup(){
@@ -195,19 +207,6 @@
             // function used for going back to dashboard
             function goBack(){
                 location.replace("/dashboard")
-            }
-
-            // *  HELPERS */
-            const getMarketToken = () => {
-                cookies = document.cookie.split(';')
-                market_token = null
-
-                for(i = 0; i < cookies.length; i++){
-                    if(cookies[i].includes('market_token=')){
-                        return market_token = cookies[i].split('market_token=')[1]
-                    }
-                }
-                return market_token
             }
 
             const displayNewAvatar = async (avatar_input, new_img) => {
@@ -243,11 +242,11 @@
                 new_img.style.display="revert"
             }
 
-            const FetchServices = async () => {
+            const FetchUserServices = async () => {
 
                 const market_token = getMarketToken()
 
-                const URL = "http://localhost:8000/settings/services"
+                const URL = "http://localhost:8000/settings/userservices"
                 const body = JSON.stringify({ token : market_token })
                 const headers = {"Content-Type" : "application/json; charset=utf-8"}
 
@@ -263,7 +262,7 @@
 
                     if(!res) throw Error
 
-                    return res.Services
+                    return res.UserServices
 
                 } catch(error) {
                     console.log(error)
@@ -272,6 +271,56 @@
 
 
             }
+
+            const FetchServices= async () => {
+                const market_token = getMarketToken()
+
+
+                const URL="http://localhost:8000/settings/services"
+                const body = JSON.stringify({token: market_token})
+                
+                const res = await MakeFetch(URL, body)
+
+                return res
+            }
+
+            // *  HELPERS */
+            const getMarketToken = () => {
+                cookies = document.cookie.split(';')
+                market_token = null
+
+                for(i = 0; i < cookies.length; i++){
+                    if(cookies[i].includes('market_token=')){
+                        return market_token = cookies[i].split('market_token=')[1]
+                    }
+                }
+                return market_token
+            }
+
+            const MakeFetch = async (URL, body) => {
+
+                const headers = {"Content-Type" : "application/json; charset=utf-8"}
+
+                try{
+                    const req = await fetch(URL, {
+                        method: "POST",
+                        mode: "cors",
+                        headers: headers,
+                        body: body
+                    })
+
+                    const res = req.json()
+
+                    if(!res) throw Error
+
+                    return res
+
+                } catch(error) {
+                    console.log(error)
+                    location.replace('/')
+                }
+            }
+
         </script>
     </body>
 </html>

@@ -89,7 +89,7 @@ def settings(option):
     data = jwt.decode(token, os.getenv('ACCESS_TOKEN_SECRET'), algorithms=["HS256"])
 
     if( data['authorization'] != os.getenv('USER_TOKEN_SECRET')):
-        return jsonify({'Success' : 'Failure', 'status' : 200})
+        return jsonify({'Success' : 'Failure', 'status' : 401})
 
     user = data['user']
     user_id = db.getUserID(user)
@@ -111,11 +111,14 @@ def settings(option):
             # save the file name under the users_id
             db.saveUserAvatar(user_id, filename)
 
-    elif option == "services":
+    elif option == "userservices":
         # fetch all of users services from the backend
-        return jsonify({'Services' :  db.getUserServices(user_id),'Success' : 'Success', 'status' : 200})
+        return jsonify({'UserServices' :  db.getUserServices(user_id),'Success' : 'Success', 'status' : 200})
+    
+    elif option == "services":
+        return jsonify({'Services' : db.getServices(), 'Success': 'Success', 'status': 200})
 
-    return jsonify({'Success' : 'Success', 'status' : 200})
+    return jsonify({'Success' : 'Forbidden', 'status' : 404})
     
 
 
