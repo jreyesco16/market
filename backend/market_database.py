@@ -17,23 +17,31 @@ def connection():
 # check if user has access to backend
 def login(email, password):
 
-    login = False
+    user = {}
 
-    db = connection()
-    csr = db.cursor()
-
-    sql_command = "select * from users where email="+ "'" + email +"'"
-    csr.execute(sql_command)
-    result = csr.fetchall()
+    query = "SELECT id, first_name, last_name, email, password, avatar FROM users WHERE email="+ "'" + email +"';"
+    result = executeQuery(query)
 
     # check password
-    if result!=[] and result[0][5]==password:
-        login = True
+    if result!=[] and result[4] == password:
+        avatar = ""
+        with open("./images/"+result[5], "rb") as avatar_image:
+            avatar = base64.b64encode(avatar_image.read())
 
-    csr.close()
-    db.close()
+        id = result[0]
+        first_name = result[1]
+        last_name = result[2]
+        email = result[3]
+        
+        user = {
+            "id" : id,
+            "first_name" : first_name,
+            "last_name" : last_name,
+            "email": email,
+            "avatar": avatar
+        }
 
-    return login
+    return user
 
 # sign user up
 def signup(first_name, last_name, birthday, email, password):
@@ -192,7 +200,7 @@ def executeQuery(query):
     csr = db.cursor()
 
     csr.execute(query)
-    result = csr.fetchall()
+    result = csr.fetchall()[0]
 
     csr.close()
     db.close()

@@ -10,6 +10,9 @@ import { PeopleComponent } from './components/people/people.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { SignupComponent } from './components/signup/signup.component';
 import { TransactionsComponent } from './components/transactions/transactions.component';
+import { IndexComponent } from './components/index/index.component';
+
+import { FormsModule } from '@angular/forms'
 
 @NgModule({
   declarations: [
@@ -20,11 +23,13 @@ import { TransactionsComponent } from './components/transactions/transactions.co
     PeopleComponent,
     SettingsComponent,
     SignupComponent,
-    TransactionsComponent
+    TransactionsComponent,
+    IndexComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

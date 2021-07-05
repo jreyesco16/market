@@ -1,12 +1,9 @@
 <!Doctype HTML>
 <html>
     <head id="">
-        <title>Dashboard</title>
-        <link rel="stylesheet" href="/css/bootstrap.min.css">
-        <script src="/js/bootstrap.min.js"></script>
     </head>
 
-    <body class=dashboard-body onLoad="getDashboard()">
+    <body class=dashboard-body>
 
         <nav class="user-nav">
             <!-- <Button onclick={location.replace("/transactions")}>Transactions</Button> -->
@@ -57,74 +54,6 @@
         </div>
 
         <script>
-            async function getDashboard(){
-
-                start_dashboard_loaders()
-                
-                market_token = getMarketToken()
-
-                const URL = "http://127.0.0.1:8000/dashboard"
-                const headers = {"Content-Type" : "application/json; charset=utf-8"}
-                const body = JSON.stringify({token: market_token})
-
-                const res = await fetch(URL, {
-                    method : "POST", 
-                    mode: "cors",
-                    headers : headers, 
-                    body : body
-                })
-
-                const dashboard_res = await res.json()
-                const data = dashboard_res.dashboard
-
-                /* INSERT DATA */
-                insertUserName(data.first_name, data.last_name)
-                insertRequests(data.request)
-                insertFeedback(data.feedback)
-                insertAvatar(data.avatar)
-            }
-
-            // used to get color associations with the ratings (can be used later for starts etc)
-            const getRatingConfig = (num) => {
-                rating = String(num)
-                if(num >= 4.5){
-                    return rating.fontcolor("green")
-                }else if(num >= 4.0){
-                    return rating.fontcolor("yellowgreen")
-                }else if(num >= 3.5){
-                    return rating.fontcolor("#CDD704")
-                }else if(num >= 3.0){
-                    return rating.fontcolor("gold")
-                }else if(num >= 2.5){
-                    return rating.fontcolor("darkorange")
-                }else{
-                    return rating.fontcolor("red")
-                }
-            }
-
-            const getMarketToken = () => {
-                cookies = document.cookie.split(';')
-                market_token = ''
-
-                for(i = 0; i < cookies.length; i++){
-                    if(cookies[i].includes('market_token=')){
-                        market_token = cookies[i].split('market_token=')[1]
-                        break
-                    }
-                }
-                return market_token
-            }
-
-            const start_dashboard_loaders = () => {
-                document.getElementById("avatar-loader").style.display = "-webkit-inline-box"
-                document.getElementById("request-loader").style.display = "-webkit-inline-box"
-                document.getElementById("feedback-loader").style.display = "-webkit-inline-box"
-            }
-
-            const insertUserName = (first_name, last_name) => {
-                document.querySelector("#first_name").insertAdjacentHTML("afterbegin",first_name)
-                document.querySelector("#last_name").insertAdjacentHTML("afterbegin", last_name)
-            }
 
             const insertRequests = (requests) => {
                 document.getElementById("request-loader").style.display = "none"
@@ -160,12 +89,6 @@
                 }
             }
 
-            const insertAvatar = (avatar) => {
-                document.getElementById("avatar-loader").style.display = "none"
-
-                document.getElementById("avatar").src = "data:image/png;base64," + avatar
-                document.getElementById("avatar").style.display = "block"
-            } 
         </script>
 
     </body>

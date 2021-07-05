@@ -17,29 +17,21 @@ CORS(app)
 
 @app.route('/login', methods = ['POST', 'GET'])
 def login():
-    # return true if the user is found else return false
-    login = "Failure"
-
     data = request.get_json(force=True)
 
     email = data['email']
     password = data['password']
 
-    if db.login(email,password):
-        user = email
-        login = "Success"
+    user = db.login(email,password)
         
-        # create a jwt token
-        token = jwt.encode({
-            'user' : user,
-            'exp' : datetime.datetime.utcnow() + datetime.timedelta(seconds=60*15),
-            'authorization' : os.getenv('USER_TOKEN_SECRET'),
-
+    # create a jwt token
+    token = jwt.encode({
+        'user' : {"user": "jesse"},
+        'exp' : datetime.datetime.utcnow() + datetime.timedelta(seconds=60*15),
+        'authorization' : os.getenv('USER_TOKEN_SECRET'),
         }, os.getenv('ACCESS_TOKEN_SECRET'), algorithm="HS256")
 
-        return jsonify({'token' : token, "login" : login, "status" : 200})
-
-    return jsonify({"login" : login, "status" : 200})
+    return jsonify({'market-token' : token, "status" : 500})
 
 @app.route('/signup', methods = ['POST', 'GET'])
 def signup():
