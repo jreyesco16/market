@@ -1,0 +1,18 @@
+<!Doctype html>
+<html>
+    <head>
+    </head>
+    <body>
+        <h1 class="banner" id="market">Market</h1>
+
+        <div class="login">
+                <form>
+                    <input type="email" placeholder="email" name="email" id="email" [(ngModel)]="email" (ngModelChange)="handleEmailChange($event)" required> <br><br>
+                    <input type="password" placeholder="password" name="psw" id="password" [(ngModel)]="password" (ngModelChange)="handlePasswordChange($event)" required> <br><br>
+                    <button variant="primary" type="submit" (click)="login()">Login</button>  
+                    <button (click)="signup()">Sign up</button>
+                </form>
+        </div>
+
+    </body>
+</html>
