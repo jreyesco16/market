@@ -1,4 +1,5 @@
-import {Jwt} from 'jsonwebtoken'
+import {environment} from "../../environments/environment"
+import jwtDecode from "jwt-decode"
 
 export interface User {
     id: string
@@ -7,39 +8,23 @@ export interface User {
     email: string
 }
 
+interface MarketToken {
+    user: User
+    exp: number
+    authorization: string
+}
+
 export const authenticate = (token : string): User | null => {
 
-    let user : User | null = null
+    const marketToken: MarketToken = jwtDecode(token)
 
-//     Jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, algorithms=['HS256'], function(err, decoded) {
-//         if(decoded != null  && decoded.authorization==process.env.USER_TOKEN_SECRET){
-//             access = true
-//         }
-//     })
+    if(marketToken.authorization !== environment.USER_TOKEN_SECRET) return null
+
+    // handle expired token
+    const user = marketToken.user
 
     return user
 }
-
-// export const getToken = (req: Request) => {
-//     try{
-//         return req.cookies.market_token
-//     }catch(error){
-//         console.log(error)
-//         return null
-//     }
-//   }
-
-// export const getMarketToken = () => {
-//     const cookies = document.cookie.split(';')
-//     let market_token : string | null  = null
-
-//     for(let i = 0; i < cookies.length; i++){
-//         if(cookies[i].includes('market_token=')){
-//             return market_token = cookies[i].split('market_token=')[1]
-//         }
-//     }
-//     return market_token
-// }
 
 export const  Fetch = async (url: string, method: "POST" | "GET", headers: HeadersInit | undefined, body: BodyInit | null | undefined) => {
     try{

@@ -35,10 +35,9 @@ def login(email, password):
         
         user = {
             "id" : id,
-            "first_name" : first_name,
-            "last_name" : last_name,
-            "email": email,
-            "avatar": avatar
+            "firstName" : first_name,
+            "lastName" : last_name,
+            "email": email
         }
 
     return user

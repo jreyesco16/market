@@ -26,7 +26,7 @@ def login():
         
     # create a jwt token
     token = jwt.encode({
-        'user' : {"user": "jesse"},
+        'user' : user,
         'exp' : datetime.datetime.utcnow() + datetime.timedelta(seconds=60*15),
         'authorization' : os.getenv('USER_TOKEN_SECRET'),
         }, os.getenv('ACCESS_TOKEN_SECRET'), algorithm="HS256")

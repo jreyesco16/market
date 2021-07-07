@@ -1,6 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service'
 import { Router } from '@angular/router'
+import { authenticate } from 'src/app/Utils/Authentication';
+import {User} from "../../Utils/Authentication"
 
 @Component({
   selector: 'app-dashboard',
@@ -11,12 +13,16 @@ export class DashboardComponent implements OnInit {
 
   title = "dashboard"
 
+  user: User | null = null
+
   constructor(private cookieService: CookieService, private router: Router) { }
 
   ngOnInit(): void {
-    const marketToken = this.cookieService.get("market-token")
+    const token = this.cookieService.get("market-token")
 
-    if(marketToken === "") this.router.navigate([''])
+    if(token === "") this.router.navigate(['/'])
+
+    this.user = authenticate(token)
   }
 
   getDashboard = async () => {

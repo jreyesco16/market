@@ -1,7 +1,7 @@
 import { Component, Input, NgModule, OnInit, Output } from '@angular/core'
 import { CookieService } from 'ngx-cookie-service'
 import { Router } from '@angular/router'
-import {Fetch} from '../../Utils/Authentication'
+import {authenticate, Fetch} from '../../Utils/Authentication'
 
 @Component({
   selector: 'app-index',
@@ -13,9 +13,13 @@ export class IndexComponent implements OnInit {
   constructor(private cookieService: CookieService, private router: Router) {}
 
   ngOnInit(): void {
-    const marketToken = this.cookieService.get("market-token")
+    const token = this.cookieService.get("market-token")
 
-    if(marketToken) this.router.navigate(['/dashboard'])
+    if(token === "") return
+
+    const user = authenticate(token)
+
+    if(user !== null) this.router.navigate(['/dashboard'])
   }
 
   public title = "Market"
@@ -35,20 +39,16 @@ export class IndexComponent implements OnInit {
     const body = JSON.stringify({ email: this.email, password: this.password})
     const url = "http://localhost:8000/login"
 
-    try {   
         const data = await Fetch(url, "POST", headers, body)
+        const token = data['market-token']
 
-        if (data["market-token"]) {
-            this.cookieService.set('market-token', data['token'])
+        if (token !== "") {
+            this.cookieService.set('market-token', data['market-token'])
             this.router.navigate(['/dashboard'])
             return
         }
-
-        throw Error
-
-    } catch(Error) {
-      alert("Failure to login")
-    }
+        
+        alert("Failure to log in")
   }
 
   public signup(){

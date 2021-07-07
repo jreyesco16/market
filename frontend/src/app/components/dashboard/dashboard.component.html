@@ -21,8 +21,8 @@
                 <div class="loader" id="avatar-loader"></div>
 
                 <img class="avatar" alt="avatar" id="avatar">
-                <p id="first_name" class="first_name"></p>
-                <p id="last_name" class="last_name"></p>
+                <p id="first_name" class="first_name" title="">{{user !== null ? user.firstName : null }}</p>
+                <p id="last_name" class="last_name"> {{ user !== null ? user.lastName : null}}</p>
             </div>
         </div>
 

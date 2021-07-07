@@ -3,8 +3,9 @@
 *.txt
 
 /frontend/.env
+/frontend/src/environments
 
 /backend/.env
 /backend/__pycache__/*
 
-/node_modules/*
+frontend/node_modules/
