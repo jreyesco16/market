@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, jsonify
 from flask_cors import CORS
 from PIL import Image
-import market_database as db
+import database as db
 import jwt, datetime
 from dotenv import load_dotenv
 import simplejson as json
@@ -33,10 +33,12 @@ def login():
 
     return jsonify({'market-token' : token, "status" : 500})
 
+
 @app.route('/signup', methods = ['POST', 'GET'])
 def signup():
-    # return true if the user is successfully added or false if the user (email) is already in the db
+
     signup = "Failure"
+    
     data = request.get_json(force=True)
 
     first_name = data['first_name']
@@ -50,16 +52,16 @@ def signup():
 
     return jsonify({"Signup" : signup, "status" : 200})
 
+
 @app.route('/dashboard', methods = ['POST', 'GET'])
 def dashboard():
 
-    token = request.get_json(force=True)['token']
+    user = request.get_json(force=True)['user']
 
-    data = jwt.decode(token, os.getenv('ACCESS_TOKEN_SECRET'), algorithms=["HS256"])
-
-    dashboard = db.dashboardData(data['user'])
+    dashboard = db.dashboardData(user)
           
     return json.dumps({"dashboard" : dashboard, "status" : 200})
+
 
 @app.route('/profile', methods = ['POST', 'GET'])
 def profile():

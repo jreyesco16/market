@@ -19,25 +19,25 @@ def login(email, password):
 
     user = {}
 
-    query = "SELECT id, first_name, last_name, email, password, avatar FROM users WHERE email="+ "'" + email +"';"
-    result = executeQuery(query)
+    print("Email ", email)
+
+    query = ("SELECT id, first_name, last_name, email, password, avatar FROM users WHERE email='%s';" % (email))
+    result = executeQuery(query)[0]
 
     # check password
     if result!=[] and result[4] == password:
-        avatar = ""
-        with open("./images/"+result[5], "rb") as avatar_image:
-            avatar = base64.b64encode(avatar_image.read())
-
         id = result[0]
         first_name = result[1]
         last_name = result[2]
         email = result[3]
+        avatar = result[5]
         
         user = {
             "id" : id,
             "firstName" : first_name,
             "lastName" : last_name,
-            "email": email
+            "email": email,
+            "avatar": avatar
         }
 
     return user
@@ -47,65 +47,29 @@ def signup(first_name, last_name, birthday, email, password):
 
     signup = False
 
-    # check if the user isn't already signed up, else add him to the list
-
-    db = connection()
-    csr = db.cursor()
-
-    query = "select * from users where email="+ "'" + email +"'"
-    csr.execute(query)
-    result = csr.fetchall()
+    query = ("select * from users where email=%s;" % (email))
+    result = executeQuery(query)
     
+    # needs to be updated should have only unique emails
     if(result==[]):
         query = "insert into users (first_name, last_name, birthday, email, password, date) values (\"%s\", \"%s\", \"%s\", \"%s\", \"%s\", \"%s\");" % (first_name,last_name,birthday,email,password, datetime.today().strftime('%Y-%m-%d'))
         csr.execute(query)
         db.commit()
         signup = True
 
-
-    csr.close()
-    db.close()
-    
-
     return signup
 
-# return list of all the data in a given field  (always close a connection when passed)
+
 def dashboardData(user):
+    user_id = user['id']
 
-    # get db components
-    db = connection()
-    csr = db.cursor()
+    query = ("SELECT users.first_name, users.last_name, services.service, users.rating FROM requests INNER JOIN services ON requests.service_id = services.id INNER JOIN users ON requests.reciever_id = users.id WHERE requests.user_servicer_id =%s;" % (user_id))
+    requests = executeQuery(query)
 
-    # get the user id, first name, last name
-    query = "SELECT users.id, users.first_name, users.last_name, users.avatar FROM users WHERE users.email="+"'"+user+"';"
-    csr.execute(query)
-    result = csr.fetchall()[0]
+    query = ("SELECT users.first_name,users.last_name, services.service, feedback.rating FROM requests INNER JOIN users ON requests.reciever_id = users.id INNER JOIN payments ON requests.id = payments.request_id INNER JOIN feedback ON payments.id = feedback.payment_id INNER JOIN services ON requests.service_id = services.id WHERE requests.user_servicer_id=%s;" % (user_id))
+    feedback = executeQuery(query)
 
-    user_id = result[0]
-    first_name = result[1]
-    last_name = result[2]
-
-    # convert the user avatar to base64 string
-    with open("./images/"+result[3], "rb") as avatar_image:
-        avatar = base64.b64encode(avatar_image.read())
-
-    feedback = {}
-    request = {}
-
-    # get all user requests
-    query = "SELECT users.first_name, users.last_name, services.service, users.rating FROM requests INNER JOIN services ON requests.service_id = services.id INNER JOIN users ON requests.reciever_id = users.id WHERE requests.user_servicer_id ="+str(user_id)+ ";"
-    csr.execute(query)
-    requests = csr.fetchall()
-
-    # get all user feedback
-    query = "SELECT users.first_name,users.last_name, services.service, feedback.rating FROM requests INNER JOIN users ON requests.reciever_id = users.id INNER JOIN payments ON requests.id = payments.request_id INNER JOIN feedback ON payments.id = feedback.payment_id INNER JOIN services ON requests.service_id = services.id WHERE requests.user_servicer_id="+str(user_id)+ ";"
-    csr.execute(query)
-    feedback = csr.fetchall()
-
-    csr.close()
-    db.close()
-
-    return  {"first_name" :  first_name, "last_name" : last_name, "request" :  requests, "feedback" : feedback, "avatar" : avatar}
+    return  {"request" :  requests, "feedback" : feedback}
 
 def profileData(user):
 
@@ -199,7 +163,7 @@ def executeQuery(query):
     csr = db.cursor()
 
     csr.execute(query)
-    result = csr.fetchall()[0]
+    result = csr.fetchall()
 
     csr.close()
     db.close()

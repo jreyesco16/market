@@ -6,6 +6,7 @@ export interface User {
     firstName: string
     lastName: string
     email: string
+    avatar: string
 }
 
 interface MarketToken {
@@ -14,13 +15,20 @@ interface MarketToken {
     authorization: string
 }
 
-export const authenticate = (token : string): User | null => {
+const emptyUser : User = {
+    id: "",
+    firstName: "",
+    lastName: "",
+    email: "",
+    avatar: ""
+}
 
+export const authenticate = (token : string): User => {
     const marketToken: MarketToken = jwtDecode(token)
 
-    if(marketToken.authorization !== environment.USER_TOKEN_SECRET) return null
+    if(marketToken.authorization !== environment.USER_TOKEN_SECRET) return emptyUser
 
-    // handle expired token
+    // handle expired tokens
     const user = marketToken.user
 
     return user
@@ -43,7 +51,7 @@ export const  Fetch = async (url: string, method: "POST" | "GET", headers: Heade
 
     } catch(Error) {
         console.log(Error)
-        window.location.replace("/")
+        // window.location.replace("/")
         
     }
 }

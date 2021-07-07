@@ -1,8 +1,21 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service'
 import { Router } from '@angular/router'
-import { authenticate } from 'src/app/Utils/Authentication';
+import { authenticate, Fetch} from 'src/app/Utils/Authentication';
 import {User} from "../../Utils/Authentication"
+
+interface Request {
+  something: []
+}
+
+interface Feedback {
+  else: []
+}
+interface Dashboard {
+  avatar : string
+  requests : Request []
+  feedback : Feedback []
+}
 
 @Component({
   selector: 'app-dashboard',
@@ -13,9 +26,17 @@ export class DashboardComponent implements OnInit {
 
   title = "dashboard"
 
-  user: User | null = null
+  user: User = {
+    id: "",
+    firstName: "",
+    lastName: "",
+    email: "",
+    avatar: ""
+  }
 
-  constructor(private cookieService: CookieService, private router: Router) { }
+  dashboard : Dashboard | null = null
+
+  constructor(private cookieService: CookieService, private router: Router,) { }
 
   ngOnInit(): void {
     const token = this.cookieService.get("market-token")
@@ -23,32 +44,22 @@ export class DashboardComponent implements OnInit {
     if(token === "") this.router.navigate(['/'])
 
     this.user = authenticate(token)
+
+    this.getDashboard(this.user)
   }
 
-  getDashboard = async () => {
-                
-    // const market_token = getMarketToken()
-    const market_token = null
-
-    const URL = "http://127.0.0.1:8000/dashboard"
+  getDashboard = async (user: User) => {
+    const url = "http://localhost:8000/dashboard"
     const headers = {"Content-Type" : "application/json; charset=utf-8"}
-    const body = JSON.stringify({token: market_token})
+    const body = JSON.stringify({user: user})
 
-    const res = await fetch(URL, {
-        method : "POST", 
-        mode: "cors",
-        headers : headers, 
-        body : body
-    })
+    const res = await Fetch(url, "POST", headers, body)
 
-    const dashboard_res = await res.json()
-    const data = dashboard_res.dashboard
+    this.dashboard = res['dashboard']
 
-    /* INSERT DATA */
-    // insertUserName(data.first_name, data.last_name)
-    // insertRequests(data.request)
-    // insertFeedback(data.feedback)
-    // insertAvatar(data.avatar)
+    console.log("Dashboard", this.dashboard)
+
+    
   }
 
   getRatingConfig = (num : number) => {

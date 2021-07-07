@@ -6,10 +6,10 @@
     <body class=dashboard-body>
 
         <nav class="user-nav">
-            <!-- <Button onclick={location.replace("/transactions")}>Transactions</Button> -->
-            <!-- <Button onclick={location.replace("/community")}>Community</Button> -->
-            <!-- <Button onclick={location.replace("/messages")}>Messages</Button> -->
-            <!-- <Button onclick={location.replace("/settings")}>Settings</Button> -->
+            <button>Transactions</button>
+            <button >Community</button> 
+            <button >Messages</button>
+            <button >Settings</button>
         </nav>  
 
         <h1 class="banner">Market</h1>
@@ -20,9 +20,9 @@
                 
                 <div class="loader" id="avatar-loader"></div>
 
-                <img class="avatar" alt="avatar" id="avatar">
-                <p id="first_name" class="first_name" title="">{{user !== null ? user.firstName : null }}</p>
-                <p id="last_name" class="last_name"> {{ user !== null ? user.lastName : null}}</p>
+                <img class="avatar" alt="avatar" id="avatar" [src]=" '../../../assets/images/' + user.avatar ">
+                <p id="first_name" class="first_name" title="">{{user.firstName}}</p>
+                <p id="last_name" class="last_name"> {{ user.lastName}}</p>
             </div>
         </div>
 
