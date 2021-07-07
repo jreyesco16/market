@@ -4,6 +4,7 @@
 
 /frontend/.env
 frontend/src/environments/environment.ts
+frontend/src/environments/environment.prod.ts
 
 /backend/.env
 /backend/__pycache__/*
