@@ -16,7 +16,9 @@ import { FormsModule } from '@angular/forms';
 import { RequestsComponent } from './components/dashboard/requests/requests.component';
 import { FeedbackComponent } from './components/dashboard/feedback/feedback.component';
 import { RequestItemComponent } from './components/dashboard/requests/request-item/request-item.component';
-import { FeedbackItemComponent } from './components/dashboard/feedback/feedback-item/feedback-item.component'
+import { FeedbackItemComponent } from './components/dashboard/feedback/feedback-item/feedback-item.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { NavigatorComponent } from './components/navigator/navigator.component'
 
 @NgModule({
   declarations: [
@@ -32,12 +34,14 @@ import { FeedbackItemComponent } from './components/dashboard/feedback/feedback-
     RequestsComponent,
     FeedbackComponent,
     RequestItemComponent,
-    FeedbackItemComponent
+    FeedbackItemComponent,
+    NavigatorComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    FontAwesomeModule
   ],
   providers: [],
   bootstrap: [AppComponent]

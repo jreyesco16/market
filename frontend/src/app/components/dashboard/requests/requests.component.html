@@ -1,2 +1,6 @@
-<h1>Requests</h1>
-<app-request-item *ngFor="let request of requests" [request]="request"></app-request-item>
+<div>
+    <h1>Requests</h1>
+    <div class=request-list>
+        <app-request-item *ngFor="let request of requests" [request]="request"></app-request-item>
+    </div>
+</div>

@@ -5,12 +5,7 @@
 
     <body class=dashboard-body>
 
-        <nav class="user-nav">
-            <button>Transactions</button>
-            <button >Community</button> 
-            <button >Messages</button>
-            <button >Settings</button>
-        </nav>  
+        <app-navigator></app-navigator> 
 
         <h1 class="banner">Market</h1>
 
@@ -23,9 +18,9 @@
         </div>
         <div class="body-wrapper">
 
-            <app-requests [requests]="dashboard.requests"></app-requests> 
+            <app-requests class="requests" [requests]="dashboard.requests"></app-requests> 
                 
-            <app-feedback [feedback]="dashboard.feedback"></app-feedback>
+            <app-feedback class="feedback" [feedback]="dashboard.feedback"></app-feedback>
 
         </div>
     </body>

@@ -51,6 +51,10 @@ export class DashboardComponent implements OnInit {
     this.dashboard = res['dashboard']    
   }
 
+  goToSettings = () => {
+    this.router.navigate(["/settings"])
+  }
+
   getRatingConfig = (num : number) => {
     const rating = String(num)
     if(num >= 4.5){
