@@ -15,81 +15,18 @@
         <h1 class="banner">Market</h1>
 
         <div class="profile">
-            <!-- user avatar -->
             <div class="avatar-div">
-                
-                <div class="loader" id="avatar-loader"></div>
-
                 <img class="avatar" alt="avatar" id="avatar" [src]=" '../../../assets/images/' + user.avatar ">
                 <p id="first_name" class="first_name" title="">{{user.firstName}}</p>
                 <p id="last_name" class="last_name"> {{ user.lastName}}</p>
             </div>
         </div>
+        <div class="body-wrapper">
 
-        <div class="user-history">
-            <div class="requests">
-                Requests  
-                <div class="loader" id="request-loader"></div>
-                <div class="bootstrap-list">
-                    <div class="list-group">
-                        <!-- insert the request list -->
-                        <div id="request_list">
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="feedback">
-                Feedback
-                <div class="loader" id="feedback-loader"></div>
-                <div class=bootstrap-list>
-                    <div class="list-group">
-                        <!-- insert the feedback list -->
-                        <div id="feedback-list">
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <app-requests [requests]="dashboard.requests"></app-requests> 
+                
+            <app-feedback [feedback]="dashboard.feedback"></app-feedback>
 
         </div>
-
-        <script>
-
-            const insertRequests = (requests) => {
-                document.getElementById("request-loader").style.display = "none"
-
-                for(i = 0; i < requests.length; i++){
-                    document.getElementById("request_list").insertAdjacentHTML("afterbegin",`
-                    <a href="#" class="list-group-item list-group-item-action" style="display: flex; font-size: medium;">
-                        <div style="width: 60%;"> ${requests[i][0] + " " + requests[i][1]} <br>
-                            ${getRatingConfig(requests[i][3])}
-                        </div>
-                        <div style="width: 40%;">
-                            ${requests[i][2]}
-                        </div>
-                    </a>
-                    `)
-                }
-            }
-
-            const insertFeedback = (feedback) => {
-                document.getElementById("feedback-loader").style.display = "none"
-
-                for(i = 0; i < feedback.length; i++){
-                    document.getElementById("feedback-list").insertAdjacentHTML("afterbegin", `
-                    <a href="#" class="list-group-item list-group-item-action" style="display: flex; font-size: medium;">
-                        <div style="width: 60%;"> ${feedback[i][0] + " " + feedback[i][1]} <br>
-                            ${feedback[i][2]}
-                        </div>
-                        <div style="width: 40%;">
-                            ${getRatingConfig(feedback[i][3])}
-                        </div>
-                    </a>
-                    `)
-                }
-            }
-
-        </script>
-
     </body>
 </html>

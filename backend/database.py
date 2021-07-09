@@ -63,13 +63,27 @@ def signup(first_name, last_name, birthday, email, password):
 def dashboardData(user):
     user_id = user['id']
 
+    requests = []
     query = ("SELECT users.first_name, users.last_name, services.service, users.rating FROM requests INNER JOIN services ON requests.service_id = services.id INNER JOIN users ON requests.reciever_id = users.id WHERE requests.user_servicer_id =%s;" % (user_id))
-    requests = executeQuery(query)
+    result = executeQuery(query)
+    for i in range(0, len(result)):
+        firstName = result[i][0]
+        lastName = result[i][1]
+        service = result[i][2]
+        rating = result[i][3]
+        requests.append({"firstName": firstName, "lastName": lastName, "service": service, "rating": rating})
 
+    feedback = []
     query = ("SELECT users.first_name,users.last_name, services.service, feedback.rating FROM requests INNER JOIN users ON requests.reciever_id = users.id INNER JOIN payments ON requests.id = payments.request_id INNER JOIN feedback ON payments.id = feedback.payment_id INNER JOIN services ON requests.service_id = services.id WHERE requests.user_servicer_id=%s;" % (user_id))
-    feedback = executeQuery(query)
+    result = executeQuery(query)
+    for i in range(0, len(result)):
+        firstName = result[i][0]
+        lastName = result[i][1]
+        service = result[i][2]
+        rating = result[i][3]
+        feedback.append({"firstName": firstName, "lastName": lastName, "service": service, "rating": rating})
 
-    return  {"request" :  requests, "feedback" : feedback}
+    return  {"requests" :  requests, "feedback" : feedback}
 
 def profileData(user):
 

@@ -12,7 +12,11 @@ import { SignupComponent } from './components/signup/signup.component';
 import { TransactionsComponent } from './components/transactions/transactions.component';
 import { IndexComponent } from './components/index/index.component';
 
-import { FormsModule } from '@angular/forms'
+import { FormsModule } from '@angular/forms';
+import { RequestsComponent } from './components/dashboard/requests/requests.component';
+import { FeedbackComponent } from './components/dashboard/feedback/feedback.component';
+import { RequestItemComponent } from './components/dashboard/requests/request-item/request-item.component';
+import { FeedbackItemComponent } from './components/dashboard/feedback/feedback-item/feedback-item.component'
 
 @NgModule({
   declarations: [
@@ -24,7 +28,11 @@ import { FormsModule } from '@angular/forms'
     SettingsComponent,
     SignupComponent,
     TransactionsComponent,
-    IndexComponent
+    IndexComponent,
+    RequestsComponent,
+    FeedbackComponent,
+    RequestItemComponent,
+    FeedbackItemComponent
   ],
   imports: [
     BrowserModule,

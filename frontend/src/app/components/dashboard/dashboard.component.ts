@@ -3,16 +3,9 @@ import { CookieService } from 'ngx-cookie-service'
 import { Router } from '@angular/router'
 import { authenticate, Fetch} from 'src/app/Utils/Authentication';
 import {User} from "../../Utils/Authentication"
-
-interface Request {
-  something: []
-}
-
-interface Feedback {
-  else: []
-}
+import { Request } from './requests/request-item/request-item.component'
+import {Feedback} from './feedback/feedback-item/feedback-item.component'
 interface Dashboard {
-  avatar : string
   requests : Request []
   feedback : Feedback []
 }
@@ -34,7 +27,7 @@ export class DashboardComponent implements OnInit {
     avatar: ""
   }
 
-  dashboard : Dashboard | null = null
+  dashboard : Dashboard = {requests: [], feedback: []}
 
   constructor(private cookieService: CookieService, private router: Router,) { }
 
@@ -55,11 +48,7 @@ export class DashboardComponent implements OnInit {
 
     const res = await Fetch(url, "POST", headers, body)
 
-    this.dashboard = res['dashboard']
-
-    console.log("Dashboard", this.dashboard)
-
-    
+    this.dashboard = res['dashboard']    
   }
 
   getRatingConfig = (num : number) => {
