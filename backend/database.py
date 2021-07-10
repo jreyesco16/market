@@ -6,7 +6,16 @@ from flask import jsonify, send_file
 # IMPORT .ENV CONFIGS
 import os
 
-print(datetime.today().strftime('%Y-%m-%d'))
+# print(datetime.today().strftime('%Y-%m-%d'))
+class Request:
+    def __init__(self, request):
+        self.id = request[0]
+        self.firstName = request[1]
+        self.lastName = request[2]
+        self.service = request[3]
+        self.rating = request[4]
+        self.date = request[5].strftime('%m/%d/%Y')
+
 
 # return the connection of the database
 def connection():
@@ -64,14 +73,11 @@ def dashboardData(user):
     user_id = user['id']
 
     requests = []
-    query = ("SELECT users.first_name, users.last_name, services.service, users.rating FROM requests INNER JOIN services ON requests.service_id = services.id INNER JOIN users ON requests.reciever_id = users.id WHERE requests.user_servicer_id =%s;" % (user_id))
+    query = ("SELECT requests.id, users.first_name, users.last_name, services.service, users.rating, requests.date FROM requests INNER JOIN services ON requests.service_id = services.id INNER JOIN users ON requests.reciever_id = users.id WHERE requests.user_servicer_id =%s ORDER BY requests.date DESC;" % (user_id))
     result = executeQuery(query)
     for i in range(0, len(result)):
-        firstName = result[i][0]
-        lastName = result[i][1]
-        service = result[i][2]
-        rating = result[i][3]
-        requests.append({"firstName": firstName, "lastName": lastName, "service": service, "rating": rating})
+        request = Request(result[i])
+        requests.append(vars(request))
 
     feedback = []
     query = ("SELECT users.first_name,users.last_name, services.service, feedback.rating FROM requests INNER JOIN users ON requests.reciever_id = users.id INNER JOIN payments ON requests.id = payments.request_id INNER JOIN feedback ON payments.id = feedback.payment_id INNER JOIN services ON requests.service_id = services.id WHERE requests.user_servicer_id=%s;" % (user_id))

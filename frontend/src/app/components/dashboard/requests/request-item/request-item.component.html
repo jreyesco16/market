@@ -1,5 +1,5 @@
 <div class='request'>
-    <p>{{ request.firstName + " " + request.lastName }}</p>  <br>
-    <p>{{ request.service + " " + request.rating }}</p>
+    <span class="requester-name">{{ request.firstName + " " + request.lastName }}</span> <span class='rating' [ngStyle]="{color: rating}" >{{ request.rating }}</span> <span class="date"> Date: {{ request.date }} </span> <br><br> 
+    <span class="service">{{ request.service }}</span> <fa-icon class='accept' [icon]="faCheck" (click)="accept()"></fa-icon> <fa-icon class="decline" [icon]="faTimes" (click)="decline()"></fa-icon> 
 </div>
 

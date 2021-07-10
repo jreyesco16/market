@@ -10,6 +10,22 @@ interface Dashboard {
   feedback : Feedback []
 }
 
+export const prettyRating = (num : number) : string => {
+  if(num >= 4.5){
+      return "green"
+  }else if(num >= 4.0){
+      return "yellowgreen"
+  }else if(num >= 3.5){
+      return "#CDD704"
+  }else if(num >= 3.0){
+      return "gold"
+  }else if(num >= 2.5){
+      return "darkorange"
+  }else{
+      return "red"
+  }
+}
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -49,27 +65,6 @@ export class DashboardComponent implements OnInit {
     const res = await Fetch(url, "POST", headers, body)
 
     this.dashboard = res['dashboard']    
-  }
-
-  goToSettings = () => {
-    this.router.navigate(["/settings"])
-  }
-
-  getRatingConfig = (num : number) => {
-    const rating = String(num)
-    if(num >= 4.5){
-        return rating.fontcolor("green")
-    }else if(num >= 4.0){
-        return rating.fontcolor("yellowgreen")
-    }else if(num >= 3.5){
-        return rating.fontcolor("#CDD704")
-    }else if(num >= 3.0){
-        return rating.fontcolor("gold")
-    }else if(num >= 2.5){
-        return rating.fontcolor("darkorange")
-    }else{
-        return rating.fontcolor("red")
-    }
   }
 
 }

@@ -20,5 +20,4 @@ export class FeedbackItemComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
 }
