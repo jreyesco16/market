@@ -23,13 +23,13 @@ export class RequestItemComponent implements OnInit {
   faTimes = faTimes
   faCheck = faCheck
 
-  rating: string = "red"
+  ratingColor: string = "red"
 
   constructor() { }
 
   ngOnInit(): void {
 
-    this.rating = prettyRating(this.request.rating)
+    this.ratingColor = prettyRating(this.request.rating)
   }
 
   accept = () => {

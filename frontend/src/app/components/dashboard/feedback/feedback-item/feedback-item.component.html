@@ -1,7 +1,5 @@
 <div class='feedback'>
-    <p>{{ feedback.firstName }}</p>
-    <p>{{ feedback.lastName }}</p>
-    <p>{{ feedback.service }}</p>
-    <p>{{ feedback.rating }}</p>
+    <span class="feedback-name">{{ feedback.firstName + " " + feedback.lastName }}</span>  <span class="date"> Date: {{ feedback.date }} </span> <br><br> 
+    <span class="service">{{ feedback.service }}</span> <span class='rating' [ngStyle]="{color: ratingColor}" >{{ feedback.rating }}</span>
 </div>
 

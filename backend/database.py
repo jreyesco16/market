@@ -16,12 +16,16 @@ class Request:
         self.rating = request[4]
         self.date = request[5].strftime('%m/%d/%Y')
 
+class Feeback:
+    def __init__(self, feedback):
+        self.id = feedback[0]
+        self.firstName = feedback[1]
+        self.lastName = feedback[2]
+        self.service = feedback[3]
+        self.rating = feedback[4]
+        self.date = feedback[5].strftime('%m/%d/%Y')
 
-# return the connection of the database
-def connection():
-    # host is db for docker container & localhost for non docker container
-    conn = mysql.connector.connect(host="localhost", user="root", password="Distant_7", database="market")
-    return conn
+
 
 # check if user has access to backend
 def login(email, password):
@@ -73,21 +77,18 @@ def dashboardData(user):
     user_id = user['id']
 
     requests = []
-    query = ("SELECT requests.id, users.first_name, users.last_name, services.service, users.rating, requests.date FROM requests INNER JOIN services ON requests.service_id = services.id INNER JOIN users ON requests.reciever_id = users.id WHERE requests.user_servicer_id =%s ORDER BY requests.date DESC;" % (user_id))
+    query = ("SELECT requests.id, users.first_name, users.last_name, services.service, users.rating, requests.date FROM requests INNER JOIN services ON requests.service_id = services.id INNER JOIN users ON requests.reciever_id = users.id INNER JOIN payments p on requests.id != p.request_id WHERE requests.user_servicer_id=%s ORDER BY requests.date DESC;" % (user_id))
     result = executeQuery(query)
     for i in range(0, len(result)):
         request = Request(result[i])
         requests.append(vars(request))
 
     feedback = []
-    query = ("SELECT users.first_name,users.last_name, services.service, feedback.rating FROM requests INNER JOIN users ON requests.reciever_id = users.id INNER JOIN payments ON requests.id = payments.request_id INNER JOIN feedback ON payments.id = feedback.payment_id INNER JOIN services ON requests.service_id = services.id WHERE requests.user_servicer_id=%s;" % (user_id))
+    query = ("SELECT feedback.id, users.first_name,users.last_name, services.service, feedback.rating, payments.date FROM requests INNER JOIN users ON requests.reciever_id = users.id INNER JOIN payments ON requests.id = payments.request_id INNER JOIN feedback ON payments.id = feedback.payment_id INNER JOIN services ON requests.service_id = services.id WHERE requests.user_servicer_id=%s ORDER BY payments.date DESC;" % (user_id))
     result = executeQuery(query)
     for i in range(0, len(result)):
-        firstName = result[i][0]
-        lastName = result[i][1]
-        service = result[i][2]
-        rating = result[i][3]
-        feedback.append({"firstName": firstName, "lastName": lastName, "service": service, "rating": rating})
+        feedback_item = Feeback(result[i])
+        feedback.append(vars(feedback_item))
 
     return  {"requests" :  requests, "feedback" : feedback}
 
@@ -178,6 +179,12 @@ def getServices():
     
     return services
 
+
+def connection():
+    # host is db for docker container & localhost for non docker container
+    conn = mysql.connector.connect(host="localhost", user="root", password="Distant_7", database="market")
+    return conn
+
 def executeQuery(query):
     db = connection()
     csr = db.cursor()
@@ -190,7 +197,3 @@ def executeQuery(query):
 
     return result
 
-
-
-
-# adds data to a given field    (always close a connection when passed)
