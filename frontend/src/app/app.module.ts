@@ -18,7 +18,13 @@ import { FeedbackComponent } from './components/dashboard/feedback/feedback.comp
 import { RequestItemComponent } from './components/dashboard/requests/request-item/request-item.component';
 import { FeedbackItemComponent } from './components/dashboard/feedback/feedback-item/feedback-item.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { NavigatorComponent } from './components/navigator/navigator.component'
+import { NavigatorComponent } from './components/navigator/navigator.component';
+import { AccountComponent } from './components/settings/account/account.component';
+import { ServicesComponent } from './components/settings/services/services.component';
+import { HistoryComponent } from './components/settings/history/history.component';
+import { ActivityComponent } from './components/settings/activity/activity.component';
+import { RulesComponent } from './components/settings/rules/rules.component';
+import { ContactUsComponent } from './components/settings/contact-us/contact-us.component'
 
 @NgModule({
   declarations: [
@@ -35,7 +41,13 @@ import { NavigatorComponent } from './components/navigator/navigator.component'
     FeedbackComponent,
     RequestItemComponent,
     FeedbackItemComponent,
-    NavigatorComponent
+    NavigatorComponent,
+    AccountComponent,
+    ServicesComponent,
+    HistoryComponent,
+    ActivityComponent,
+    RulesComponent,
+    ContactUsComponent
   ],
   imports: [
     BrowserModule,

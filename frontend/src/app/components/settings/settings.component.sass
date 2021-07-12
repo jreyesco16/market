@@ -17,7 +17,6 @@
 .avatar 
     width: 220px
     height: 220px
-    display: none
     margin-left: auto
     margin-right: auto
     border-radius: 50%
@@ -61,8 +60,8 @@ div#popup-form
 
 .settings-popup 
     text-align: center
-    width: 100% 
-    display: none
+    width: 500px
+    max-height: 800px
     position: fixed
     left: 50%
     top: 15%
@@ -71,16 +70,7 @@ div#popup-form
     z-index: 9
     background-color: white
     text-align: center
-
-
-.form-popup 
-    display: none
-    position: fixed
-    left: 50%
-    top: 15%
-    transform: translate(-50%, 5%)
-    border: 3px solid #999999
-    z-index: 9
+    overflow: auto
 
 
 .form-container 
@@ -93,21 +83,5 @@ div#popup-form
 .close-popup-form-x
     width: 30px
     float: right
-
-
-
-
-.loader 
-    border: 16px solid #f3f3f3 
-    border-top: 16px solid black 
-    border-radius: 50%
-    width: 120px
-    height: 120px
-    animation: spin 2s linear infinite
-    display: none
   
-  
-//   @keyframes spin 
-//     0%  transform: rotate(0deg) 
-//     100%  transform: rotate(360deg) 
   

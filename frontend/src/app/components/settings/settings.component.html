@@ -1,277 +1,31 @@
-<html>
-    <head>
-        <title>Settings</title>
-        <link rel="stylesheet" href="/css/bootstrap.min.css">
-        <script src="/js/bootstrap.min.js"></script>
-        <script src="/heic2any.min.js"></script>
-    </head>
+<app-navigator></app-navigator> 
 
-    <body onload="FetchSettings()">
+<div class="profile"> 
 
-        <!-- <img class="back-arrow" src="arrow-left.svg" alt="back-arrow" onclick={location.replace('/dashboard')}> -->
-        
-        <app-navigator></app-navigator> 
-
-        <div class="profile"> 
-
-            <h2>SETTINGS</h2> 
-            <div class="loader" id="profile-loader"></div>
-            <img class="avatar" alt="avatar" id="avatar">
-            <div class="edit-name-div">
-                <p id="first_name" class="first_name"></p>
-                <p id="last_name" class="last_name"></p>
-            </div>
-        </div>
+    <h2>SETTINGS</h2> 
+    <div class="loader" id="profile-loader"></div>
+    <img class="avatar" alt="avatar" id="avatar" [src]=" '../../../assets/images/' + user.avatar ">
+    <div class="edit-name-div">
+        <p id="first_name" class="first_name">{{user.firstName}}</p>
+        <p id="last_name" class="last_name">{{user.lastName}}</p>
+    </div>
+</div>
 
 
         <!-- GENERIC POP-UP -->
-        <div class="settings-popup" id="settings-popup">
-            <img class="close-popup-form-x" src="x.svg" onclick={closePopup()}>
-            <div id="popup-view" style="display: -webkit-flex;"></div>
-        </div>
+<div class="settings-popup" id="settings-popup" [ngStyle]="{display: display}">
+    <fa-icon class="close-popup-form-x" [icon]="faTimes" (click)="closePopup()"></fa-icon>
+    <div id="popup-view" style="display: -webkit-flex;"></div>
+</div>
 
-        <div class="button-layer">
-            <Button type="button" onclick={editAccountPopup()}> ACCOUNT </Button>
+<div class="button-layer">
+    <Button type="button" (click)="editAccount()"> ACCOUNT </Button>
+    <Button type="button"id="services-button" (click)="editServices()">SERVICES </Button>
+    <Button type="button" (click)="viewHistory()"> HISTORY </Button>
+</div>
 
-            <Button type="button"id="services-button" onclick={openEditPopup()}>SERVICES </Button>
-
-            <Button type="button" onclick="editAccountPopup()"> HISTORY </Button>
-        </div>
-
-        <div class="button-layer">
-            <Button type="button" onclick="editAccountPopup()"> ACTIVITY </Button>
-            
-            <Button type="button" onclick="editAccountPopup()"> RULES </Button>
-
-            <Button type="button" onclick="editAccountPopup()"> CONTACT US </Button>
-        </div>
-    
-        <script>
-
-            async function FetchSettings(){
-                document.getElementById("profile-loader").style.display = "-webkit-inline-box"
-
-                const market_token = getMarketToken()
-                const URL = "http://localhost:8000/profile"
-                const headers = {"Content-Type" : "application/json; charset=utf-8"}
-                const body = JSON.stringify({token: market_token})
-
-                const res = await MakeFetch(URL, body)
-
-                const data = res.profile
-
-                    
-                document.getElementById("profile-loader").style.display = "none"
-                document.querySelector("#first_name").insertAdjacentHTML("afterbegin", data.first_name)
-                document.querySelector("#last_name").insertAdjacentHTML("afterbegin", data.last_name)
-                document.getElementById("avatar").src = "data:image/png;base64," + data.avatar
-                document.getElementById("avatar").style.display = "block"
-            }
-
-            // ACCOUNT
-     
-            const editAccountPopup = () => {
-                document.getElementById("settings-popup").style.display = "block"
-
-                const first_name = document.querySelector("#first_name").innerHTML
-                const last_name = document.querySelector("#last_name").innerHTML
-
-                const avatar = document.querySelector("#avatar")
-
-                document.getElementById("popup-view").innerHTML = `
-                <div class="form-container">
-                    <h2>Edit Account</h2>
-
-                    <h4>Edit Avatar</h4>
-                    
-                    <div class="uploaded-image" id="uploaded-image">
-                        <div class="loader" id="avatar-loader"></div>
-                        <img src=${avatar.src} alt="" id="new-img" class="new-img">
-                    </div>
-                    Select Image: 
-                    
-                    <input type="file" id="edit-photo-img" name="img" accept="image/*" required>
-                    
-                    <h4>Edit Name </h4>
-                    
-                    First Name:
-
-                    <input type="text" id="edited-first-name" value="${first_name}" required>
-
-                    Last Name:
-
-                    <input type="text" id="edited-last-name" value="${last_name}" required>
-
-                    <Button type="submit" id="name-edit-btn" class="name-edit-btn" onClick="handleAccountChange()"> Make Change </Button>
-                </div>`
-
-                const new_img = document.querySelector("#new-img")
-                const avatar_input = document.querySelector("#edit-photo-img")
-
-                avatar_input.addEventListener( "change", () => {displayNewAvatar(avatar_input, new_img)})
-            }
-
-            const handleAccountChange = async () => {
-
-                const first_name = document.getElementById("edited-first-name").value
-                const last_name = document.getElementById("edited-last-name").value
-                const avatar = document.getElementById('new-img')
-
-                const market_token = getMarketToken()
-
-                const URL = "http://localhost:8000/settings/account"
-                const body = JSON.stringify({ token: market_token, first_name : first_name, last_name : last_name , avatar: avatar.src})
-                const headers = {"Content-Type" : "application/json; charset=utf-8"}
-
-                const res = await MakeFetch(URL, body)
-
-                res ? location.replace("/settings") : location.replace("/")
-            }
-
-            // SERVICES
-
-            const openEditPopup = async () => {
-
-                document.getElementById("settings-popup").style.display = "block"
-
-                const first_name = document.querySelector("#first_name").innerHTML
-                const last_name = document.querySelector("#last_name").innerHTML
-
-                const user_services = await FetchUserServices()
-                const services = await FetchServices()
-
-                document.getElementById("popup-view").innerHTML = `
-                    <div class="form-container">
-                        <h2> Edit Services </h2>
-                        <div id="service-list" style="margin-top: 10px;"></div>
-                        <div id="add-service" style="display: inline-flex; margin-top: 10px;">
-                          <select id="service-select" style="width: 220px; margin-right: 7px;"> </select>
-                          $ <input type="number" placeholder="fee" style="width: 100px;margin-right: 7px;"></input> 
-                          <input type="number" placeholder="days" style="width: 100px;margin-right: 15px;"> </input>
-                          <img class="add-service-button" src="plus-lg.svg" onclick={console.log("ADDING")}>
-                        </div>
-                    </div>`
-                
-                user_services.forEach(us => {
-                    document.getElementById("service-list").insertAdjacentHTML("afterbegin", `
-                        <div id="serices" style="display: inline-flex; margin-top: 10px;">
-                          <input type="text" value="${us.service}"  disabled="true" style="width: 200px;"></input> 
-                          $ <input type="number" value="${us.fee}" style="width: 100px;"> </input>
-                          <input type="number" value="${us.duration}" style="width: 100px;"> </input>
-                          <input type="text" value="${us.rating}" disabled="true" style="width: 40px;margin-right: 5px;"> </input> 
-                          <img class="edit-service" src="pencil.svg" onclick={console.log("EDITING")}>
-                          <img class="close-popup-form-x" src="x.svg" onclick={console.log("DELETING")}>
-                        </div>
-                    `)
-                })
-
-                services.forEach(s => {
-                    document.getElementById("service-select").insertAdjacentHTML("afterbegin", `
-                        <option value=${s.id}> ${s.service} </option>
-                    `)
-                }) 
-            }
-
-            function closePopup(){
-                document.getElementById("settings-popup").style.display = "none"
-            }
-
-            // function used for going back to dashboard
-            function goBack(){
-                location.replace("/dashboard")
-            }
-
-            const displayNewAvatar = async (avatar_input, new_img) => {
-                let file = avatar_input.files[0]
-
-                const reader = new FileReader()
-
-                new_img.style.display="none"
-                document.getElementById("avatar-loader").style.display = "-webkit-inline-box"
-
-                try {
-                    if(file['type'] == "image/heic"){
-                        const URL = await window.URL.createObjectURL(file)
-                        const res = await fetch(URL)
-                        const blob = await res.blob()
-                        const png = await heic2any({blob, toType: "image/png", multiple: "true",})
-
-                        file = png[0]
-                    }
-                    reader.readAsDataURL(file)
-
-                    reader.onload = () => {
-                        new_img.src = reader.result
-                    }
-                } catch(error) {
-                    console.log(error)
-                }
-
-                document.getElementById("avatar-loader").style.display = "none"
-                new_img.style.display="revert"
-            }
-
-            const FetchUserServices = async () => {
-
-                const market_token = getMarketToken()
-
-                const URL = "http://localhost:8000/settings/userservices"
-                const body = JSON.stringify({ token : market_token })
-
-                const res = await MakeFetch(URL, body)
-                const user_services = res.UserServices
-
-                return user_services
-            }
-
-            const FetchServices= async () => {
-                const market_token = getMarketToken()
-
-                const URL="http://localhost:8000/settings/services"
-                const body = JSON.stringify({token: market_token})
-                
-                const res = await MakeFetch(URL, body)
-                const services = res.Services
-
-                return services
-            }
-
-            // *  HELPERS */
-            const getMarketToken = () => {
-                cookies = document.cookie.split(';')
-                market_token = null
-
-                for(i = 0; i < cookies.length; i++){
-                    if(cookies[i].includes('market_token=')){
-                        return market_token = cookies[i].split('market_token=')[1]
-                    }
-                }
-                return market_token
-            }
-
-            const MakeFetch = async (URL, body) => {
-                const headers = {"Content-Type" : "application/json; charset=utf-8"}
-                
-                try{
-                    const req = await fetch(URL, {
-                        method: "POST",
-                        mode: "cors",
-                        headers: headers,
-                        body: body
-                    })
-
-                    const res = req.json()
-
-                    if(!res) throw Error
-
-                    return res
-
-                } catch(error) {
-                    console.log(error)
-                    location.replace('/')
-                }
-            }
-
-        </script>
-    </body>
-</html>
+<div class="button-layer">
+    <Button type="button" (click)="viewActivity()"> ACTIVITY </Button>
+    <Button type="button" (click)="viewRules()"> RULES </Button>
+    <Button type="button" (click)="openContactUs()"> CONTACT US </Button>
+</div>
