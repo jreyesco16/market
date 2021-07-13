@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit, Input } from '@angular/core'
 import { Fetch } from 'src/app/Utils/Authentication'
+import { User } from "../../../Utils/Authentication"
 
 @Component({
   selector: 'app-account',
@@ -7,6 +8,14 @@ import { Fetch } from 'src/app/Utils/Authentication'
   styleUrls: ['./account.component.sass']
 })
 export class AccountComponent implements OnInit {
+
+  @Input() user: User = {
+    id: "",
+    firstName: "",
+    lastName: "",
+    email: "",
+    avatar: ""
+  }
 
   constructor() { }
 

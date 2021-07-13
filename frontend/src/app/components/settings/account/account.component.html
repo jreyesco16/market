@@ -13,7 +13,7 @@ const avatar = document.querySelector("#avatar") -->
     
     <div class="uploaded-image" id="uploaded-image">
         <div class="loader" id="avatar-loader"></div>
-        <img src="" alt="" id="new-img" class="new-img">
+        <img [src]=" '../../../../assets/images/' + user.avatar " alt="" id="new-img" class="new-img">
     </div>
     Select Image: 
     
@@ -21,13 +21,9 @@ const avatar = document.querySelector("#avatar") -->
     
     <h4>Edit Name </h4>
     
-    First Name:
+    First Name: <input type="text" id="edited-first-name" value="{{user.firstName}}" required> <br> <br>
 
-    <input type="text" id="edited-first-name" value="${first_name}" required>
-
-    Last Name:
-
-    <input type="text" id="edited-last-name" value="${last_name}" required>
+    Last Name: <input type="text" id="edited-last-name" value="{{user.lastName}}" required> <br> <br>
 
     <Button type="submit" id="name-edit-btn" class="name-edit-btn" onClick="handleAccountChange()"> Make Change </Button>
 </div>

@@ -15,7 +15,10 @@
         <!-- GENERIC POP-UP -->
 <div class="settings-popup" id="settings-popup" [ngStyle]="{display: display}">
     <fa-icon class="close-popup-form-x" [icon]="faTimes" (click)="closePopup()"></fa-icon>
-    <div id="popup-view" style="display: -webkit-flex;"></div>
+    <div id="popup-view">
+        <app-account [ngStyle]="{display: accountDisplay}" [user]="user"></app-account>
+        <app-services [ngStyle]="{display: servicesDisplay }" ></app-services>
+    </div>
 </div>
 
 <div class="button-layer">
