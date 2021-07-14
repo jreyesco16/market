@@ -1,7 +1,6 @@
 from flask import Flask, render_template, request, jsonify
 from flask_cors import CORS
 from PIL import Image
-import database as db
 import jwt, datetime
 from dotenv import load_dotenv
 import simplejson as json
@@ -11,6 +10,7 @@ import base64
 import io
 import auth
 import get_data
+import add_data
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('USER_TOKEN_SECRET')
@@ -108,6 +108,16 @@ def settings(option):
     
     elif option == "services":
         return jsonify({'Services' : get_data.getServices(), 'Success': 'Success', 'status': 200})
+    
+    elif option == "new-service":
+
+        service = req['service']
+        print(service)
+        print(service['serviceId'])
+        new_service = add_data.add_service(user_id, service)
+        print(new_service)
+
+        return jsonify({ 'Success': "Success", 'status' : 200 })
 
     return jsonify({'Success' : 'Forbidden', 'status' : 404})
     

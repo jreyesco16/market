@@ -4,11 +4,13 @@
       <app-user-service *ngFor="let us of userServices" [userService]="us"></app-user-service>
     </div>
     <div id="add-service" style="display: inline-flex; margin-top: 10px;">
-      <select id="service-select" style="width: 220px; margin-right: 7px;">
-        <option *ngFor="let service of services" value="service.id">{{service.service}}</option>
+      <select class="service-select" [(ngModel)]="service" (ngModelChange)="handleServiceChange($event)" >
+        <option disabled value=null> select service </option>
+        <option *ngFor="let service of services" value={{service.id}}>{{service.service}}</option>
       </select>
-      $ <input type="number" placeholder="fee" style="width: 100px;margin-right: 7px;" /> 
-      <input type="number" placeholder="days" style="width: 100px;margin-right: 15px;" />
+      $ <input type="number" placeholder="fee" class="fee" [(ngModel)]="fee" (ngModelChange)="handleFeeChange($event)"/> 
+      <input type="number" placeholder="days" class="duration" [(ngModel)]="duration" (ngModelChange)="handleDurationChange($event)"/>
+      <fa-icon [icon]="faPlus" (click)="addService()"></fa-icon>
     </div>
 </div>
     
