@@ -9,6 +9,8 @@ load_dotenv()
 import os
 import base64
 import io
+import auth
+import get_data
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('USER_TOKEN_SECRET')
@@ -22,14 +24,9 @@ def login():
     email = data['email']
     password = data['password']
 
-    user = db.login(email,password)
+    user = auth.login(email,password)
         
-    # create a jwt token
-    token = jwt.encode({
-        'user' : user,
-        'exp' : datetime.datetime.utcnow() + datetime.timedelta(seconds=60*15),
-        'authorization' : os.getenv('USER_TOKEN_SECRET'),
-        }, os.getenv('ACCESS_TOKEN_SECRET'), algorithm="HS256")
+    token = auth.encodeToken(user)
 
     return jsonify({'market-token' : token, "status" : 500})
 
@@ -47,7 +44,7 @@ def signup():
     email = data['email']
     password = data['password']
 
-    if db.signup(first_name, last_name, birthday, email, password):
+    if auth.signup(first_name, last_name, birthday, email, password):
         signup = "Success"
 
     return jsonify({"Signup" : signup, "status" : 200})
@@ -58,7 +55,7 @@ def dashboard():
 
     user = request.get_json(force=True)['user']
 
-    dashboard = db.dashboardData(user)
+    dashboard = get_data.dashboardData(user)
           
     return json.dumps({"dashboard" : dashboard, "status" : 200})
 
@@ -71,7 +68,7 @@ def profile():
 
     user = data['user']
 
-    return jsonify({"profile" : db.profileData(user), "status" : 200})
+    return jsonify({"profile" : get_data.profileData(user), "status" : 200})
 
 @app.route('/settings/<option>', methods = ['POST', 'GET'])
 def settings(option):
@@ -86,7 +83,7 @@ def settings(option):
         return jsonify({'Success' : 'Failure', 'status' : 401})
 
     user = data['user']
-    user_id = db.getUserID(user)
+    user_id = user['id']
 
     if option == "account":
         first_name = req['first_name']
@@ -94,7 +91,7 @@ def settings(option):
 
         new_avatar = str(req['avatar']).split(",")[1]
 
-        db.updateName(first_name, last_name, user_id)
+        get_data.updateName(first_name, last_name, user_id)
 
         # convert the new_avatar which represents a file as a base64 to a png file and save to images directory
         avatar_img = base64.b64decode(new_avatar)
@@ -103,14 +100,14 @@ def settings(option):
         with open("./images/" + filename, "wb") as fo:
             fo.write(avatar_img)
             # save the file name under the users_id
-            db.saveUserAvatar(user_id, filename)
+            get_data.saveUserAvatar(user_id, filename)
 
     elif option == "userservices":
         # fetch all of users services from the backend
-        return jsonify({'UserServices' :  db.getUserServices(user_id),'Success' : 'Success', 'status' : 200})
+        return jsonify({'UserServices' :  get_data.getUserServices(user_id),'Success' : 'Success', 'status' : 200})
     
     elif option == "services":
-        return jsonify({'Services' : db.getServices(), 'Success': 'Success', 'status': 200})
+        return jsonify({'Services' : get_data.getServices(), 'Success': 'Success', 'status': 200})
 
     return jsonify({'Success' : 'Forbidden', 'status' : 404})
     

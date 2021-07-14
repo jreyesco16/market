@@ -24,7 +24,8 @@ import { ServicesComponent } from './components/settings/services/services.compo
 import { HistoryComponent } from './components/settings/history/history.component';
 import { ActivityComponent } from './components/settings/activity/activity.component';
 import { RulesComponent } from './components/settings/rules/rules.component';
-import { ContactUsComponent } from './components/settings/contact-us/contact-us.component'
+import { ContactUsComponent } from './components/settings/contact-us/contact-us.component';
+import { ServiceItemComponent } from './components/settings/services/user-service/user-service.component'
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import { ContactUsComponent } from './components/settings/contact-us/contact-us.
     HistoryComponent,
     ActivityComponent,
     RulesComponent,
-    ContactUsComponent
+    ContactUsComponent,
+    ServiceItemComponent
   ],
   imports: [
     BrowserModule,

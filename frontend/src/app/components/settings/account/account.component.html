@@ -1,11 +1,3 @@
-<!-- document.getElementById("settings-popup").style.display = "block"
-
-const first_name = document.querySelector("#first_name").innerHTML
-const last_name = document.querySelector("#last_name").innerHTML
-
-const avatar = document.querySelector("#avatar") -->
-
-
 <div class="form-container">
     <h2>Edit Account</h2>
 
@@ -17,18 +9,13 @@ const avatar = document.querySelector("#avatar") -->
     </div>
     Select Image: 
     
-    <input type="file" id="edit-photo-img" name="img" accept="image/*" required>
+    <input #avatar type="file" id="edit-photo-img" name="img" accept="image/*" (change)="processAvatar(avatar)" required>
     
     <h4>Edit Name </h4>
     
-    First Name: <input type="text" id="edited-first-name" value="{{user.firstName}}" required> <br> <br>
+    First Name: <input type="text" id="edited-first-name" placeholder="{{firstName}}" [(ngModel)]="firstName" (ngModelChange)="handleFirstNameChange($event)" required> <br> <br>
 
-    Last Name: <input type="text" id="edited-last-name" value="{{user.lastName}}" required> <br> <br>
+    Last Name: <input type="text" id="edited-last-name" [(ngModel)]="lastName" (ngModelChange)="handleLastNameChange($event)" required> <br> <br>
 
     <Button type="submit" id="name-edit-btn" class="name-edit-btn" onClick="handleAccountChange()"> Make Change </Button>
 </div>
-
-<!-- const new_img = document.querySelector("#new-img")
-const avatar_input = document.querySelector("#edit-photo-img")
-
-avatar_input.addEventListener( "change", () => {displayNewAvatar(avatar_input, new_img)}) -->
