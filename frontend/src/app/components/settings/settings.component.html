@@ -17,7 +17,8 @@
     <fa-icon class="close-popup-form-x" [icon]="faTimes" (click)="closePopup()"></fa-icon>
     <div id="popup-view">
         <app-account [ngStyle]="{display: accountDisplay}" [user]="user"></app-account>
-        <app-services [ngStyle]="{display: servicesDisplay }" ></app-services>
+        <app-services [ngStyle]="{display: servicesDisplay }"></app-services>
+        <app-rules [ngStyle]="{display: rulesDisplay}"></app-rules>
     </div>
 </div>
 

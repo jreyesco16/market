@@ -80,7 +80,7 @@ export class SettingsComponent implements OnInit {
   viewRules = () => {
     this.display = "block"
     this.resetAll()
-    this.activityDisplay = "block"
+    this.rulesDisplay = "block"
     console.log("Viewing rules")
   }
 

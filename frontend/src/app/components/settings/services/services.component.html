@@ -3,7 +3,7 @@
     <div id="service-list" style="margin-top: 10px;">
       <app-user-service *ngFor="let us of userServices" [userService]="us"></app-user-service>
     </div>
-    <div id="add-service" style="display: inline-flex; margin-top: 10px;">
+    <div class="add-service" style="display: inline-flex; margin-top: 10px;">
       <select class="service-select" [(ngModel)]="service" (ngModelChange)="handleServiceChange($event)" >
         <option disabled value=null> select service </option>
         <option *ngFor="let service of services" value={{service.id}}>{{service.service}}</option>

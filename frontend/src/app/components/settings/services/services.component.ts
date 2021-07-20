@@ -107,6 +107,23 @@ export class ServicesComponent implements OnInit {
 
     console.log("New Service", newService)
 
+    // USERSERVICE
+    // id : number
+    // fee : number
+    // duration : number
+    // rating : number
+    // serviceID : number
+    // service : number
+
+    //NEWSERVIVE
+    // serviceId : number
+    // fee : number
+    // duration: number
+    // rating: number
+
+    // ADD NEW SERVICE TO CURRENT USERSERVICES
+    // this.userServices = [{...this.userServices, newService}]
+
     // only reset if the fetch is successful
     this.resetNewService()
   }
