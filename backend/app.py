@@ -112,12 +112,10 @@ def settings(option):
     elif option == "new-service":
 
         service = req['service']
-        print(service)
-        print(service['serviceId'])
-        new_service = add_data.add_service(user_id, service)
-        print(new_service)
+        new_user_service = add_data.add_service(user_id, service)
+        print("new user service ", new_user_service)
 
-        return jsonify({ 'Success': "Success", 'status' : 200 })
+        return jsonify({ 'Success': "Success", 'userService': new_user_service, 'status' : 200 })
 
     return jsonify({'Success' : 'Forbidden', 'status' : 404})
     

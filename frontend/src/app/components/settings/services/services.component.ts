@@ -102,27 +102,9 @@ export class ServicesComponent implements OnInit {
 
     const res = await Fetch(url, "POST", headers, body)
 
-    console.log("res", res)
+    const newUserService : UserService = res.userService
 
-
-    console.log("New Service", newService)
-
-    // USERSERVICE
-    // id : number
-    // fee : number
-    // duration : number
-    // rating : number
-    // serviceID : number
-    // service : number
-
-    //NEWSERVIVE
-    // serviceId : number
-    // fee : number
-    // duration: number
-    // rating: number
-
-    // ADD NEW SERVICE TO CURRENT USERSERVICES
-    // this.userServices = [{...this.userServices, newService}]
+    this.userServices = [...this.userServices, newUserService]
 
     // only reset if the fetch is successful
     this.resetNewService()

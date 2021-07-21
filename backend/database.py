@@ -23,3 +23,13 @@ def executeQuery(query):
 
     return result
 
+def commitQuery(query):
+    db = connection()
+    csr = db.cursor()
+
+    csr.execute(query)
+    db.commit()
+
+    csr.close()
+    db.close()
+
