@@ -1,7 +1,7 @@
 <div class="form-container">
     <h2> Edit Services </h2>
     <div id="service-list" style="margin-top: 10px;">
-      <app-user-service *ngFor="let us of userServices" [userService]="us"></app-user-service>
+      <app-user-service *ngFor="let us of userServices" [userService]="us" (deleteUserService)="deleteUserService($event)"></app-user-service>
     </div>
     <div class="add-service" style="display: inline-flex; margin-top: 10px;">
       <select class="service-select" [(ngModel)]="service" (ngModelChange)="handleServiceChange($event)" >

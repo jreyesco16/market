@@ -116,4 +116,18 @@ export class ServicesComponent implements OnInit {
     this.duration = null
   }
 
+  deleteUserService = async (id: number) => {
+
+    const token = this.cookieService.get("market-token")
+
+    const url = "http://localhost:8000/settings/delete-service"
+    const headers = {"Content-Type" : "application/json; charset=utf-8"}
+    const body = JSON.stringify({ token : token, serviceId: id })
+
+    const res = await Fetch(url, "POST", headers, body)
+
+    // have to handle errors
+    this.userServices = this.userServices.filter( (us) => us.id != id)
+
+  }
 }

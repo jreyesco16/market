@@ -11,6 +11,7 @@ import io
 import auth
 import get_data
 import add_data
+import remove_data
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('USER_TOKEN_SECRET')
@@ -113,9 +114,16 @@ def settings(option):
 
         service = req['service']
         new_user_service = add_data.add_service(user_id, service)
-        print("new user service ", new_user_service)
 
         return jsonify({ 'Success': "Success", 'userService': new_user_service, 'status' : 200 })
+    
+    elif option == "delete-service":
+
+        service_id = req['serviceId']
+        remove_data.remove_user_service(service_id)
+
+        return jsonify({ 'Success': "Success", 'status' : 200 })
+
 
     return jsonify({'Success' : 'Forbidden', 'status' : 404})
     
